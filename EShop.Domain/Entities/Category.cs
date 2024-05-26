@@ -20,7 +20,9 @@
             Name = name;
         }
 
-
+        /// <summary>
+        ///     Устанавливает значение поля <see cref="Name"/>
+        /// </summary>
         public void UpdateName(string name)
         {
             Name = name;

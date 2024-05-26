@@ -28,13 +28,17 @@
             UserId = userId;
         }
 
-
+        /// <summary>
+        ///     Добавляет объект <see cref="BasketItem"/> в коллекцию <see cref="BasketItems"/>
+        /// </summary>
         public void AddItem(BasketItem newBasketItem)
         {
             BasketItems.Add(newBasketItem);
         }
 
-
+        /// <summary>
+        ///     Удаляет объект <see cref="BasketItem"/> из коллекции <see cref="BasketItems"/>
+        /// </summary>
         public void RemoveItem(BasketItem basketItem)
         {
             BasketItems.Remove(basketItem);
