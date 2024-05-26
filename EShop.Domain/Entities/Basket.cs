@@ -29,14 +29,15 @@
         }
 
 
-        public void AddItemToBasket(BasketItem basketItem)
+        public void AddItem(BasketItem newBasketItem)
         {
-            if (BasketItems == null)
-            {
-                BasketItems = new List<BasketItem>();
-            }
+            BasketItems.Add(newBasketItem);
+        }
 
-            BasketItems.Add(basketItem);
+
+        public void RemoveItem(BasketItem basketItem)
+        {
+            BasketItems.Remove(basketItem);
         }
     }
 }
