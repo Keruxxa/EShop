@@ -18,7 +18,7 @@
         /// <summary>
         ///     Дата выпуска
         /// </summary>
-        public DateTime? RealiseDate { get; }
+        public DateTime? ReleaseDate { get; }
 
         /// <summary>
         ///     Цена

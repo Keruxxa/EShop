@@ -6,9 +6,9 @@
     public class Review : EntityBase<int>
     {
         /// <summary>
-        ///     Текстовая часть отзыва
+        ///     Id товара, связанного с отзывом
         /// </summary>
-        public string? Text { get; }
+        public Guid ProductId { get; }
 
         /// <summary>
         ///     Рейтинг
@@ -16,9 +16,9 @@
         public int Rating { get; }
 
         /// <summary>
-        ///     Id товара, связанного с отзывом
+        ///     Текстовая часть отзыва
         /// </summary>
-        public Guid ProductId { get; }
+        public string? Text { get; }
 
         /// <summary>
         ///     Товар, связанный с отзывом
@@ -28,7 +28,7 @@
 
         private Review() { }
 
-        public Review(Guid productId, string? text, int rating)
+        public Review(Guid productId, int rating, string? text)
         {
             ProductId = productId;
             Rating = rating;

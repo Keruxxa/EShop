@@ -12,18 +12,12 @@ namespace EShop.Domain.Entities
         /// </summary>
         public string Name { get; }
 
-        /// <summary>
-        ///     Тип роли
-        /// </summary>
-        public RoleType RoleType { get; }
-
 
         private Role() { }
 
-        public Role(string name, RoleType roleType)
+        public Role(string name)
         {
             Name = name;
-            RoleType = roleType;
         }
     }
 }
