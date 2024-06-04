@@ -8,7 +8,7 @@
         /// <summary>
         ///     Администратор
         /// </summary>
-        Administrator,
+        Administrator = 1,
 
         /// <summary>
         ///     Менеджер
@@ -16,8 +16,13 @@
         Manager,
 
         /// <summary>
-        ///     Пользователь
+        ///     Зарегистрированный пользователь
         /// </summary>
-        User
+        RegisteredUser,
+
+        /// <summary>
+        ///     Незарегистрированный пользователь
+        /// </summary>
+        UnregisteredUser
     }
 }

@@ -23,7 +23,7 @@
         /// <summary>
         ///     Количество товара в корзине
         /// </summary>
-        public int Count { get; set; }
+        public int Count { get; private set; }
 
 
         private BasketItem() { }
@@ -34,5 +34,16 @@
             ProductId = productId;
             Count = 1;
         }
+
+
+        /// <summary>
+        ///     Увеличивает на единицу количество товара в корзине
+        /// </summary>
+        public void IncrementItemCount() => Count++;
+
+        /// <summary>
+        ///     Уменьшает на единицу количество товара в корзине
+        /// </summary>
+        public void DecrementItemCount() => Count--;
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     ///     Представляет отзыв
     /// </summary>
-    public class Review : EntityBase<int>
+    public class Review : EntityBase<Guid>
     {
         /// <summary>
         ///     Id товара, связанного с отзывом
@@ -19,11 +19,6 @@
         ///     Текстовая часть отзыва
         /// </summary>
         public string? Text { get; }
-
-        /// <summary>
-        ///     Товар, связанный с отзывом
-        /// </summary>
-        public Product Product { get; }
 
 
         private Review() { }

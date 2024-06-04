@@ -10,6 +10,11 @@
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        ///     Товары, относящиеся к данному бренду
+        /// </summary>
+        public IReadOnlyCollection<Product> Products { get; }
+
 
         private Brand() { }
 

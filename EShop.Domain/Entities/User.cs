@@ -1,4 +1,6 @@
-﻿namespace EShop.Domain.Entities
+﻿using EShop.Domain.Enums;
+
+namespace EShop.Domain.Entities
 {
     /// <summary>
     ///     Представляет пользователя
@@ -31,14 +33,14 @@
         public string Password { get; set; }
 
         /// <summary>
-        ///     Id сущности пользователь-роль
+        ///     Id роли
         /// </summary>
-        public int UserRoleId { get; set; }
+        public RoleType RoleId { get; set; }
 
         /// <summary>
-        ///     Сущность пользователь-роль
+        ///     Роль
         /// </summary>
-        public UserRole UserRole { get; set; }
+        public Role Role { get; set; }
 
 
         private User() { }

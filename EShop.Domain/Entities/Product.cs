@@ -41,6 +41,16 @@
         public Category Category { get; }
 
         /// <summary>
+        ///     Id бренда
+        /// </summary>
+        public int BrandId { get; }
+
+        /// <summary>
+        ///     Бренд
+        /// </summary>
+        public Brand Brand { get; }
+
+        /// <summary>
         ///     Id страны-производителя
         /// </summary>
         public int? CountryManufacturerId { get; }
