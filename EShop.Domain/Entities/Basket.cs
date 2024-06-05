@@ -13,7 +13,7 @@
         /// <summary>
         ///     Товары корзины
         /// </summary>
-        public ICollection<BasketItem>? BasketItems { get; set; }
+        public ICollection<BasketItem>? BasketItems { get; private set; }
 
         /// <summary>
         ///     Суммарная стоимость корзины
@@ -26,22 +26,27 @@
         public Basket(Guid userId)
         {
             UserId = userId;
+            BasketItems = new List<BasketItem>();
         }
 
         /// <summary>
         ///     Добавляет объект <see cref="BasketItem"/> в коллекцию <see cref="BasketItems"/>
         /// </summary>
-        public void AddItem(BasketItem newBasketItem)
+        public void AddItem(BasketItem basketItem)
         {
-            BasketItems.Add(newBasketItem);
+            BasketItems ??= new List<BasketItem>();
+
+            BasketItems.Add(basketItem);
         }
 
         /// <summary>
         ///     Удаляет объект <see cref="BasketItem"/> из коллекции <see cref="BasketItems"/>
         /// </summary>
-        public void RemoveItem(BasketItem basketItem)
+        public bool RemoveItem(BasketItem basketItem)
         {
-            BasketItems.Remove(basketItem);
+            BasketItems ??= new List<BasketItem>();
+
+            return BasketItems.Remove(basketItem);
         }
     }
 }

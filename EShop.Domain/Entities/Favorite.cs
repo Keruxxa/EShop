@@ -21,6 +21,27 @@
         public Favorite(Guid userId)
         {
             UserId = userId;
+            Products = new List<Product>();
+        }
+
+        /// <summary>
+        ///     Добавляет объект <see cref="Product"/> в коллекцию <see cref="Products"/>
+        /// </summary>
+        public void AddItem(Product product)
+        {
+            Products ??= new List<Product>();
+
+            Products.Add(product);
+        }
+
+        /// <summary>
+        ///     Удаляет объект <see cref="Product"/> из коллекции <see cref="Products"/>
+        /// </summary>
+        public bool RemoveItem(Product product)
+        {
+            Products ??= new List<Product>();
+
+            return Products.Remove(product);
         }
     }
 }
