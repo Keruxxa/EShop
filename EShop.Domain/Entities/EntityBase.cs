@@ -6,7 +6,7 @@
     /// <typeparam name="TKey">
     ///     Тип Id
     /// </typeparam>
-    public class EntityBase<TKey> where TKey : struct
+    public abstract class EntityBase<TKey> where TKey : struct
     {
         public TKey Id { get; set; }
     }
