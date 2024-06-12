@@ -1,3 +1,4 @@
+using EShop.Application.Interfaces;
 using EShop.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +19,13 @@ namespace EShop.Web
             {
                 options.UseNpgsql(configuration.GetConnectionString("EShopConnectionString"));
             });
+            builder.Services.AddScoped<IEShopDbContext, EShopDbContext>();
 
             builder.Services.AddMediatR(configuration =>
             {
                 configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
             });
+
 
             var app = builder.Build();
 
