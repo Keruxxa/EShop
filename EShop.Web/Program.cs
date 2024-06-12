@@ -38,6 +38,7 @@ namespace EShop.Web
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
+            app.UseDeveloperExceptionPage();
 
             app.Run();
         }
