@@ -35,7 +35,7 @@ namespace EShop.Web.Controllers
 
             var productId = await Mediator.Send(createCommand);
 
-            return default;
+            return CreatedAtAction(nameof(GetById), new { id = productId });
         }
     }
 }
