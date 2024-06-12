@@ -1,4 +1,3 @@
-
 using EShop.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,16 +8,20 @@ namespace EShop.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = builder.Configuration;
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var configuration = builder.Configuration;
-
             builder.Services.AddDbContext<EShopDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("EShopConnectionString"));
+            });
+
+            builder.Services.AddMediatR(configuration =>
+            {
+                configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
             });
 
             var app = builder.Build();
