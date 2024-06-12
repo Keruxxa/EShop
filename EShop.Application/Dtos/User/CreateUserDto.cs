@@ -1,6 +1,6 @@
 ﻿using EShop.Domain.Enums;
 
-namespace EShop.Infrastructure.Dtos.User
+namespace EShop.Application.Dtos.User
 {
     /// <summary>
     ///     Представляет объект DTO для создания пользователя

@@ -1,7 +1,7 @@
-﻿namespace EShop.Infrastructure.Dtos.Review
+﻿namespace EShop.Application.Dtos.Review
 {
     /// <param name="ProductId"> Id товара, связанного с отзывом </param>
     /// <param name="Rating"> Рейтинг </param>
     /// <param name="Text"> Текстовая часть отзыва </param>
-    public record CreateReviewDto(Guid ProductId, int Rating, string? Text);
+    public record UpdateReviewDto(Guid ProductId, int Rating, string? Text);
 }

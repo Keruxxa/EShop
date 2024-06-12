@@ -1,7 +1,7 @@
-﻿namespace EShop.Infrastructure.Dtos.Product
+﻿namespace EShop.Application.Dtos.Product
 {
     /// <summary>
-    ///     Представляет объект DTO для обновления товара
+    ///     Представляет объект DTO для создания товара
     /// </summary>
     /// <param name="Name"> Наименование </param>
     /// <param name="Description"> Описание </param>
@@ -9,7 +9,7 @@
     /// <param name="Price"> Цена </param>
     /// <param name="CategoryId"> Id категории </param>
     /// <param name="CountryManufacturerId"> Id страны-производителя </param>
-    public record UpdateProductDto(
+    public record CreateProductDto(
         string Name,
         string? Description,
         DateTime? ReleaseDate,
