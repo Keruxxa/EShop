@@ -8,57 +8,57 @@
         /// <summary>
         ///     Наименование
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
         ///     Описание
         /// </summary>
-        public string? Description { get; set; }
+        public string? Description { get; private set; }
 
         /// <summary>
         ///     Дата выпуска
         /// </summary>
-        public DateTime? ReleaseDate { get; }
+        public DateTime? ReleaseDate { get; private set; }
 
         /// <summary>
         ///     Цена
         /// </summary>
-        public decimal Price { get; set; }
+        public decimal Price { get; private set; }
 
         /// <summary>
         ///     Рейтинг
         /// </summary>
-        public decimal? Rating { get; set; }
+        public decimal? Rating { get; private set; }
 
         /// <summary>
         ///     Id категории
         /// </summary>
-        public int CategoryId { get; }
+        public int CategoryId { get; private set; }
 
         /// <summary>
         ///     Категория
         /// </summary>
-        public Category Category { get; }
+        public Category Category { get; private set; }
 
         /// <summary>
         ///     Id бренда
         /// </summary>
-        public int BrandId { get; }
+        public int BrandId { get; private set; }
 
         /// <summary>
         ///     Бренд
         /// </summary>
-        public Brand Brand { get; }
+        public Brand Brand { get; private set; }
 
         /// <summary>
         ///     Id страны-производителя
         /// </summary>
-        public int? CountryManufacturerId { get; }
+        public int? CountryManufacturerId { get; private set; }
 
         /// <summary>
         ///     Страна-производитель
         /// </summary>
-        public Country CountryManufacturer { get; }
+        public Country CountryManufacturer { get; private set; }
 
         /// <summary>
         ///     Отзывы
@@ -67,5 +67,32 @@
 
 
         private Product() { }
+
+
+        public Product(string name, string? description, DateTime? releaseDate,
+            decimal price, decimal? rating, int categoryId, int brandId, int? countryManufacturerId)
+        {
+            Name = name;
+            Description = description;
+            ReleaseDate = releaseDate;
+            Price = price;
+            Rating = rating;
+            CategoryId = categoryId;
+            BrandId = brandId;
+            CountryManufacturerId = countryManufacturerId;
+        }
+
+        public void UpdateEntity(string name, string? description, DateTime? releaseDate,
+            decimal price, decimal? rating, int categoryId, int brandId, int? countryManufacturerId)
+        {
+            Name = name;
+            Description = description;
+            ReleaseDate = releaseDate;
+            Price = price;
+            Rating = rating;
+            CategoryId = categoryId;
+            BrandId = brandId;
+            CountryManufacturerId = countryManufacturerId;
+        }
     }
 }

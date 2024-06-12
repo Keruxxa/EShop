@@ -1,15 +1,10 @@
-﻿using EShop.Application.Interfaces;
-using EShop.Domain.Entities;
+﻿using EShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Infrastructure
+namespace EShop.Application.Interfaces
 {
-    public class EShopDbContext : DbContext, IEShopDbContext
+    public interface IEShopDbContext
     {
-        public EShopDbContext(DbContextOptions<EShopDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketsItems { get; set; }
@@ -21,10 +16,6 @@ namespace EShop.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EShopDbContext).Assembly);
-        }
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
