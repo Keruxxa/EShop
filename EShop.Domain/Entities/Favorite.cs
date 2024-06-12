@@ -13,7 +13,7 @@
         /// <summary>
         ///     Товары, содержащиеся в коллекции избранного
         /// </summary>
-        public ICollection<Product>? Products { get; set; }
+        public List<Product> Products { get; set; }
 
 
         private Favorite() { }
@@ -21,7 +21,6 @@
         public Favorite(Guid userId)
         {
             UserId = userId;
-            Products = new List<Product>();
         }
 
         /// <summary>
@@ -39,8 +38,6 @@
         /// </summary>
         public bool RemoveItem(Product product)
         {
-            Products ??= new List<Product>();
-
             return Products.Remove(product);
         }
     }

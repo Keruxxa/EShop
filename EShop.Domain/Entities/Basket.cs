@@ -13,7 +13,7 @@
         /// <summary>
         ///     Товары корзины
         /// </summary>
-        public ICollection<BasketItem>? BasketItems { get; private set; }
+        public List<BasketItem> BasketItems { get; private set; }
 
         /// <summary>
         ///     Суммарная стоимость корзины
@@ -26,7 +26,6 @@
         public Basket(Guid userId)
         {
             UserId = userId;
-            BasketItems = new List<BasketItem>();
         }
 
         /// <summary>
@@ -44,8 +43,6 @@
         /// </summary>
         public bool RemoveItem(BasketItem basketItem)
         {
-            BasketItems ??= new List<BasketItem>();
-
             return BasketItems.Remove(basketItem);
         }
     }
