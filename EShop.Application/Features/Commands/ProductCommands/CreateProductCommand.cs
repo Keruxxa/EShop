@@ -2,6 +2,9 @@
 
 namespace EShop.Application.Features.Commands.ProductCommands
 {
+    /// <summary>
+    ///     Представляет команду для создания товара
+    /// </summary>
     public class CreateProductCommand : IRequest<Guid>
     {
         public string Name { get; set; }

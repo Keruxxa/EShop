@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Queries.ProductQueries
 {
+    /// <summary>
+    ///     Представялет обработчик команды <see cref="GetProductByIdQuery"/>
+    /// </summary>
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductDto>
     {
         private readonly IEShopDbContext _dbContext;

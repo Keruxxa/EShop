@@ -4,6 +4,9 @@ using MediatR;
 
 namespace EShop.Application.Features.Commands.ProductCommands
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="UpdateProductCommand"/>
+    /// </summary>
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
         private readonly IEShopDbContext _dbContext;

@@ -2,6 +2,9 @@
 
 namespace EShop.Application.Features.Commands.ProductCommands
 {
+    /// <summary>
+    ///     Представляет команду для обновления товара
+    /// </summary>
     public class UpdateProductCommand : IRequest<bool>
     {
         public Guid Id { get; set; }
