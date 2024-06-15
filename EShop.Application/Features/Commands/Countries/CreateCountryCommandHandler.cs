@@ -10,7 +10,7 @@ namespace EShop.Application.Features.Commands.Countries
 
         public CreateCountryCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
         }
 
 

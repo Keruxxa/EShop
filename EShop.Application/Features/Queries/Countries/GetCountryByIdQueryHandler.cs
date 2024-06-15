@@ -12,7 +12,7 @@ namespace EShop.Application.Features.Queries.Countries
 
         public GetCountryByIdQueryHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
         }
 
 
@@ -23,7 +23,7 @@ namespace EShop.Application.Features.Queries.Countries
 
             if (country == null)
             {
-                throw new NotFoundException(typeof(Country).Name, request.Id);
+                throw new NotFoundException(nameof(Country), request.Id);
             }
 
             return country;

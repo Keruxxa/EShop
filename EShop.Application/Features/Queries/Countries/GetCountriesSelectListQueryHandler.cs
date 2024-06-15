@@ -12,7 +12,7 @@ namespace EShop.Application.Features.Queries.Countries
 
         public GetCountriesSelectListQueryHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
         }
 
 
@@ -22,11 +22,9 @@ namespace EShop.Application.Features.Queries.Countries
         {
             var countriesEntities = await _dbContext.Countries.ToListAsync(cancellationToken);
 
-            var countriesSelectList = countriesEntities
+            return countriesEntities
                 .Select(SelectListItem<int>.CreateItem)
                 .OrderBy(country => country.Name);
-
-            return countriesSelectList;
         }
     }
 }

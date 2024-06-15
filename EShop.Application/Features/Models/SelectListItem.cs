@@ -22,5 +22,15 @@ namespace EShop.Application.Features.Models
                 Name = country.Name
             };
         }
+
+
+        public static SelectListItem<int> CreateItem(Brand brand)
+        {
+            return new SelectListItem<int>()
+            {
+                Id = brand.Id,
+                Name = brand.Name
+            };
+        }
     }
 }

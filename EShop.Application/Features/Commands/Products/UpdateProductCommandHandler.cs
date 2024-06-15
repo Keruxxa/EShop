@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using EShop.Domain.Exceptions;
 using MediatR;
+using EShop.Domain.Entities;
 
 namespace EShop.Application.Features.Commands.Products
 {
@@ -24,7 +25,7 @@ namespace EShop.Application.Features.Commands.Products
 
             if (product == null)
             {
-                throw new NotFoundException(nameof(product), request.Id);
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
             product.UpdateEntity(request.Name, request.Description, request.ReleaseDate, request.Price,

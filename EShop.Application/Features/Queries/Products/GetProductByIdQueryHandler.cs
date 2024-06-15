@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Dtos.Product;
 using EShop.Application.Extensions.DtoMapping;
 using EShop.Application.Interfaces;
+using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EShop.Application.Features.Queries.Products
 {
     /// <summary>
-    ///     Представялет обработчик команды <see cref="GetProductByIdQuery"/>
+    ///     Представялет обработчик зпроса <see cref="GetProductByIdQuery"/>
     /// </summary>
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductDto>
     {
@@ -16,7 +17,7 @@ namespace EShop.Application.Features.Queries.Products
 
         public GetProductByIdQueryHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
         }
 
         public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
@@ -26,7 +27,7 @@ namespace EShop.Application.Features.Queries.Products
 
             if (product == null)
             {
-                throw new NotFoundException(nameof(product), request.Id);
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
             return product.ToDto();
