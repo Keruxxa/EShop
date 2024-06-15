@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace EShop.Application.Features.Commands.ProductCommands
+namespace EShop.Application.Features.Commands.Products
 {
     /// <summary>
     ///     Представляет команду для обновления товара

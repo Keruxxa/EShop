@@ -6,7 +6,7 @@
     public class Country : EntityBase<int>
     {
         /// <summary>
-        ///     Наименование
+        ///     Название
         /// </summary>
         public string Name { get; }
 
