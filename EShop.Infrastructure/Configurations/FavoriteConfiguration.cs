@@ -12,6 +12,13 @@ namespace EShop.Infrastructure.Configurations
 
             builder.Property(favorite => favorite.Id)
                 .IsRequired();
+
+            builder.Ignore(favorite => favorite.Products);
+
+            builder.HasMany<FavoriteProducts>()
+                .WithOne()
+                .HasForeignKey(favoriteProducts => favoriteProducts.FavoriteId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -115,6 +115,38 @@ namespace EShop.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Китай"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Россия"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Корея"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Индия"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Германия"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Франция"
+                        });
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Favorite", b =>
@@ -131,6 +163,21 @@ namespace EShop.Infrastructure.Migrations
                     b.ToTable("Favorites");
                 });
 
+            modelBuilder.Entity("EShop.Domain.Entities.FavoriteProducts", b =>
+                {
+                    b.Property<Guid>("FavoriteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FavoriteId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("FavoriteProducts");
+                });
+
             modelBuilder.Entity("EShop.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -143,12 +190,12 @@ namespace EShop.Infrastructure.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("CountryManufacturerId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
-
-                    b.Property<Guid?>("FavoriteId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -161,13 +208,16 @@ namespace EShop.Infrastructure.Migrations
                     b.Property<decimal?>("Rating")
                         .HasColumnType("numeric");
 
+                    b.Property<DateTime?>("ReleaseDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("FavoriteId");
+                    b.HasIndex("CountryManufacturerId");
 
                     b.ToTable("Products");
                 });
@@ -180,6 +230,9 @@ namespace EShop.Infrastructure.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Text")
                         .HasMaxLength(2048)
@@ -295,6 +348,21 @@ namespace EShop.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("EShop.Domain.Entities.FavoriteProducts", b =>
+                {
+                    b.HasOne("EShop.Domain.Entities.Favorite", null)
+                        .WithMany()
+                        .HasForeignKey("FavoriteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EShop.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EShop.Domain.Entities.Product", b =>
                 {
                     b.HasOne("EShop.Domain.Entities.Brand", "Brand")
@@ -309,13 +377,16 @@ namespace EShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EShop.Domain.Entities.Favorite", null)
-                        .WithMany("Products")
-                        .HasForeignKey("FavoriteId");
+                    b.HasOne("EShop.Domain.Entities.Country", "CountryManufacturer")
+                        .WithMany()
+                        .HasForeignKey("CountryManufacturerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+
+                    b.Navigation("CountryManufacturer");
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Review", b =>
@@ -349,11 +420,6 @@ namespace EShop.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("EShop.Domain.Entities.Favorite", b =>
                 {
                     b.Navigation("Products");
                 });

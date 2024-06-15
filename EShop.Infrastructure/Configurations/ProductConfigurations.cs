@@ -35,6 +35,16 @@ namespace EShop.Infrastructure.Configurations
                 .WithMany(brand => brand.Products)
                 .HasForeignKey(product => product.BrandId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(product => product.CountryManufacturer)
+                .WithMany()
+                .HasForeignKey(product => product.CountryManufacturerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany<FavoriteProducts>()
+                .WithOne()
+                .HasForeignKey(favoriteProducts => favoriteProducts.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

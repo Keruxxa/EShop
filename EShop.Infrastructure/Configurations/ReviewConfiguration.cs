@@ -16,6 +16,9 @@ namespace EShop.Infrastructure.Configurations
             builder.Property(review => review.Text)
                 .HasMaxLength(2048);
 
+            builder.Property(review => review.Rating)
+                .IsRequired();
+
             builder
                 .HasOne<Product>()
                 .WithMany(product => product.Reviews)

@@ -84,11 +84,12 @@ namespace EShop.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ReleaseDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Rating = table.Column<decimal>(type: "numeric", nullable: true),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     BrandId = table.Column<int>(type: "integer", nullable: false),
-                    FavoriteId = table.Column<Guid>(type: "uuid", nullable: true)
+                    CountryManufacturerId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,10 +107,11 @@ namespace EShop.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Favorites_FavoriteId",
-                        column: x => x.FavoriteId,
-                        principalTable: "Favorites",
-                        principalColumn: "Id");
+                        name: "FK_Products_Countries_CountryManufacturerId",
+                        column: x => x.CountryManufacturerId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,11 +138,36 @@ namespace EShop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FavoriteProducts",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FavoriteId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteProducts", x => new { x.FavoriteId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_FavoriteProducts_Favorites_FavoriteId",
+                        column: x => x.FavoriteId,
+                        principalTable: "Favorites",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FavoriteProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
                     Text = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true)
                 },
                 constraints: table =>
@@ -199,6 +226,19 @@ namespace EShop.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Китай" },
+                    { 2, "Россия" },
+                    { 3, "Корея" },
+                    { 4, "Индия" },
+                    { 5, "Германия" },
+                    { 6, "Франция" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -226,6 +266,11 @@ namespace EShop.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FavoriteProducts_ProductId",
+                table: "FavoriteProducts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
                 table: "Products",
                 column: "BrandId");
@@ -236,9 +281,9 @@ namespace EShop.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_FavoriteId",
+                name: "IX_Products_CountryManufacturerId",
                 table: "Products",
-                column: "FavoriteId");
+                column: "CountryManufacturerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ProductId",
@@ -259,13 +304,16 @@ namespace EShop.Infrastructure.Migrations
                 name: "BasketsItems");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "FavoriteProducts");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Baskets");
+
+            migrationBuilder.DropTable(
+                name: "Favorites");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -280,7 +328,7 @@ namespace EShop.Infrastructure.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Favorites");
+                name: "Countries");
 
             migrationBuilder.DropTable(
                 name: "Roles");

@@ -16,6 +16,15 @@ namespace EShop.Infrastructure.Configurations
             builder.Property(country => country.Name)
                 .IsRequired()
                 .HasMaxLength(128);
+
+            builder.HasData([
+                new Country("Китай") { Id = 1 },
+                new Country("Россия") { Id = 2 },
+                new Country("Корея") { Id = 3 },
+                new Country("Индия") { Id = 4 },
+                new Country("Германия") { Id = 5 },
+                new Country("Франция") { Id = 6 }
+                ]);
         }
     }
 }
