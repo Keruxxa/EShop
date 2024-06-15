@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Controllers
 {
-    public class ProductController : BaseController
+    public class ProductsController : BaseController
     {
-        public ProductController(IMediator mediator) : base(mediator)
+        public ProductsController(IMediator mediator) : base(mediator)
         {
         }
 

@@ -1,6 +1,5 @@
-using EShop.Application.Interfaces;
+using EShop.Application;
 using EShop.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Web
 {
@@ -15,17 +14,8 @@ namespace EShop.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<EShopDbContext>(options =>
-            {
-                options.UseNpgsql(configuration.GetConnectionString("EShopConnectionString"));
-            });
-            builder.Services.AddScoped<IEShopDbContext, EShopDbContext>();
-
-            builder.Services.AddMediatR(configuration =>
-            {
-                configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
-            });
-
+            builder.Services.AddApplication();
+            builder.Services.AddInfrastrusture(configuration.GetConnectionString("EShopConnectionString"));
 
             var app = builder.Build();
 
