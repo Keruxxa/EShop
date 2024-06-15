@@ -5,7 +5,7 @@ using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Queries.ProductQueries
+namespace EShop.Application.Features.Queries.Products
 {
     /// <summary>
     ///     Представялет обработчик команды <see cref="GetProductByIdQuery"/>
@@ -21,7 +21,8 @@ namespace EShop.Application.Features.Queries.ProductQueries
 
         public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var product = await _dbContext.Products.FirstOrDefaultAsync(product => product.Id == request.Id);
+            var product = await _dbContext.Products
+                .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
 
             if (product == null)
             {

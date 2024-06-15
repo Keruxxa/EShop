@@ -2,7 +2,7 @@
 using EShop.Domain.Entities;
 using MediatR;
 
-namespace EShop.Application.Features.Commands.ProductCommands
+namespace EShop.Application.Features.Commands.Products
 {
     /// <summary>
     ///     Представляет обработчик команды <see cref="CreateProductCommand"/>
@@ -34,14 +34,7 @@ namespace EShop.Application.Features.Commands.ProductCommands
             await _dbContext.Products.AddAsync(product, cancellationToken);
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-            if (saved)
-            {
-                return product.Id;
-            }
-            else
-            {
-                return Guid.Empty;
-            }
+            return saved ? product.Id : Guid.Empty;
         }
     }
 }

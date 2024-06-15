@@ -1,8 +1,9 @@
 ﻿using EShop.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using EShop.Domain.Exceptions;
 using MediatR;
 
-namespace EShop.Application.Features.Commands.ProductCommands
+namespace EShop.Application.Features.Commands.Products
 {
     /// <summary>
     ///     Представляет обработчик команды <see cref="UpdateProductCommand"/>
@@ -18,7 +19,8 @@ namespace EShop.Application.Features.Commands.ProductCommands
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = _dbContext.Products.FirstOrDefault(product => product.Id == request.Id);
+            var product = await _dbContext.Products
+                .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
 
             if (product == null)
             {
