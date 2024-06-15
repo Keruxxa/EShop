@@ -22,7 +22,9 @@ namespace EShop.Application.Features.Queries.Countries
         {
             var countriesEntities = await _dbContext.Countries.ToListAsync(cancellationToken);
 
-            var countriesSelectList = countriesEntities.Select(SelectListItem<int>.CreateItem);
+            var countriesSelectList = countriesEntities
+                .Select(SelectListItem<int>.CreateItem)
+                .OrderBy(country => country.Name);
 
             return countriesSelectList;
         }

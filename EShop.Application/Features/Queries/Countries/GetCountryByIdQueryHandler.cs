@@ -23,7 +23,7 @@ namespace EShop.Application.Features.Queries.Countries
 
             if (country == null)
             {
-                throw new NotFoundException(nameof(country), request.Id);
+                throw new NotFoundException(typeof(Country).Name, request.Id);
             }
 
             return country;

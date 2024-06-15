@@ -40,10 +40,7 @@ namespace EShop.Web.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<int>> Create(string name)
         {
-            var createCommand = new CreateCountryCommand
-            {
-                Name = name
-            };
+            var createCommand = new CreateCountryCommand(name);
 
             var id = await Mediator.Send(createCommand);
 
