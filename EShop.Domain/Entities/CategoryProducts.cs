@@ -2,14 +2,15 @@
 {
     /// <summary>
     ///     Представляет промежуточную сущность, связывающую сущности 
-    ///     <see cref="Favorite"/> и <see cref="Product"/>
+    ///     <see cref="Category"/> и <see cref="Product"/>
     /// </summary>
-    public class FavoriteProducts
+    public class CategoryProducts
     {
+
         /// <summary>
-        ///     Id избранного
+        ///     Id категории
         /// </summary>
-        public Guid FavoriteId { get; private set; }
+        public int CategoryId { get; private set; }
 
         /// <summary>
         ///     Id товара
@@ -17,12 +18,12 @@
         public Guid ProductId { get; private set; }
 
 
-        private FavoriteProducts() { }
+        public CategoryProducts() { }
 
 
-        public FavoriteProducts(Guid favoriteId, Guid productId)
+        public CategoryProducts(int categoryId, Guid productId)
         {
-            FavoriteId = favoriteId;
+            CategoryId = categoryId;
             ProductId = productId;
         }
     }

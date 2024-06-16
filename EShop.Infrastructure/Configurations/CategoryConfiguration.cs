@@ -17,9 +17,14 @@ namespace EShop.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(128);
 
-            builder.HasMany(brand => brand.Products)
+            builder.HasMany(category => category.Products)
                 .WithOne(product => product.Category)
                 .HasForeignKey(product => product.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany<CategoryProducts>()
+                .WithOne()
+                .HasForeignKey(categoryProducts => categoryProducts.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

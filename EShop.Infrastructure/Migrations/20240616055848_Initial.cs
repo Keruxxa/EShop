@@ -138,6 +138,30 @@ namespace EShop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategoryProducts",
+                columns: table => new
+                {
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryProducts", x => new { x.CategoryId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_CategoryProducts_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CategoryProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FavoriteProducts",
                 columns: table => new
                 {
@@ -266,6 +290,11 @@ namespace EShop.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategoryProducts_ProductId",
+                table: "CategoryProducts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FavoriteProducts_ProductId",
                 table: "FavoriteProducts",
                 column: "ProductId");
@@ -302,6 +331,9 @@ namespace EShop.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BasketsItems");
+
+            migrationBuilder.DropTable(
+                name: "CategoryProducts");
 
             migrationBuilder.DropTable(
                 name: "FavoriteProducts");

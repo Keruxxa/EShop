@@ -45,6 +45,11 @@ namespace EShop.Infrastructure.Configurations
                 .WithOne()
                 .HasForeignKey(favoriteProducts => favoriteProducts.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<CategoryProducts>()
+                .WithOne()
+                .HasForeignKey(categoryProducts => categoryProducts.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -8,12 +8,12 @@
         /// <summary>
         ///     Id пользователя, с которым связана коллекция избранного
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid UserId { get; private set; }
 
         /// <summary>
         ///     Товары, содержащиеся в коллекции избранного
         /// </summary>
-        public List<Product> Products { get; set; }
+        public List<Product> Products { get; private set; }
 
 
         private Favorite() { }
