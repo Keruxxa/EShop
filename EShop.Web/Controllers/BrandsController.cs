@@ -1,6 +1,8 @@
-﻿using EShop.Application.Features.Commands.Brands;
+﻿using EShop.Application.Features.Commands.Brands.Create;
+using EShop.Application.Features.Commands.Brands.Delete;
 using EShop.Application.Features.Models;
-using EShop.Application.Features.Queries.Brands;
+using EShop.Application.Features.Queries.Brands.ById;
+using EShop.Application.Features.Queries.Brands.SelectList;
 using EShop.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
