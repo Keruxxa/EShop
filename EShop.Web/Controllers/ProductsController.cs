@@ -36,14 +36,9 @@ namespace EShop.Web.Controllers
 
             var productResult = await Mediator.Send(createCommand);
 
-            if (productResult.IsSuccess)
-            {
-                return RedirectToAction(nameof(GetById), new { id = productResult.Value });
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, productResult.Error);
-            }
+            return productResult.IsSuccess
+                ? RedirectToAction(nameof(GetById), new { id = productResult.Value })
+                : StatusCode(StatusCodes.Status500InternalServerError, productResult.Error);
         }
 
 
