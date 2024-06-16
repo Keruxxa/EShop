@@ -42,7 +42,7 @@ namespace EShop.Web.Controllers
         {
             if (string.IsNullOrEmpty(name?.Trim()))
             {
-                return StatusCode(StatusCodes.Status400BadRequest);
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
 
             var id = await Mediator.Send(new CreateCategoryCommand(name));

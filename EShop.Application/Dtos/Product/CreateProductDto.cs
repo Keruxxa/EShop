@@ -15,5 +15,6 @@
         DateTime? ReleaseDate,
         decimal Price,
         int CategoryId,
+        int BrandId,
         int? CountryManufacturerId);
 }

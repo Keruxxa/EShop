@@ -34,9 +34,16 @@ namespace EShop.Web.Controllers
         {
             var createCommand = createProductDto.Adapt<CreateProductCommand>();
 
-            var productId = await Mediator.Send(createCommand);
+            var productResult = await Mediator.Send(createCommand);
 
-            return CreatedAtAction(nameof(GetById), new { id = productId });
+            if (productResult.IsSuccess)
+            {
+                return RedirectToAction(nameof(GetById), new { id = productResult.Value });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, productResult.Error);
+            }
         }
 
 

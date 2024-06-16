@@ -10,6 +10,7 @@
     /// <param name="CategoryName"> Наименование категории </param>
     /// <param name="CountryManufacturerName"> Наименование страны-производителя </param>
     public record ProductDto(
+        Guid Id,
         string Name,
         string? Description,
         DateTime? ReleaseDate,

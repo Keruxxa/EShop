@@ -28,8 +28,8 @@ namespace EShop.Application.Features.Commands.Products
                 throw new NotFoundException(nameof(Product), request.Id);
             }
 
-            product.UpdateEntity(request.Name, request.Description, request.ReleaseDate, request.Price,
-                request.Rating, request.CategoryId, request.BrandId, request.CountryManufacturerId);
+            product.UpdateEntity(request.Name, request.Description, request.ReleaseDate,
+                request.Price, request.CategoryId, request.BrandId, request.CountryManufacturerId);
 
             return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
         }

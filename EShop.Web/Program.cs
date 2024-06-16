@@ -21,6 +21,7 @@ namespace EShop.Web
 
             if (app.Environment.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -28,7 +29,6 @@ namespace EShop.Web
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
-            app.UseDeveloperExceptionPage();
 
             app.Run();
         }

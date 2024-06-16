@@ -70,26 +70,25 @@
 
 
         public Product(string name, string? description, DateTime? releaseDate,
-            decimal price, decimal? rating, int categoryId, int brandId, int? countryManufacturerId)
+            decimal price, int categoryId, int brandId, int? countryManufacturerId)
         {
             Name = name;
             Description = description;
-            ReleaseDate = releaseDate;
+            ReleaseDate = releaseDate.Value.ToUniversalTime();
             Price = price;
-            Rating = rating;
             CategoryId = categoryId;
             BrandId = brandId;
             CountryManufacturerId = countryManufacturerId;
         }
 
+
         public void UpdateEntity(string name, string? description, DateTime? releaseDate,
-            decimal price, decimal? rating, int categoryId, int brandId, int? countryManufacturerId)
+            decimal price, int categoryId, int brandId, int? countryManufacturerId)
         {
             Name = name;
             Description = description;
             ReleaseDate = releaseDate;
             Price = price;
-            Rating = rating;
             CategoryId = categoryId;
             BrandId = brandId;
             CountryManufacturerId = countryManufacturerId;

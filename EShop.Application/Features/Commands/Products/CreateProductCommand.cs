@@ -1,26 +1,19 @@
-﻿using MediatR;
+﻿using CSharpFunctionalExtensions;
+using MediatR;
 
 namespace EShop.Application.Features.Commands.Products
 {
     /// <summary>
     ///     Представляет команду для создания товара
     /// </summary>
-    public class CreateProductCommand : IRequest<Guid>
+    public record CreateProductCommand(
+        string Name,
+        string? Description,
+        DateTime? ReleaseDate,
+        decimal Price,
+        int CategoryId,
+        int BrandId,
+        int? CountryManufacturerId) : IRequest<Result<Guid>>
     {
-        public string Name { get; set; }
-
-        public string? Description { get; set; }
-
-        public DateTime? ReleaseDate { get; }
-
-        public decimal Price { get; set; }
-
-        public decimal? Rating { get; set; }
-
-        public int CategoryId { get; }
-
-        public int BrandId { get; }
-
-        public int? CountryManufacturerId { get; }
     }
 }
