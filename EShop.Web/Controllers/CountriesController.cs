@@ -26,12 +26,12 @@ namespace EShop.Web.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Country>> GetById(int id)
         {
-            var getByIdQuery = new GetCountryByIdQuery()
+            if (id <= 0)
             {
-                Id = id
-            };
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
 
-            var country = await Mediator.Send(getByIdQuery);
+            var country = await Mediator.Send(new GetCountryByIdQuery(id));
 
             return StatusCode(StatusCodes.Status200OK, country);
         }
@@ -45,6 +45,20 @@ namespace EShop.Web.Controllers
             var id = await Mediator.Send(createCommand);
 
             return StatusCode(StatusCodes.Status201Created, id);
+        }
+
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            if (id <= 0)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+
+            var deleted = await Mediator.Send(new DeleteCountryCommand(id));
+
+            return StatusCode(StatusCodes.Status204NoContent, deleted);
         }
     }
 }

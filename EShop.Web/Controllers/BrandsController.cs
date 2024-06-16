@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Features.Commands.Brands;
 using EShop.Application.Features.Models;
 using EShop.Application.Features.Queries.Brands;
+using EShop.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,21 @@ namespace EShop.Web.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Brand>> GetById(int id)
+        {
+            if (id <= 0)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+
+            var brand = await Mediator.Send(new GetBrandByIdQuery(id));
+
+            return StatusCode(StatusCodes.Status200OK, brand);
+        }
+
+
+        [HttpPost("create")]
         public async Task<ActionResult<int>> Create(string name)
         {
             if (string.IsNullOrEmpty(name?.Trim()))

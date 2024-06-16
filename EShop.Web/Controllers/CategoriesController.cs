@@ -31,12 +31,7 @@ namespace EShop.Web.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
 
-            var getByIdQuery = new GetCategoryByIdQuery
-            {
-                Id = id
-            };
-
-            var category = await Mediator.Send(getByIdQuery);
+            var category = await Mediator.Send(new GetCategoryByIdQuery(id));
 
             return StatusCode(StatusCodes.Status200OK, category);
         }

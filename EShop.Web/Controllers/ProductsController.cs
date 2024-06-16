@@ -13,15 +13,16 @@ namespace EShop.Web.Controllers
         {
         }
 
+
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<ProductDto>> GetById(Guid id)
         {
-            var getByIdQuery = new GetProductByIdQuery
+            if (id == Guid.Empty)
             {
-                Id = id
-            };
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
 
-            var productDto = await Mediator.Send(getByIdQuery);
+            var productDto = await Mediator.Send(new GetProductByIdQuery(id));
 
             return StatusCode(StatusCodes.Status200OK, productDto);
         }
@@ -36,6 +37,15 @@ namespace EShop.Web.Controllers
             var productId = await Mediator.Send(createCommand);
 
             return CreatedAtAction(nameof(GetById), new { id = productId });
+        }
+
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<bool>> Delete(Guid id)
+        {
+            var deleted = await Mediator.Send(new DeleteProductCommand(id));
+
+            return StatusCode(StatusCodes.Status204NoContent, deleted);
         }
     }
 }

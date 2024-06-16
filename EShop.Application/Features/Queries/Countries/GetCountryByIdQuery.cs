@@ -3,7 +3,7 @@ using MediatR;
 
 namespace EShop.Application.Features.Queries.Countries
 {
-    public class GetCountryByIdQuery : EntityBase<int>, IRequest<Country>
+    public record GetCountryByIdQuery(int Id) : IRequest<Country>
     {
     }
 }
