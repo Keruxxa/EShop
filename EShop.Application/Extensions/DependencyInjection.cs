@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace EShop.Application
+namespace EShop.Application.Extensions
 {
     public static class DependencyInjection
     {

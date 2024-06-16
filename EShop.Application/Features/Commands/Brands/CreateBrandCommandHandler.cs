@@ -21,22 +21,22 @@ namespace EShop.Application.Features.Commands.Brands
 
         public async Task<int> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
         {
-            var existBrand = await _dbContext.Brands
+            var brand = await _dbContext.Brands
                 .FirstOrDefaultAsync(brand =>
                     brand.Name.ToLower() == request.Name.ToLower(), cancellationToken);
 
-            if (existBrand != null)
+            if (brand != null)
             {
                 throw new DuplicateEntityException(nameof(Brand));
             }
 
-            var brand = new Brand(request.Name);
+            var newBrand = new Brand(request.Name);
 
-            await _dbContext.Brands.AddAsync(brand, cancellationToken);
+            await _dbContext.Brands.AddAsync(newBrand, cancellationToken);
 
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-            return saved ? brand.Id : 0;
+            return saved ? newBrand.Id : 0;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace EShop.Web.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }

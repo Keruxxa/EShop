@@ -32,5 +32,15 @@ namespace EShop.Application.Features.Models
                 Name = brand.Name
             };
         }
+
+
+        public static SelectListItem<int> CreateItem(Category category)
+        {
+            return new SelectListItem<int>()
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+        }
     }
 }

@@ -1,4 +1,4 @@
-using EShop.Application;
+using EShop.Application.Extensions;
 using EShop.Infrastructure;
 
 namespace EShop.Web
