@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Dtos.Product;
-using EShop.Application.Features.Commands.Products;
-using EShop.Application.Features.Queries.Products;
+using EShop.Application.Features.Commands.Products.Create;
+using EShop.Application.Features.Commands.Products.Delete;
+using EShop.Application.Features.Queries.Products.ById;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
