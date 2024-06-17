@@ -6,7 +6,7 @@ namespace EShop.Application.Features.Commands.Products.Create
     /// <summary>
     ///     Представляет команду для создания товара
     /// </summary>
-    public record CreateProductCommand(
+	public record CreateProductCommand(
         string Name,
         string? Description,
         DateTime? ReleaseDate,

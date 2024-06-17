@@ -28,11 +28,6 @@ namespace EShop.Web.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Brand>> GetById(int id)
         {
-            if (id <= 0)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest);
-            }
-
             var brand = await Mediator.Send(new GetBrandByIdQuery(id));
 
             return StatusCode(StatusCodes.Status200OK, brand);
@@ -42,11 +37,6 @@ namespace EShop.Web.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<int>> Create(string name)
         {
-            if (string.IsNullOrEmpty(name?.Trim()))
-            {
-                return StatusCode(StatusCodes.Status400BadRequest);
-            }
-
             var id = await Mediator.Send(new CreateBrandCommand(name));
 
             return StatusCode(StatusCodes.Status201Created, id);

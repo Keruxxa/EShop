@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EShop.Application.Features.Behaviors;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace EShop.Application.Extensions
 {
@@ -10,6 +14,10 @@ namespace EShop.Application.Extensions
             {
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             });
+
+            services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly()]);
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             return services;
         }
