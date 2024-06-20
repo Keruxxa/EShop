@@ -6,6 +6,8 @@ namespace EShop.Application.Features.Commands.Products.Update
     {
         public UpdateProductCommandValidator()
         {
+            RuleFor(command => command.Id).NotEmpty();
+
             RuleFor(command => command.Name)
                 .NotEmpty()
                 .MaximumLength(256);

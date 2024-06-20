@@ -35,7 +35,7 @@ namespace EShop.Web.Controllers
 
 
         [HttpPost("create")]
-        public async Task<ActionResult<int>> Create(string name)
+        public async Task<ActionResult<int>> Create(string? name)
         {
             var id = await Mediator.Send(new CreateBrandCommand(name));
 
@@ -46,17 +46,7 @@ namespace EShop.Web.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
-            if (id <= 0)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest);
-            }
-
-            var deleteCommand = new DeleteBrandCommand
-            {
-                Id = id
-            };
-
-            var deleted = await Mediator.Send(deleteCommand);
+            var deleted = await Mediator.Send(new DeleteBrandCommand(id));
 
             return StatusCode(StatusCodes.Status204NoContent, deleted);
         }
