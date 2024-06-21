@@ -8,12 +8,20 @@
         /// <summary>
         ///     Название
         /// </summary>
-        public string Name { get; }
+        public string Name { get; private set; }
 
 
         private Country() { }
 
         public Country(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        ///     Устанавливает значение наименования <see cref="Name"/>
+        /// </summary>
+        public void UpdateName(string name)
         {
             Name = name;
         }

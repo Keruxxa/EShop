@@ -21,7 +21,7 @@
         }
 
         /// <summary>
-        ///     Устанавливает значение поля <see cref="Name"/>
+        ///     Устанавливает значение наименования <see cref="Name"/>
         /// </summary>
         public void UpdateName(string name)
         {
