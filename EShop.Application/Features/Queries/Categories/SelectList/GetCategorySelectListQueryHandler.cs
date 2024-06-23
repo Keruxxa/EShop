@@ -20,7 +20,9 @@ namespace EShop.Application.Features.Queries.Categories.SelectList
             GetCategorySelectListQuery request,
             CancellationToken cancellationToken)
         {
-            var categories = await _dbContext.Categories.ToListAsync(cancellationToken);
+            var categories = await _dbContext.Categories
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             return categories
                 .Select(SelectListItem<int>.CreateItem)

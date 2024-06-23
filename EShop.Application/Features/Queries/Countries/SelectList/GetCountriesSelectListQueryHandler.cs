@@ -20,7 +20,9 @@ namespace EShop.Application.Features.Queries.Countries.SelectList
             GetCountriesSelectListQuery request,
             CancellationToken cancellationToken)
         {
-            var countriesEntities = await _dbContext.Countries.ToListAsync(cancellationToken);
+            var countriesEntities = await _dbContext.Countries
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             return countriesEntities
                 .Select(SelectListItem<int>.CreateItem)

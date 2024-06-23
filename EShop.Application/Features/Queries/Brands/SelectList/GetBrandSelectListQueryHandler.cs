@@ -24,7 +24,9 @@ namespace EShop.Application.Features.Queries.Brands.SelectList
             GetBrandSelectListQuery request,
             CancellationToken cancellationToken)
         {
-            var brands = await _dbContext.Brands.ToListAsync(cancellationToken);
+            var brands = await _dbContext.Brands
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             return brands
                 .Select(SelectListItem<int>.CreateItem)
