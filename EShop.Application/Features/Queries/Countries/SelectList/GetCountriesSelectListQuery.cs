@@ -1,4 +1,4 @@
-﻿using EShop.Application.Features.Models;
+﻿using EShop.Application.Models;
 using MediatR;
 
 namespace EShop.Application.Features.Queries.Countries.SelectList

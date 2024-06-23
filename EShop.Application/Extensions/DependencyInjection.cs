@@ -1,4 +1,4 @@
-﻿using EShop.Application.Features.Behaviors;
+﻿using EShop.Application.Behaviors;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
