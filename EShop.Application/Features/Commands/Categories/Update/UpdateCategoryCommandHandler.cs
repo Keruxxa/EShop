@@ -37,6 +37,8 @@ namespace EShop.Application.Features.Commands.Categories.Update
                 throw new DuplicateEntityException(nameof(Country));
             }
 
+            category.UpdateName(request.Name);
+
             _dbContext.Categories.Update(category);
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 

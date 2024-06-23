@@ -1,5 +1,7 @@
-﻿using EShop.Application.Features.Commands.Brands.Create;
+﻿using CSharpFunctionalExtensions;
+using EShop.Application.Features.Commands.Brands.Create;
 using EShop.Application.Features.Commands.Brands.Delete;
+using EShop.Application.Features.Commands.Brands.Update;
 using EShop.Application.Features.Models;
 using EShop.Application.Features.Queries.Brands.ById;
 using EShop.Application.Features.Queries.Brands.SelectList;
@@ -40,6 +42,17 @@ namespace EShop.Web.Controllers
             var id = await Mediator.Send(new CreateBrandCommand(name));
 
             return StatusCode(StatusCodes.Status201Created, id);
+        }
+
+
+        [HttpPost("{id:int}")]
+        public async Task<ActionResult<Result<int>>> Update(int id, [FromQuery] string name)
+        {
+            var result = await Mediator.Send(new UpdateBrandCommand(id, name));
+
+            return result.IsSuccess
+                ? StatusCode(StatusCodes.Status200OK, result.Value)
+                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
 
 
