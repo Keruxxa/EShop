@@ -26,16 +26,6 @@ namespace EShop.Infrastructure.Configurations
                 .HasForeignKey(review => review.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(product => product.Category)
-                .WithMany(category => category.Products)
-                .HasForeignKey(product => product.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(product => product.Brand)
-                .WithMany(brand => brand.Products)
-                .HasForeignKey(product => product.BrandId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(product => product.CountryManufacturer)
                 .WithMany()
                 .HasForeignKey(product => product.CountryManufacturerId)
@@ -49,6 +39,11 @@ namespace EShop.Infrastructure.Configurations
             builder.HasMany<CategoryProducts>()
                 .WithOne()
                 .HasForeignKey(categoryProducts => categoryProducts.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<BrandProducts>()
+                .WithOne()
+                .HasForeignKey(brandProduct => brandProduct.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

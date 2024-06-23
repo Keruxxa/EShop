@@ -74,7 +74,7 @@
         {
             Name = name;
             Description = description;
-            ReleaseDate = releaseDate.Value.ToUniversalTime();
+            ReleaseDate = releaseDate?.ToUniversalTime();
             Price = price;
             CategoryId = categoryId;
             BrandId = brandId;

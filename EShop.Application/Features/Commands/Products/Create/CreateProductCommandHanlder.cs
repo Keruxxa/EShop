@@ -3,6 +3,8 @@ using EShop.Application.Interfaces;
 using EShop.Domain.Entities;
 using MediatR;
 
+using static EShop.Domain.Constants;
+
 namespace EShop.Application.Features.Commands.Products.Create
 {
     /// <summary>
@@ -33,11 +35,13 @@ namespace EShop.Application.Features.Commands.Products.Create
             };
 
             await _dbContext.Products.AddAsync(product, cancellationToken);
+            await _dbContext.BrandProducts.AddAsync(new(request.BrandId, product.Id), cancellationToken);
+
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
             return saved
                 ? Result.Success(product.Id)
-                : Result.Failure<Guid>("An error occured on the server side");
+                : Result.Failure<Guid>(SERVER_SIDE_ERROR);
         }
     }
 }

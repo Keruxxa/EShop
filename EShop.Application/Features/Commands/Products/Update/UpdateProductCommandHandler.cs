@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using EShop.Domain.Exceptions;
 using MediatR;
 using EShop.Domain.Entities;
+using CSharpFunctionalExtensions;
 
 namespace EShop.Application.Features.Commands.Products.Update
 {
     /// <summary>
     ///     Представляет обработчик команды <see cref="UpdateProductCommand"/>
     /// </summary>
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result>
     {
         private readonly IEShopDbContext _dbContext;
 
@@ -18,7 +19,7 @@ namespace EShop.Application.Features.Commands.Products.Update
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = await _dbContext.Products
                 .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
@@ -31,7 +32,12 @@ namespace EShop.Application.Features.Commands.Products.Update
             product.UpdateEntity(request.Name, request.Description, request.ReleaseDate,
                 request.Price, request.CategoryId, request.BrandId, request.CountryManufacturerId);
 
-            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+            _dbContext.Products.Update(product);
+            var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+
+            return saved
+                ? Result.Success()
+                : Result.Failure("An error occured on the server side");
         }
     }
 }

@@ -6,6 +6,9 @@ namespace EShop.Application.Interfaces
     public interface IEShopDbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<FavoriteProducts> FavoriteProducts { get; set; }
+        public DbSet<BrandProducts> BrandProducts { get; set; }
+        public DbSet<CategoryProducts> CategoryProducts { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketsItems { get; set; }
         public DbSet<Review> Reviews { get; set; }

@@ -3,7 +3,5 @@ using MediatR;
 
 namespace EShop.Application.Features.Queries.Categories.ById
 {
-    public record GetCategoryByIdQuery(int Id) : IRequest<Category>
-    {
-    }
+    public record GetCategoryByIdQuery(int Id) : IRequest<Category>;
 }

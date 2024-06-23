@@ -8,6 +8,7 @@
     /// <param name="ReleaseDate"> Дата выпуска </param>
     /// <param name="Price"> Цена </param>
     /// <param name="CategoryId"> Id категории </param>
+    /// <param name="BrandId"> Id бренда </param>
     /// <param name="CountryManufacturerId"> Id страны-производителя </param>
     public record CreateProductDto(
         string Name,

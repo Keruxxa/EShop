@@ -1,28 +1,27 @@
-﻿using MediatR;
+﻿using CSharpFunctionalExtensions;
+using MediatR;
 
 namespace EShop.Application.Features.Commands.Products.Update
 {
     /// <summary>
     ///     Представляет команду для обновления товара
     /// </summary>
-    public class UpdateProductCommand : IRequest<bool>
+    /// <param name="Name"> Наименование </param>
+    /// <param name="Description"> Описание </param>
+    /// <param name="ReleaseDate"> Дата выпуска </param>
+    /// <param name="Price"> Цена </param>
+    /// <param name="CategoryId"> Id категории </param>
+    /// <param name="BrandId"> Id бренда </param>
+    /// <param name="CountryManufacturerId"> Id страны-производителя </param>
+    public record UpdateProductCommand(
+        Guid Id,
+        string Name,
+        string? Description,
+        DateTime? ReleaseDate,
+        decimal Price,
+        int CategoryId,
+        int BrandId,
+        int? CountryManufacturerId) : IRequest<Result>
     {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string? Description { get; set; }
-
-        public DateTime? ReleaseDate { get; }
-
-        public decimal Price { get; set; }
-
-        public decimal? Rating { get; set; }
-
-        public int CategoryId { get; }
-
-        public int BrandId { get; }
-
-        public int? CountryManufacturerId { get; }
     }
 }

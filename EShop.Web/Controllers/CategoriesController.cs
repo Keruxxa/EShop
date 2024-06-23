@@ -1,5 +1,7 @@
-﻿using EShop.Application.Features.Commands.Categories.Create;
+﻿using CSharpFunctionalExtensions;
+using EShop.Application.Features.Commands.Categories.Create;
 using EShop.Application.Features.Commands.Categories.Delete;
+using EShop.Application.Features.Commands.Categories.Update;
 using EShop.Application.Features.Models;
 using EShop.Application.Features.Queries.Categories.ById;
 using EShop.Application.Features.Queries.Categories.SelectList;
@@ -40,6 +42,17 @@ namespace EShop.Web.Controllers
             var id = await Mediator.Send(new CreateCategoryCommand(name));
 
             return StatusCode(StatusCodes.Status201Created, id);
+        }
+
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Result<int>>> Update(int id, [FromQuery] string name)
+        {
+            var result = await Mediator.Send(new UpdateCategoryCommand(id, name));
+
+            return result.IsSuccess
+                ? StatusCode(StatusCodes.Status200OK, result.Value)
+                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
 
 
