@@ -1,5 +1,5 @@
-﻿using EShop.Application.Features.Models;
-using EShop.Application.Interfaces;
+﻿using EShop.Application.Interfaces;
+using EShop.Application.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

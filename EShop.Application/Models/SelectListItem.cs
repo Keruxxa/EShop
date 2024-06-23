@@ -1,6 +1,6 @@
 ﻿using EShop.Domain.Entities;
 
-namespace EShop.Application.Features.Models
+namespace EShop.Application.Models
 {
     /// <summary>
     ///     Представляет модель для отображения элемента в списке

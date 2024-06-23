@@ -2,9 +2,9 @@
 using EShop.Application.Features.Commands.Categories.Create;
 using EShop.Application.Features.Commands.Categories.Delete;
 using EShop.Application.Features.Commands.Categories.Update;
-using EShop.Application.Features.Models;
 using EShop.Application.Features.Queries.Categories.ById;
 using EShop.Application.Features.Queries.Categories.SelectList;
+using EShop.Application.Models;
 using EShop.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
