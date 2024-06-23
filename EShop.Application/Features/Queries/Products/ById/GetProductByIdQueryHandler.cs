@@ -1,4 +1,5 @@
-﻿using EShop.Application.Dtos.Product;
+﻿using CSharpFunctionalExtensions;
+using EShop.Application.Dtos.Product;
 using EShop.Application.Interfaces;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
@@ -11,7 +12,7 @@ namespace EShop.Application.Features.Queries.Products.ById
     /// <summary>
     ///     Представялет обработчик зпроса <see cref="GetProductByIdQuery"/>
     /// </summary>
-    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductDto>
+    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto>>
     {
         private readonly IEShopDbContext _dbContext;
 
@@ -21,7 +22,7 @@ namespace EShop.Application.Features.Queries.Products.ById
         }
 
 
-        public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ProductDto>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
             var product = await _dbContext.Products
                 .Include(product => product.Category)
@@ -33,7 +34,7 @@ namespace EShop.Application.Features.Queries.Products.ById
                 throw new NotFoundException(nameof(Product), request.Id);
             }
 
-            return product.Adapt<ProductDto>();
+            return Result.Success(product.Adapt<ProductDto>());
         }
     }
 }

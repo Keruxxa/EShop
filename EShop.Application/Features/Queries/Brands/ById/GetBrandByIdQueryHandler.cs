@@ -22,6 +22,7 @@ namespace EShop.Application.Features.Queries.Brands.ById
         public async Task<Brand> Handle(GetBrandByIdQuery request, CancellationToken cancellationToken)
         {
             var brand = await _dbContext.Brands
+                .Include(brand => brand.BrandProducts)
                 .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
 
             if (brand == null)

@@ -18,46 +18,51 @@ namespace EShop.Web.Controllers
 
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult<ProductDto>> GetById(Guid id)
+        public async Task<ActionResult<Result<ProductDto>>> GetById(Guid id)
         {
-            var productDto = await Mediator.Send(new GetProductByIdQuery(id));
+            var result = await Mediator.Send(new GetProductByIdQuery(id));
 
-            return StatusCode(StatusCodes.Status200OK, productDto);
+            return result.IsSuccess
+                ? StatusCode(StatusCodes.Status200OK, result.Value)
+                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
 
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateProductDto createProductDto)
+        public async Task<ActionResult<Result<Guid>>> Create([FromBody] CreateProductDto createProductDto)
         {
             var createCommand = createProductDto.Adapt<CreateProductCommand>();
 
-            var createResult = await Mediator.Send(createCommand);
+            var result = await Mediator.Send(createCommand);
 
-            return createResult.IsSuccess
-                ? RedirectToAction(nameof(GetById), new { id = createResult.Value })
-                : StatusCode(StatusCodes.Status500InternalServerError, createResult.Error);
+            return result.IsSuccess
+                ? RedirectToAction(nameof(GetById), new { id = result.Value })
+                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
+
 
         [HttpPut("update")]
         public async Task<ActionResult<Result>> Update([FromBody] UpdateProductDto updateProductDto)
         {
             var updateCommand = updateProductDto.Adapt<UpdateProductCommand>();
 
-            var updateResult = await Mediator.Send(updateCommand);
+            var result = await Mediator.Send(updateCommand);
 
-            return updateResult.IsSuccess
+            return result.IsSuccess
                 ? StatusCode(StatusCodes.Status200OK)
-                : StatusCode(StatusCodes.Status500InternalServerError, updateResult.Error);
+                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
 
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<bool>> Delete(Guid id)
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<Result<bool>>> Delete(Guid id)
         {
-            var isSuccessDeleted = await Mediator.Send(new DeleteProductCommand(id));
+            var result = await Mediator.Send(new DeleteProductCommand(id));
 
-            return StatusCode(StatusCodes.Status204NoContent, isSuccessDeleted);
+            return result.IsSuccess
+                ? StatusCode(StatusCodes.Status204NoContent, result.Value)
+                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
     }
 }
