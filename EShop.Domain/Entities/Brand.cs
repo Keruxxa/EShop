@@ -6,6 +6,11 @@
     public class Brand : EntityBase<int>
     {
         /// <summary>
+        ///     Товары, относящиеся к данному бренду
+        /// </summary>
+        private readonly List<BrandProducts> _brandProducts;
+
+        /// <summary>
         ///     Наименование
         /// </summary>
         public string Name { get; set; }
@@ -13,7 +18,7 @@
         /// <summary>
         ///     Товары, относящиеся к данному бренду
         /// </summary>
-        public IReadOnlyCollection<Product> Products { get; }
+        public IReadOnlyCollection<BrandProducts> BrandProducts => _brandProducts.AsReadOnly();
 
 
         private Brand() { }

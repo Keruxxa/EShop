@@ -3,6 +3,11 @@
     public class Category : EntityBase<int>
     {
         /// <summary>
+        ///     Товары, относящиеся к данной категории
+        /// </summary>
+        private readonly List<CategoryProducts> _categotyProducts = [];
+
+        /// <summary>
         ///     Наименование
         /// </summary>
         public string Name { get; private set; }
@@ -10,7 +15,7 @@
         /// <summary>
         ///     Товары, относящиеся к данной категории
         /// </summary>
-        public IReadOnlyCollection<Product> Products { get; }
+        public IReadOnlyCollection<CategoryProducts> CategoryProducts => _categotyProducts.AsReadOnly();
 
 
         private Category() { }
