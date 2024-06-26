@@ -18,6 +18,8 @@
 
         private Favorite() { }
 
+
+        /// <param name="userId">Id пользователя</param>
         public Favorite(Guid userId)
         {
             UserId = userId;
@@ -28,7 +30,7 @@
         /// </summary>
         public void AddItem(Product product)
         {
-            Products ??= new List<Product>();
+            Products ??= [];
 
             Products.Add(product);
         }

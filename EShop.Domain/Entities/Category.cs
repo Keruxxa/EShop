@@ -20,6 +20,7 @@
 
         private Category() { }
 
+
         public Category(string name)
         {
             Name = name;

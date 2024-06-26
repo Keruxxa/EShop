@@ -23,6 +23,7 @@
 
         private Basket() { }
 
+
         public Basket(Guid userId)
         {
             UserId = userId;
@@ -33,7 +34,7 @@
         /// </summary>
         public void AddItem(BasketItem basketItem)
         {
-            BasketItems ??= new List<BasketItem>();
+            BasketItems ??= [];
 
             BasketItems.Add(basketItem);
         }

@@ -7,7 +7,7 @@
     public class FavoriteProducts
     {
         /// <summary>
-        ///     Id избранного
+        ///     Id коллекции избранного
         /// </summary>
         public Guid FavoriteId { get; private set; }
 
@@ -20,6 +20,8 @@
         private FavoriteProducts() { }
 
 
+        /// <param name="favoriteId">Id коллекции избранного</param>
+        /// <param name="productId">Id товара</param>
         public FavoriteProducts(Guid favoriteId, Guid productId)
         {
             FavoriteId = favoriteId;

@@ -15,6 +15,8 @@ namespace EShop.Domain.Entities
 
         private Role() { }
 
+
+        /// <param name="name">Наименование</param>
         public Role(string name)
         {
             Name = name;

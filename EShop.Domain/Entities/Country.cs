@@ -13,6 +13,8 @@
 
         private Country() { }
 
+
+        /// <param name="name">Наименование</param>
         public Country(string name)
         {
             Name = name;

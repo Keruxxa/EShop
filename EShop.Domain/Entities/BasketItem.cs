@@ -28,6 +28,7 @@
 
         private BasketItem() { }
 
+
         public BasketItem(Guid basketId, Guid productId)
         {
             BasketId = basketId;

@@ -8,7 +8,7 @@
         /// <summary>
         ///     Товары, относящиеся к данному бренду
         /// </summary>
-        private readonly List<BrandProducts> _brandProducts;
+        private readonly List<BrandProducts> _brandProducts = [];
 
         /// <summary>
         ///     Наименование
