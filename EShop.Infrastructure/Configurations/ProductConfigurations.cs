@@ -20,6 +20,8 @@ namespace EShop.Infrastructure.Configurations
             builder.Property(product => product.Description)
                 .HasMaxLength(256);
 
+            builder.Ignore(product => product.ReviewCount);
+
             builder
                 .HasMany(product => product.Reviews)
                 .WithOne()

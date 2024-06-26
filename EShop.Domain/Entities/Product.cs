@@ -6,6 +6,12 @@
     public class Product : EntityBase<Guid>
     {
         /// <summary>
+        ///     Отзывы товара
+        /// </summary>
+        private readonly List<Review> _reviews;
+
+
+        /// <summary>
         ///     Наименование
         /// </summary>
         public string Name { get; private set; }
@@ -61,9 +67,14 @@
         public Country CountryManufacturer { get; private set; }
 
         /// <summary>
-        ///     Отзывы
+        ///     Отзывы товара
         /// </summary>
-        public IReadOnlyCollection<Review>? Reviews { get; }
+        public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
+
+        /// <summary>
+        ///     Количество отзывов
+        /// </summary>
+        public int ReviewCount => _reviews.Count;
 
 
         private Product() { }

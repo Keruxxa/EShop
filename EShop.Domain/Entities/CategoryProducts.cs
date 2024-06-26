@@ -6,7 +6,6 @@
     /// </summary>
     public class CategoryProducts
     {
-
         /// <summary>
         ///     Id категории
         /// </summary>
@@ -21,6 +20,8 @@
         public CategoryProducts() { }
 
 
+        /// <param name="categoryId">Id категории</param>
+        /// <param name="productId">Id товара</param>
         public CategoryProducts(int categoryId, Guid productId)
         {
             CategoryId = categoryId;
