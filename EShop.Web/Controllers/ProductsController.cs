@@ -4,6 +4,7 @@ using EShop.Application.Features.Commands.Products.Create;
 using EShop.Application.Features.Commands.Products.Delete;
 using EShop.Application.Features.Commands.Products.Update;
 using EShop.Application.Features.Queries.Products.ById;
+using EShop.Application.Features.Queries.Products.List;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,14 @@ namespace EShop.Web.Controllers
             return result.IsSuccess
                 ? StatusCode(StatusCodes.Status200OK, result.Value)
                 : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+        }
+
+
+        [HttpGet]
+        [Route("list")]
+        public async Task<IEnumerable<ProductListItemDto>> GetList()
+        {
+            return await Mediator.Send(new GetProductListQuery());
         }
 
 
