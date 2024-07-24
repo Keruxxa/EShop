@@ -1,5 +1,5 @@
 using EShop.Application.Extensions;
-using EShop.Infrastructure;
+using EShop.Infrastructure.Extensions;
 
 namespace EShop.Web
 {
@@ -17,6 +17,17 @@ namespace EShop.Web
             builder.Services.AddApplication();
             builder.Services.AddInfrastrusture(configuration.GetConnectionString("EShopConnectionString"));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -24,9 +35,12 @@ namespace EShop.Web
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.ApplyMigrations();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("AllowAnyOrigin");
+
+            //app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
 

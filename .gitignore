@@ -1,5 +1,6 @@
 ##
 **/*.editorconfig
+.containers/
 ##
 
 # User-specific files
