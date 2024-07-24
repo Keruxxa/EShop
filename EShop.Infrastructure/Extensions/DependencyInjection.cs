@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EShop.Infrastructure
+namespace EShop.Infrastructure.Extensions
 {
     public static class DependencyInjection
     {

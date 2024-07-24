@@ -8,7 +8,7 @@
         /// <summary>
         ///     Отзывы товара
         /// </summary>
-        private readonly List<Review> _reviews;
+        private readonly List<Review> _reviews = [];
 
 
         /// <summary>
