@@ -24,7 +24,7 @@ namespace EShop.Application.Features.Commands.Products.Update
             var product = await _dbContext.Products
                 .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
 
-            if (product == null)
+            if (product is null)
             {
                 throw new NotFoundException(nameof(Product), request.Id);
             }
