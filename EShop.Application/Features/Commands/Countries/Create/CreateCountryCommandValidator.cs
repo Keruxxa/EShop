@@ -2,6 +2,9 @@
 
 namespace EShop.Application.Features.Commands.Countries.Create
 {
+    /// <summary>
+    ///     Представляет валидатор команды <see cref="CreateCountryCommand"/>
+    /// </summary>
     public class CreateCountryCommandValidator : AbstractValidator<CreateCountryCommand>
     {
         public CreateCountryCommandValidator()

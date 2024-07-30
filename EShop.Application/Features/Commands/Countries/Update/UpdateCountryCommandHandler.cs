@@ -9,6 +9,9 @@ using static EShop.Domain.Constants;
 
 namespace EShop.Application.Features.Commands.Countries.Update
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="UpdateCountryCommand"/>
+    /// </summary>
     public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand, Result<int>>
     {
         private readonly IEShopDbContext _dbContext;

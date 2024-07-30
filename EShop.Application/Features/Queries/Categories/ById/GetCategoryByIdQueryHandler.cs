@@ -6,11 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Queries.Categories.ById
 {
-    public class GetCategoryByIdQueryHanlder : IRequestHandler<GetCategoryByIdQuery, Category>
+    /// <summary>
+    ///     Представляет обработчик запроса <see cref="GetCategoryByIdQuery"/>
+    /// </summary>
+    public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Category>
     {
         private readonly IEShopDbContext _dbContext;
 
-        public GetCategoryByIdQueryHanlder(IEShopDbContext dbContext)
+        public GetCategoryByIdQueryHandler(IEShopDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
         }
@@ -21,7 +24,7 @@ namespace EShop.Application.Features.Queries.Categories.ById
             var category = await _dbContext.Categories
                 .FirstOrDefaultAsync(category => category.Id == request.Id, cancellationToken);
 
-            if (category == null)
+            if (category is null)
             {
                 throw new NotFoundException(nameof(Category), request.Id);
             }

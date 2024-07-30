@@ -8,6 +8,9 @@ using static EShop.Domain.Constants;
 
 namespace EShop.Application.Features.Commands.Categories.Update
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="UpdateCategoryCommand"/>
+    /// </summary>
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result<int>>
     {
         private readonly IEShopDbContext _dbContext;

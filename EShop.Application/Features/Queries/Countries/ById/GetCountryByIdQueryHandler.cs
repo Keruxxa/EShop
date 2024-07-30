@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Queries.Countries.ById
 {
+    /// <summary>
+    ///     Представляет обработчик запроса <see cref="GetCountryByIdQuery"/>
+    /// </summary>
     public class GetCountryByIdQueryHandler : IRequestHandler<GetCountryByIdQuery, Country>
     {
         private readonly IEShopDbContext _dbContext;
@@ -21,7 +24,7 @@ namespace EShop.Application.Features.Queries.Countries.ById
             var country = await _dbContext.Countries
                 .FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
 
-            if (country == null)
+            if (country is null)
             {
                 throw new NotFoundException(nameof(Country), request.Id);
             }

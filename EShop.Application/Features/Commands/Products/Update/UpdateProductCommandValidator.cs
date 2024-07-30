@@ -2,6 +2,9 @@
 
 namespace EShop.Application.Features.Commands.Products.Update
 {
+    /// <summary>
+    ///     Представляет валидатор команды <see cref="UpdateProductCommand"/>
+    /// </summary>
     public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
         public UpdateProductCommandValidator()

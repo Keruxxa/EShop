@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Queries.Categories.SelectList
 {
+    /// <summary>
+    ///     Представляет обработчик запроса <see cref="GetCategorySelectListQuery"/>
+    /// </summary>
     public class GetCategorySelectListQueryHandler
         : IRequestHandler<GetCategorySelectListQuery, IEnumerable<SelectListItem<int>>>
     {

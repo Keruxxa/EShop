@@ -2,6 +2,9 @@
 
 namespace EShop.Application.Features.Commands.Countries.Update
 {
+    /// <summary>
+    ///     Представляет валидатор команды <see cref="UpdateCountryCommand"/>
+    /// </summary>
     public class UpdateCountryCommandValidator : AbstractValidator<UpdateCountryCommand>
     {
         public UpdateCountryCommandValidator()

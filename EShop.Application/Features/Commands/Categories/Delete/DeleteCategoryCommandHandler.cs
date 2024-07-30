@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Commands.Categories.Delete
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="DeleteCategoryCommand"/>
+    /// </summary>
     public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
     {
         private readonly IEShopDbContext _dbContext;

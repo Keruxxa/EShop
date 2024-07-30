@@ -4,6 +4,9 @@ using MediatR;
 
 namespace EShop.Application.Features.Commands.Countries.Create
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="CreateCountryCommand"/>
+    /// </summary>
     public class CreateCountryCommandHandler : IRequestHandler<CreateCountryCommand, int>
     {
         private readonly IEShopDbContext _dbContext;

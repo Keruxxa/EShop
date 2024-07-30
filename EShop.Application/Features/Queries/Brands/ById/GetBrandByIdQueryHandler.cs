@@ -25,7 +25,7 @@ namespace EShop.Application.Features.Queries.Brands.ById
                 .Include(brand => brand.BrandProducts)
                 .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
 
-            if (brand == null)
+            if (brand is null)
             {
                 throw new NotFoundException(nameof(Brand), request.Id);
             }

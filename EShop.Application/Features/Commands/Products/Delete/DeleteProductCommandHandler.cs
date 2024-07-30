@@ -9,6 +9,9 @@ using static EShop.Domain.Constants;
 
 namespace EShop.Application.Features.Commands.Products.Delete
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="DeleteProductCommand"/>
+    /// </summary>
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result<bool>>
     {
         private readonly IEShopDbContext _dbContext;

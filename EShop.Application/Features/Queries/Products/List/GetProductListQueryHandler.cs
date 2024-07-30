@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Queries.Products.List
 {
+    /// <summary>
+    ///     Представляет обработчик запроса <see cref="GetProductListQuery"/>
+    /// </summary>
     public class GetProductListQueryHandler
         : IRequestHandler<GetProductListQuery, IEnumerable<ProductListItemDto>>
     {

@@ -3,7 +3,8 @@ using MediatR;
 
 namespace EShop.Application.Features.Queries.Products.List
 {
-    public class GetProductListQuery : IRequest<IEnumerable<ProductListItemDto>>
-    {
-    }
+    /// <summary>
+    ///     Представляет запрос для получения списка товаров
+    /// </summary>
+    public record GetProductListQuery : IRequest<IEnumerable<ProductListItemDto>>;
 }

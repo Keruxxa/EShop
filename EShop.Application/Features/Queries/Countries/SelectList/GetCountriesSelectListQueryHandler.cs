@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Queries.Countries.SelectList
 {
+    /// <summary>
+    ///     Представляет обработчик запроса <see cref="GetCountriesSelectListQuery"/>
+    /// </summary>
     public class GetCountriesSelectListQueryHandler
         : IRequestHandler<GetCountriesSelectListQuery, IEnumerable<SelectListItem<int>>>
     {

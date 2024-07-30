@@ -10,11 +10,11 @@ namespace EShop.Application.Features.Commands.Products.Create
     /// <summary>
     ///     Представляет обработчик команды <see cref="CreateProductCommand"/>
     /// </summary>
-    public class CreateProductCommandHanlder : IRequestHandler<CreateProductCommand, Result<Guid>>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Guid>>
     {
         private readonly IEShopDbContext _dbContext;
 
-        public CreateProductCommandHanlder(IEShopDbContext dbContext)
+        public CreateProductCommandHandler(IEShopDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }

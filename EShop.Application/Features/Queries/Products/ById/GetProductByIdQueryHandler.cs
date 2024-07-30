@@ -29,7 +29,7 @@ namespace EShop.Application.Features.Queries.Products.ById
                 .Include(product => product.CountryManufacturer)
                 .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
 
-            if (product == null)
+            if (product is null)
             {
                 throw new NotFoundException(nameof(Product), request.Id);
             }

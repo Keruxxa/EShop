@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Commands.Countries.Delete
 {
+    /// <summary>
+    ///     Представляет обработчик команды <see cref="DeleteCountryCommand"/>
+    /// </summary>
     public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand, bool>
     {
         private readonly IEShopDbContext _dbContext;
@@ -20,7 +23,7 @@ namespace EShop.Application.Features.Commands.Countries.Delete
             var country = await _dbContext
                 .Countries.FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
 
-            if (country == null)
+            if (country is null)
             {
                 throw new NotFoundException(nameof(Country), request.Id);
             }
