@@ -15,10 +15,10 @@ namespace EShop.Infrastructure.Configurations
                 .IsRequired();
 
             builder.Property(user => user.FirstName)
-                .HasMaxLength(256);
+                .HasMaxLength(32);
 
             builder.Property(user => user.LastName)
-                .HasMaxLength(256);
+                .HasMaxLength(32);
 
             builder.Property(user => user.Email)
                 .IsRequired()
@@ -37,8 +37,8 @@ namespace EShop.Infrastructure.Configurations
                 .HasDefaultValue(RoleType.UnregisteredUser);
 
             builder.HasOne(user => user.Role)
-                .WithOne()
-                .HasForeignKey<User>(user => user.RoleId)
+                .WithMany()
+                .HasForeignKey(user => user.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
