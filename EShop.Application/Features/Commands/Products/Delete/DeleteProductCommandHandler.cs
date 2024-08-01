@@ -18,14 +18,14 @@ namespace EShop.Application.Features.Commands.Products.Delete
 
         public DeleteProductCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 
         public async Task<Result<bool>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _dbContext
-                .Products.FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
+            var product = await _dbContext.Products
+                .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
 
             if (product is null)
             {

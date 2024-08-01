@@ -13,7 +13,7 @@ namespace EShop.Application.Features.Commands.Countries.Create
 
         public CreateCountryCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 
@@ -22,6 +22,7 @@ namespace EShop.Application.Features.Commands.Countries.Create
             var country = new Country(request.Name);
 
             await _dbContext.Countries.AddAsync(country, cancellationToken);
+
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
             return saved ? country.Id : 0;

@@ -21,7 +21,7 @@ namespace EShop.Application.Features.Commands.Users.Create
 
         public CreateUserCommandHandler(IEShopDbContext dbContext, IPasswordHasher passwordHasher)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
             _passwordHasher = passwordHasher;
         }
 

@@ -16,7 +16,7 @@ namespace EShop.Application.Features.Commands.Products.Create
 
         public CreateProductCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
 
 

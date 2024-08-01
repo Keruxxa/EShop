@@ -22,9 +22,6 @@ namespace EShop.Application.Features.Commands.Users.Create
             RuleFor(command => command.Password)
                 .NotEmpty()
                 .MaximumLength(64);
-
-            RuleFor(command => command.RoleId)
-                .IsInEnum();
         }
     }
 }

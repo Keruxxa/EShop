@@ -15,7 +15,7 @@ namespace EShop.Application.Features.Queries.Categories.ById
 
         public GetCategoryByIdQueryHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 

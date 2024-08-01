@@ -19,9 +19,9 @@ namespace EShop.Web.Controllers
 
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult<Result<ProductDto>>> GetById(Guid id)
+        public async Task<ActionResult<Result<ProductDto>>> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var result = await Mediator.Send(new GetProductByIdQuery(id));
+            var result = await Mediator.Send(new GetProductByIdQuery(id), cancellationToken);
 
             return result.IsSuccess
                 ? StatusCode(StatusCodes.Status200OK, result.Value)
@@ -31,19 +31,19 @@ namespace EShop.Web.Controllers
 
         [HttpGet]
         [Route("list")]
-        public async Task<IEnumerable<ProductListItemDto>> GetList()
+        public async Task<IEnumerable<ProductListItemDto>> GetList(CancellationToken cancellationToken)
         {
-            return await Mediator.Send(new GetProductListQuery());
+            return await Mediator.Send(new GetProductListQuery(), cancellationToken);
         }
 
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<Result<Guid>>> Create([FromBody] CreateProductDto createProductDto)
+        public async Task<ActionResult<Result<Guid>>> Create(
+            [FromBody] CreateProductDto createProductDto,
+            CancellationToken cancellationToken)
         {
-            var createCommand = createProductDto.Adapt<CreateProductCommand>();
-
-            var result = await Mediator.Send(createCommand);
+            var result = await Mediator.Send(createProductDto.Adapt<CreateProductCommand>(), cancellationToken);
 
             return result.IsSuccess
                 ? RedirectToAction(nameof(GetById), new { id = result.Value })
@@ -52,11 +52,11 @@ namespace EShop.Web.Controllers
 
 
         [HttpPut("update")]
-        public async Task<ActionResult<Result>> Update([FromBody] UpdateProductDto updateProductDto)
+        public async Task<ActionResult<Result>> Update(
+            [FromBody] UpdateProductDto updateProductDto,
+            CancellationToken cancellationToken)
         {
-            var updateCommand = updateProductDto.Adapt<UpdateProductCommand>();
-
-            var result = await Mediator.Send(updateCommand);
+            var result = await Mediator.Send(updateProductDto.Adapt<UpdateProductCommand>(), cancellationToken);
 
             return result.IsSuccess
                 ? StatusCode(StatusCodes.Status200OK)
@@ -65,9 +65,9 @@ namespace EShop.Web.Controllers
 
 
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult<Result<bool>>> Delete(Guid id)
+        public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var result = await Mediator.Send(new DeleteProductCommand(id));
+            var result = await Mediator.Send(new DeleteProductCommand(id), cancellationToken);
 
             return result.IsSuccess
                 ? StatusCode(StatusCodes.Status204NoContent, result.Value)

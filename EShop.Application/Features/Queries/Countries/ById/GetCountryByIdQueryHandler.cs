@@ -15,7 +15,7 @@ namespace EShop.Application.Features.Queries.Countries.ById
 
         public GetCountryByIdQueryHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 

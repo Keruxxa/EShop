@@ -34,7 +34,7 @@ namespace EShop.Application.Features.Commands.Countries.Update
 
             var nameIsTaken = await _dbContext.Countries
                 .AnyAsync(country =>
-                    country.Name.Equals(request.Name, StringComparison.CurrentCultureIgnoreCase), cancellationToken);
+                    country.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
             if (nameIsTaken)
             {

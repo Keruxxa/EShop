@@ -13,7 +13,5 @@ namespace EShop.Application.Features.Commands.Products.Create
         decimal Price,
         int CategoryId,
         int BrandId,
-        int? CountryManufacturerId) : IRequest<Result<Guid>>
-    {
-    }
+        int? CountryManufacturerId) : IRequest<Result<Guid>>;
 }

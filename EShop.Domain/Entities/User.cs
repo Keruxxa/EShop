@@ -62,5 +62,17 @@ namespace EShop.Domain.Entities
             Password = password;
             RoleId = roleId;
         }
+
+
+        /// <summary>
+        ///     Устанавливает основную информацию о пользователе 
+        /// </summary>
+        /// <param name="firstName"> Имя </param>
+        /// <param name="lastName"> Фамилия </param>
+        public void UpdateMainInfo(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
     }
 }

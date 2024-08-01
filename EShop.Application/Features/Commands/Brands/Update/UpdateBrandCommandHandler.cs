@@ -41,6 +41,7 @@ namespace EShop.Application.Features.Commands.Brands.Update
             brand.UpdateName(request.Name);
 
             _dbContext.Brands.Update(brand);
+
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
             return saved

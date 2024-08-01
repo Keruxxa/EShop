@@ -15,13 +15,13 @@ namespace EShop.Application.Features.Commands.Countries.Delete
 
         public DeleteCountryCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
         public async Task<bool> Handle(DeleteCountryCommand request, CancellationToken cancellationToken)
         {
-            var country = await _dbContext
-                .Countries.FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
+            var country = await _dbContext.Countries
+                .FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
 
             if (country is null)
             {

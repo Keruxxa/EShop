@@ -1,18 +1,17 @@
 ﻿namespace EShop.Application.Dtos.User
 {
     /// <summary>
-    ///     Представляет объект DTO для создания пользователя
+    ///     Представляет объект DTO пользователя
     /// </summary>
     /// <param name="FirstName"> Имя </param>
     /// <param name="LastName"> Фамилия </param>
     /// <param name="Phone"> Телефон </param>
     /// <param name="Email"> Электронная почта </param>
-    /// <param name="Password"> Пароль </param>
     /// <param name="RoleId"> Id роли </param>
-    public record CreateUserDto(
+    public record UserDto(
         string? FirstName,
         string? LastName,
         string? Phone,
         string Email,
-        string Password);
+        string RoleTypeName);
 }

@@ -19,36 +19,36 @@ namespace EShop.Web.Controllers
 
 
         [HttpGet("select-list")]
-        public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList()
+        public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList(CancellationToken cancellationToken)
         {
-            var categories = await Mediator.Send(new GetCategorySelectListQuery());
-
+            var categories = await Mediator.Send(new GetCategorySelectListQuery(), cancellationToken);
             return StatusCode(StatusCodes.Status200OK, categories);
         }
 
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Category>> GetById(int id)
+        public async Task<ActionResult<Category>> GetById(int id, CancellationToken cancellationToken)
         {
-            var category = await Mediator.Send(new GetCategoryByIdQuery(id));
-
+            var category = await Mediator.Send(new GetCategoryByIdQuery(id), cancellationToken);
             return StatusCode(StatusCodes.Status200OK, category);
         }
 
 
         [HttpPost("create")]
-        public async Task<ActionResult<bool>> Create(string name)
+        public async Task<ActionResult<bool>> Create(string name, CancellationToken cancellationToken)
         {
-            var id = await Mediator.Send(new CreateCategoryCommand(name));
-
+            var id = await Mediator.Send(new CreateCategoryCommand(name), cancellationToken);
             return StatusCode(StatusCodes.Status201Created, id);
         }
 
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Result<int>>> Update(int id, [FromQuery] string name)
+        public async Task<ActionResult<Result<int>>> Update(
+            int id,
+            [FromQuery] string name,
+            CancellationToken cancellationToken)
         {
-            var result = await Mediator.Send(new UpdateCategoryCommand(id, name));
+            var result = await Mediator.Send(new UpdateCategoryCommand(id, name), cancellationToken);
 
             return result.IsSuccess
                 ? StatusCode(StatusCodes.Status200OK, result.Value)
@@ -57,10 +57,9 @@ namespace EShop.Web.Controllers
 
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<bool>> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id, CancellationToken cancellationToken)
         {
-            var deleted = await Mediator.Send(new DeleteCategoryCommand(id));
-
+            var deleted = await Mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
             return StatusCode(StatusCodes.Status204NoContent, deleted);
         }
     }
