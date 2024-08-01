@@ -19,36 +19,39 @@ namespace EShop.Web.Controllers
 
 
         [HttpGet("select-list")]
-        public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList()
+        public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList(CancellationToken cancellationToken)
         {
-            var getListQuery = await Mediator.Send(new GetCountriesSelectListQuery());
+            var getListQuery = await Mediator.Send(new GetCountriesSelectListQuery(), cancellationToken);
 
             return StatusCode(StatusCodes.Status200OK, getListQuery);
         }
 
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Country>> GetById(int id)
+        public async Task<ActionResult<Country>> GetById(int id, CancellationToken cancellationToken)
         {
-            var country = await Mediator.Send(new GetCountryByIdQuery(id));
+            var country = await Mediator.Send(new GetCountryByIdQuery(id), cancellationToken);
 
             return StatusCode(StatusCodes.Status200OK, country);
         }
 
 
         [HttpPost("create")]
-        public async Task<ActionResult<int>> Create(string name)
+        public async Task<ActionResult<int>> Create(string name, CancellationToken cancellationToken)
         {
-            var id = await Mediator.Send(new CreateCountryCommand(name));
+            var id = await Mediator.Send(new CreateCountryCommand(name), cancellationToken);
 
             return StatusCode(StatusCodes.Status201Created, id);
         }
 
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Result<int>>> Update(int id, [FromRoute] string name)
+        public async Task<ActionResult<Result<int>>> Update(
+            int id,
+            [FromRoute] string name,
+            CancellationToken cancellationToken)
         {
-            var result = await Mediator.Send(new UpdateCountryCommand(id, name));
+            var result = await Mediator.Send(new UpdateCountryCommand(id, name), cancellationToken);
 
             return result.IsSuccess
                 ? StatusCode(StatusCodes.Status200OK, result.Value)
@@ -57,14 +60,14 @@ namespace EShop.Web.Controllers
 
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<bool>> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
 
-            var deleted = await Mediator.Send(new DeleteCountryCommand(id));
+            var deleted = await Mediator.Send(new DeleteCountryCommand(id), cancellationToken);
 
             return StatusCode(StatusCodes.Status204NoContent, deleted);
         }

@@ -15,7 +15,7 @@ namespace EShop.Application.Features.Commands.Categories.Delete
 
         public DeleteCategoryCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 

@@ -35,7 +35,7 @@ namespace EShop.Web
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.ApplyMigrations();
+                //app.ApplyMigrations();
             }
 
             app.UseCors("AllowAnyOrigin");

@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using EShop.Domain.Enums;
 using MediatR;
 
 namespace EShop.Application.Features.Commands.Users.Create
@@ -12,8 +11,7 @@ namespace EShop.Application.Features.Commands.Users.Create
         string? LastName,
         string? Phone,
         string Email,
-        string Password,
-        RoleType RoleId = RoleType.UnregisteredUser) : IRequest<Result<Guid>>
+        string Password) : IRequest<Result<Guid>>
     {
         public string HashPassword { get; set; }
     }

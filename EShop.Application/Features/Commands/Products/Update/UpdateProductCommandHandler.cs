@@ -16,8 +16,9 @@ namespace EShop.Application.Features.Commands.Products.Update
 
         public UpdateProductCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
+
 
         public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
@@ -33,6 +34,7 @@ namespace EShop.Application.Features.Commands.Products.Update
                 request.Price, request.CategoryId, request.BrandId, request.CountryManufacturerId);
 
             _dbContext.Products.Update(product);
+
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
             return saved

@@ -15,7 +15,7 @@ namespace EShop.Application.Features.Commands.Categories.Create
 
         public CreateCategoryCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 
@@ -23,7 +23,7 @@ namespace EShop.Application.Features.Commands.Categories.Create
         {
             var category = await _dbContext
                 .Categories.FirstOrDefaultAsync(category =>
-                    category.Name.ToLower() == request.Name.ToLower(), cancellationToken);
+                    category.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
             if (category != null)
             {

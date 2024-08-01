@@ -23,7 +23,7 @@ namespace EShop.Application.Features.Commands.Brands.Create
         {
             var brand = await _dbContext.Brands
                 .FirstOrDefaultAsync(brand =>
-                    brand.Name.ToLower() == request.Name.ToLower(), cancellationToken);
+                    brand.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
             if (brand != null)
             {

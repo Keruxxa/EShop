@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Dtos.User;
 using EShop.Application.Features.Commands.Users.Create;
 using EShop.Domain.Entities;
+using EShop.Domain.Enums;
 using Mapster;
 
 namespace EShop.Application.Mapping
@@ -18,7 +19,7 @@ namespace EShop.Application.Mapping
                     src.Phone,
                     src.Email,
                     src.HashPassword,
-                    src.RoleId
+                    RoleType.Manager
                 ));
 
             TypeAdapterConfig<CreateUserDto, CreateUserCommand>
@@ -28,8 +29,16 @@ namespace EShop.Application.Mapping
                     src.LastName,
                     src.Phone,
                     src.Email,
-                    src.Password,
-                    src.RoleId));
+                    src.Password));
+
+            TypeAdapterConfig<User, UserDto>
+                .NewConfig()
+                .ConstructUsing(src => new UserDto(
+                    src.FirstName,
+                    src.LastName,
+                    src.Phone,
+                    src.Email,
+                    src.Role.Name));
         }
     }
 }

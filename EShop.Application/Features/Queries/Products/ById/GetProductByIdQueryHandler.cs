@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EShop.Application.Features.Queries.Products.ById
 {
     /// <summary>
-    ///     Представялет обработчик зпроса <see cref="GetProductByIdQuery"/>
+    ///     Представялет обработчик запроса <see cref="GetProductByIdQuery"/>
     /// </summary>
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto>>
     {
@@ -18,7 +18,7 @@ namespace EShop.Application.Features.Queries.Products.ById
 
         public GetProductByIdQueryHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 

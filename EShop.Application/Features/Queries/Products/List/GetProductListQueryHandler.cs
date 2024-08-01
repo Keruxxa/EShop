@@ -20,7 +20,8 @@ namespace EShop.Application.Features.Queries.Products.List
             _context = context;
         }
 
-        public async Task<IEnumerable<ProductListItemDto>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ProductListItemDto>> Handle(
+            GetProductListQuery request, CancellationToken cancellationToken)
         {
             var products = await _context.Products.AsNoTracking().ToListAsync(cancellationToken);
 

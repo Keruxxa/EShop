@@ -15,14 +15,14 @@ namespace EShop.Application.Features.Commands.Brands.Delete
 
         public DeleteBrandCommandHandler(IEShopDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(IEShopDbContext));
+            _dbContext = dbContext;
         }
 
 
         public async Task<bool> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
         {
-            var brand = await _dbContext
-                .Brands.FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
+            var brand = await _dbContext.Brands
+                .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
 
             if (brand == null)
             {
