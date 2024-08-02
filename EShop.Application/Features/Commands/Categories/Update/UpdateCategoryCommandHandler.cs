@@ -4,7 +4,7 @@ using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static EShop.Domain.Constants;
+using static EShop.Application.Constants;
 
 namespace EShop.Application.Features.Commands.Categories.Update
 {

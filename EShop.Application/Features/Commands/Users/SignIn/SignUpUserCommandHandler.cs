@@ -9,24 +9,24 @@ using Microsoft.EntityFrameworkCore;
 
 using static EShop.Application.Constants;
 
-namespace EShop.Application.Features.Commands.Users.Create
+namespace EShop.Application.Features.Commands.Users.SignIn
 {
     /// <summary>
-    ///     Представляет обработчик команды <see cref="CreateUserCommandHandler"/>
+    ///     Представляет обработчик команды <see cref="SignUpUserCommandHandler"/>
     /// </summary>
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Guid>>
+    public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Result<User>>
     {
         private readonly IEShopDbContext _dbContext;
         private readonly IPasswordHasher _passwordHasher;
 
-        public CreateUserCommandHandler(IEShopDbContext dbContext, IPasswordHasher passwordHasher)
+        public SignUpUserCommandHandler(IEShopDbContext dbContext, IPasswordHasher passwordHasher)
         {
             _dbContext = dbContext;
             _passwordHasher = passwordHasher;
         }
 
 
-        public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<User>> Handle(SignUpUserCommand request, CancellationToken cancellationToken)
         {
             if (request.Email is not null)
             {
@@ -59,8 +59,8 @@ namespace EShop.Application.Features.Commands.Users.Create
             var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
             return saved
-                ? Result.Success(user.Id)
-                : Result.Failure<Guid>(SERVER_SIDE_ERROR);
+                ? Result.Success(user)
+                : Result.Failure<User>(SERVER_SIDE_ERROR);
         }
     }
 }

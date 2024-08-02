@@ -23,6 +23,7 @@ namespace EShop.Infrastructure.Configurations
                 .HasForeignKey(user => user.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // TODO: сформировать через IEnumerable
             builder.HasData(
             [
                 new Role("Администратор") { Id = RoleType.Administrator },

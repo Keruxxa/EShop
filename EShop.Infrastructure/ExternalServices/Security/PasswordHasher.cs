@@ -1,7 +1,7 @@
 ﻿using EShop.Application.Interfaces.Security;
 using BCrypt.Net;
 
-namespace EShop.Infrastructure.External_Services
+namespace EShop.Infrastructure.ExternalServices.Security
 {
     public class PasswordHasher : IPasswordHasher
     {
