@@ -1,5 +1,6 @@
 using EShop.Application.Extensions;
 using EShop.Infrastructure.Extensions;
+using EShop.Infrastructure.Utilities;
 
 namespace EShop.Web
 {
@@ -14,8 +15,10 @@ namespace EShop.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+
             builder.Services.AddApplication();
-            builder.Services.AddInfrastrusture(configuration.GetConnectionString("EShopConnectionString"));
+            builder.Services.AddInfrastrusture(configuration);
 
             builder.Services.AddCors(options =>
             {
@@ -39,8 +42,8 @@ namespace EShop.Web
             }
 
             app.UseCors("AllowAnyOrigin");
-
             //app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
 

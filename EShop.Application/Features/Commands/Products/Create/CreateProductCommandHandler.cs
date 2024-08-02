@@ -3,7 +3,7 @@ using EShop.Application.Interfaces;
 using EShop.Domain.Entities;
 using MediatR;
 
-using static EShop.Domain.Constants;
+using static EShop.Application.Constants;
 
 namespace EShop.Application.Features.Commands.Products.Create
 {

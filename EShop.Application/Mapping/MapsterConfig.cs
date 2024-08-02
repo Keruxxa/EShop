@@ -1,5 +1,6 @@
 ﻿using EShop.Application.Dtos.User;
 using EShop.Application.Features.Commands.Users.Create;
+using EShop.Application.Features.Commands.Users.SignIn;
 using EShop.Domain.Entities;
 using EShop.Domain.Enums;
 using Mapster;
@@ -10,6 +11,15 @@ namespace EShop.Application.Mapping
     {
         public static void ConfigureMapping()
         {
+            TypeAdapterConfig<CreateUserDto, CreateUserCommand>
+                .NewConfig()
+                .ConstructUsing(src => new CreateUserCommand(
+                    src.FirstName,
+                    src.LastName,
+                    src.Phone,
+                    src.Email,
+                    src.Password));
+
             TypeAdapterConfig<CreateUserCommand, User>
                 .NewConfig()
                 .MapWith(src => new User(
@@ -22,15 +32,6 @@ namespace EShop.Application.Mapping
                     RoleType.Manager
                 ));
 
-            TypeAdapterConfig<CreateUserDto, CreateUserCommand>
-                .NewConfig()
-                .ConstructUsing(src => new CreateUserCommand(
-                    src.FirstName,
-                    src.LastName,
-                    src.Phone,
-                    src.Email,
-                    src.Password));
-
             TypeAdapterConfig<User, UserDto>
                 .NewConfig()
                 .ConstructUsing(src => new UserDto(
@@ -39,6 +40,27 @@ namespace EShop.Application.Mapping
                     src.Phone,
                     src.Email,
                     src.Role.Name));
+
+            TypeAdapterConfig<SignUpUserDto, SignUpUserCommand>
+                .NewConfig()
+                .ConstructUsing(src => new SignUpUserCommand(
+                    src.FirstName,
+                    src.LastName,
+                    src.Phone,
+                    src.Email,
+                    src.Password));
+
+            TypeAdapterConfig<SignUpUserCommand, User>
+                .NewConfig()
+                .MapWith(src => new User(
+                    Guid.NewGuid(),
+                    src.FirstName,
+                    src.LastName,
+                    src.Phone,
+                    src.Email,
+                    src.HashPassword,
+                    RoleType.RegisteredUser
+                ));
         }
     }
 }

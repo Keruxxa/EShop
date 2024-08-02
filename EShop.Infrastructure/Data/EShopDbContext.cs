@@ -2,7 +2,7 @@
 using EShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Infrastructure
+namespace EShop.Infrastructure.Data
 {
     public class EShopDbContext : DbContext, IEShopDbContext
     {
