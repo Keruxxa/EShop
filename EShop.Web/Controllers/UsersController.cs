@@ -9,67 +9,66 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EShop.Web.Controllers
+namespace EShop.Web.Controllers;
+
+public class UsersController : BaseController
 {
-    public class UsersController : BaseController
+    public UsersController(IMediator mediator) : base(mediator)
     {
-        public UsersController(IMediator mediator) : base(mediator)
-        {
-        }
+    }
 
 
-        [HttpGet("{id:Guid}")]
-        public async Task<ActionResult<Result<UserDto>>> GetById(Guid id, CancellationToken cancellationToken)
-        {
-            var result = await Mediator.Send(new GetUserByIdQuery(id), cancellationToken);
+    [HttpGet("{id:Guid}")]
+    public async Task<ActionResult<Result<UserDto>>> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(new GetUserByIdQuery(id), cancellationToken);
 
-            return result.IsSuccess
-                ? StatusCode(StatusCodes.Status200OK, result.Value)
-                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
-        }
-
-
-        [HttpGet("list")]
-        public async Task<IEnumerable<UsersListItemDto>> GetList(CancellationToken cancellationToken)
-        {
-            return await Mediator.Send(new GetUsersListItemQuery(), cancellationToken);
-        }
+        return result.IsSuccess
+            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+    }
 
 
-        [HttpPost("create")]
-        public async Task<ActionResult<Result<Guid>>> Create(
-            [FromBody] CreateUserDto createUserDto,
-            CancellationToken cancellationToken)
-        {
-            var result = await Mediator.Send(createUserDto.Adapt<CreateUserCommand>(), cancellationToken);
-
-            return result.IsSuccess
-                ? StatusCode(StatusCodes.Status201Created, result.Value)
-                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
-        }
+    [HttpGet("list")]
+    public async Task<IEnumerable<UsersListItemDto>> GetList(CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetUsersListItemQuery(), cancellationToken);
+    }
 
 
-        [HttpPatch("update-main-info")]
-        public async Task<ActionResult<Result<bool>>> UpdateMainInfo(
-            [FromBody] UpdateUserDto updateUserDto,
-            CancellationToken cancellationToken)
-        {
-            var result = await Mediator.Send(updateUserDto.Adapt<UpdateUserCommand>(), cancellationToken);
+    [HttpPost("create")]
+    public async Task<ActionResult<Result<Guid>>> Create(
+        [FromBody] CreateUserDto createUserDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(createUserDto.Adapt<CreateUserCommand>(), cancellationToken);
 
-            return result.IsSuccess
-                ? StatusCode(StatusCodes.Status200OK, result.Value)
-                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
-        }
+        return result.IsSuccess
+            ? StatusCode(StatusCodes.Status201Created, result.Value)
+            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+    }
 
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
-        {
-            var result = await Mediator.Send(new DeleteUserCommand(id), cancellationToken);
+    [HttpPatch("update-main-info")]
+    public async Task<ActionResult<Result<bool>>> UpdateMainInfo(
+        [FromBody] UpdateUserDto updateUserDto,
+        CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(updateUserDto.Adapt<UpdateUserCommand>(), cancellationToken);
 
-            return result.IsSuccess
-                ? StatusCode(StatusCodes.Status200OK, result.Value)
-                : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
-        }
+        return result.IsSuccess
+            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+    }
+
+
+    [HttpDelete("{id:Guid}")]
+    public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(new DeleteUserCommand(id), cancellationToken);
+
+        return result.IsSuccess
+            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 }

@@ -1,31 +1,30 @@
-﻿namespace EShop.Domain.Entities
+﻿namespace EShop.Domain.Entities;
+
+/// <summary>
+///     Представляет промежуточную сущность, связывающую сущности 
+///     <see cref="Favorite"/> и <see cref="Product"/>
+/// </summary>
+public class FavoriteProducts
 {
     /// <summary>
-    ///     Представляет промежуточную сущность, связывающую сущности 
-    ///     <see cref="Favorite"/> и <see cref="Product"/>
+    ///     Id коллекции избранного
     /// </summary>
-    public class FavoriteProducts
+    public Guid FavoriteId { get; private set; }
+
+    /// <summary>
+    ///     Id товара
+    /// </summary>
+    public Guid ProductId { get; private set; }
+
+
+    private FavoriteProducts() { }
+
+
+    /// <param name="favoriteId">Id коллекции избранного</param>
+    /// <param name="productId">Id товара</param>
+    public FavoriteProducts(Guid favoriteId, Guid productId)
     {
-        /// <summary>
-        ///     Id коллекции избранного
-        /// </summary>
-        public Guid FavoriteId { get; private set; }
-
-        /// <summary>
-        ///     Id товара
-        /// </summary>
-        public Guid ProductId { get; private set; }
-
-
-        private FavoriteProducts() { }
-
-
-        /// <param name="favoriteId">Id коллекции избранного</param>
-        /// <param name="productId">Id товара</param>
-        public FavoriteProducts(Guid favoriteId, Guid productId)
-        {
-            FavoriteId = favoriteId;
-            ProductId = productId;
-        }
+        FavoriteId = favoriteId;
+        ProductId = productId;
     }
 }

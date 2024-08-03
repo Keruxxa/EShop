@@ -7,37 +7,38 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace EShop.Infrastructure.Services.Auth
+namespace EShop.Infrastructure.Services.Auth;
+
+public class JwtTokenService : IJwtTokenService
 {
-    public class JwtTokenService : IJwtTokenGenerator
+    private readonly JwtOptions _options;
+
+    public JwtTokenService(IOptions<JwtOptions> options)
     {
-        private readonly JwtOptions _options;
+        _options = options.Value;
+    }
 
-        public JwtTokenService(IOptions<JwtOptions> options)
+
+    public string Generate(User user)
+    {
+        var claims = new List<Claim>
         {
-            _options = options.Value;
-        }
+            new(JwtRegisteredClaimNames.Iss, _options.Issuer),
+            new(JwtRegisteredClaimNames.Aud, _options.Audience),
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddMinutes(_options.ExpiresMinutes).ToString()),
+        };
 
+        var signingCredentials = new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
+            SecurityAlgorithms.HmacSha256);
 
-        public string Generate(User user)
-        {
-            var claims = new List<Claim>
-            {
-                new("userId", user.Id.ToString())
-            };
+        var token = new JwtSecurityToken(
+            claims: claims,
+            signingCredentials: signingCredentials);
 
-            var signingCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
-                SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _options.Issuer,
-                audience: _options.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(_options.ExpiresHours),
-                signingCredentials: signingCredentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

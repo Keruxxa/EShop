@@ -3,35 +3,34 @@ using EShop.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations
+namespace EShop.Infrastructure.Configurations;
+
+public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<Role>
+    public void Configure(EntityTypeBuilder<Role> builder)
     {
-        public void Configure(EntityTypeBuilder<Role> builder)
-        {
-            builder.HasKey(role => role.Id);
+        builder.HasKey(role => role.Id);
 
-            builder.Property(role => role.Id)
-                .IsRequired();
+        builder.Property(role => role.Id)
+            .IsRequired();
 
-            builder.Property(role => role.Name)
-                .IsRequired()
-                .HasMaxLength(128);
+        builder.Property(role => role.Name)
+            .IsRequired()
+            .HasMaxLength(128);
 
-            builder.HasMany<User>()
-                .WithOne(user => user.Role)
-                .HasForeignKey(user => user.RoleId)
-                .OnDelete(DeleteBehavior.Restrict);
+        builder.HasMany<User>()
+            .WithOne(user => user.Role)
+            .HasForeignKey(user => user.RoleId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-            // TODO: сформировать через IEnumerable
-            builder.HasData(
-            [
-                new Role("Администратор") { Id = RoleType.Administrator },
-                new Role("Менеджер") { Id = RoleType.Manager },
-                new Role("Пользователь") { Id = RoleType.RegisteredUser },
-                new Role("Странник") { Id = RoleType.UnregisteredUser }
-            ]);
+        // TODO: сформировать через IEnumerable
+        builder.HasData(
+        [
+            new Role("Администратор") { Id = RoleType.Administrator },
+            new Role("Менеджер") { Id = RoleType.Manager },
+            new Role("Пользователь") { Id = RoleType.RegisteredUser },
+            new Role("Странник") { Id = RoleType.UnregisteredUser }
+        ]);
 
-        }
     }
 }

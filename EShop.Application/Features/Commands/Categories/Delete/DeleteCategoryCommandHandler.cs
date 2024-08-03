@@ -4,34 +4,33 @@ using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Commands.Categories.Delete
+namespace EShop.Application.Features.Commands.Categories.Delete;
+
+/// <summary>
+///     Представляет обработчик команды <see cref="DeleteCategoryCommand"/>
+/// </summary>
+public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
 {
-    /// <summary>
-    ///     Представляет обработчик команды <see cref="DeleteCategoryCommand"/>
-    /// </summary>
-    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
+    private readonly IEShopDbContext _dbContext;
+
+    public DeleteCategoryCommandHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public DeleteCategoryCommandHandler(IEShopDbContext dbContext)
+
+    public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    {
+        var category = await _dbContext.Categories
+            .FirstOrDefaultAsync(category => category.Id == request.Id, cancellationToken);
+
+        if (category == null)
         {
-            _dbContext = dbContext;
+            throw new NotFoundException(nameof(Category), request.Id);
         }
 
+        _dbContext.Categories.Remove(category);
 
-        public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
-        {
-            var category = await _dbContext.Categories
-                .FirstOrDefaultAsync(category => category.Id == request.Id, cancellationToken);
-
-            if (category == null)
-            {
-                throw new NotFoundException(nameof(Category), request.Id);
-            }
-
-            _dbContext.Categories.Remove(category);
-
-            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-        }
+        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 }

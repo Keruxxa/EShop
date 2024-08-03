@@ -7,33 +7,32 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Queries.Users.ById
+namespace EShop.Application.Features.Queries.Users.ById;
+
+/// <summary>
+///     Представялет обработчик запроса <see cref="GetUserByIdQuery"/>
+/// </summary>
+public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<UserDto>>
 {
-    /// <summary>
-    ///     Представялет обработчик запроса <see cref="GetUserByIdQuery"/>
-    /// </summary>
-    public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<UserDto>>
+    private readonly IEShopDbContext _dbContext;
+
+    public GetUserByIdQueryHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public GetUserByIdQueryHandler(IEShopDbContext dbContext)
+
+    public async Task<Result<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    {
+        var user = await _dbContext.Users
+            .Include(user => user.Role)
+            .FirstOrDefaultAsync(user => user.Id == request.Id, cancellationToken);
+
+        if (user is null)
         {
-            _dbContext = dbContext;
+            throw new NotFoundException(nameof(User), request.Id);
         }
 
-
-        public async Task<Result<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
-        {
-            var user = await _dbContext.Users
-                .Include(user => user.Role)
-                .FirstOrDefaultAsync(user => user.Id == request.Id, cancellationToken);
-
-            if (user is null)
-            {
-                throw new NotFoundException(nameof(User), request.Id);
-            }
-
-            return user.Adapt<UserDto>();
-        }
+        return user.Adapt<UserDto>();
     }
 }

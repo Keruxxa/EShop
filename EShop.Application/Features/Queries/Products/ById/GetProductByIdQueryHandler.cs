@@ -7,34 +7,33 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Queries.Products.ById
+namespace EShop.Application.Features.Queries.Products.ById;
+
+/// <summary>
+///     Представялет обработчик запроса <see cref="GetProductByIdQuery"/>
+/// </summary>
+public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto>>
 {
-    /// <summary>
-    ///     Представялет обработчик запроса <see cref="GetProductByIdQuery"/>
-    /// </summary>
-    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto>>
+    private readonly IEShopDbContext _dbContext;
+
+    public GetProductByIdQueryHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public GetProductByIdQueryHandler(IEShopDbContext dbContext)
+
+    public async Task<Result<ProductDto>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    {
+        var product = await _dbContext.Products
+            .Include(product => product.Category)
+            .Include(product => product.CountryManufacturer)
+            .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
+
+        if (product is null)
         {
-            _dbContext = dbContext;
+            throw new NotFoundException(nameof(Product), request.Id);
         }
 
-
-        public async Task<Result<ProductDto>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
-        {
-            var product = await _dbContext.Products
-                .Include(product => product.Category)
-                .Include(product => product.CountryManufacturer)
-                .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
-
-            if (product is null)
-            {
-                throw new NotFoundException(nameof(Product), request.Id);
-            }
-
-            return Result.Success(product.Adapt<ProductDto>());
-        }
+        return Result.Success(product.Adapt<ProductDto>());
     }
 }

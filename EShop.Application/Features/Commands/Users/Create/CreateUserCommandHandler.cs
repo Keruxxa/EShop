@@ -9,58 +9,57 @@ using Microsoft.EntityFrameworkCore;
 
 using static EShop.Application.Constants;
 
-namespace EShop.Application.Features.Commands.Users.Create
+namespace EShop.Application.Features.Commands.Users.Create;
+
+/// <summary>
+///     Представляет обработчик команды <see cref="CreateUserCommandHandler"/>
+/// </summary>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Guid>>
 {
-    /// <summary>
-    ///     Представляет обработчик команды <see cref="CreateUserCommandHandler"/>
-    /// </summary>
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Guid>>
+    private readonly IEShopDbContext _dbContext;
+    private readonly IPasswordHasher _passwordHasher;
+
+    public CreateUserCommandHandler(IEShopDbContext dbContext, IPasswordHasher passwordHasher)
     {
-        private readonly IEShopDbContext _dbContext;
-        private readonly IPasswordHasher _passwordHasher;
+        _dbContext = dbContext;
+        _passwordHasher = passwordHasher;
+    }
 
-        public CreateUserCommandHandler(IEShopDbContext dbContext, IPasswordHasher passwordHasher)
+
+    public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    {
+        if (request.Email is not null)
         {
-            _dbContext = dbContext;
-            _passwordHasher = passwordHasher;
+            var emailIsUsed = await _dbContext.Users
+                .AnyAsync(user => user.Email.Equals(request.Email), cancellationToken);
+
+            if (emailIsUsed)
+            {
+                throw new DuplicateEntityException(nameof(User));
+            }
         }
 
-
-        public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        if (request.Phone is not null)
         {
-            if (request.Email is not null)
+            var phoneIsUsed = await _dbContext.Users
+                .AnyAsync(user => user.Phone.Equals(request.Phone), cancellationToken);
+
+            if (phoneIsUsed)
             {
-                var emailIsUsed = await _dbContext.Users
-                    .AnyAsync(user => user.Email.Equals(request.Email), cancellationToken);
-
-                if (emailIsUsed)
-                {
-                    throw new DuplicateEntityException(nameof(User));
-                }
+                throw new DuplicateEntityException(nameof(User));
             }
-
-            if (request.Phone is not null)
-            {
-                var phoneIsUsed = await _dbContext.Users
-                    .AnyAsync(user => user.Phone.Equals(request.Phone), cancellationToken);
-
-                if (phoneIsUsed)
-                {
-                    throw new DuplicateEntityException(nameof(User));
-                }
-            }
-
-            request.HashPassword = _passwordHasher.Hash(request.Password);
-
-            var user = request.Adapt<User>();
-
-            await _dbContext.Users.AddAsync(user, cancellationToken);
-
-            var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-
-            return saved
-                ? Result.Success(user.Id)
-                : Result.Failure<Guid>(SERVER_SIDE_ERROR);
         }
+
+        request.HashPassword = _passwordHasher.Hash(request.Password);
+
+        var user = request.Adapt<User>();
+
+        await _dbContext.Users.AddAsync(user, cancellationToken);
+
+        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+
+        return saved
+            ? Result.Success(user.Id)
+            : Result.Failure<Guid>(SERVER_SIDE_ERROR);
     }
 }

@@ -1,50 +1,49 @@
-﻿namespace EShop.Domain.Entities
+﻿namespace EShop.Domain.Entities;
+
+/// <summary>
+///     Представляет корзину
+/// </summary>
+public class Basket : EntityBase<Guid>
 {
     /// <summary>
-    ///     Представляет корзину
+    ///     Id пользователя, связанного с корзиной
     /// </summary>
-    public class Basket : EntityBase<Guid>
+    public Guid UserId { get; }
+
+    /// <summary>
+    ///     Товары корзины
+    /// </summary>
+    public List<BasketItem> BasketItems { get; private set; }
+
+    /// <summary>
+    ///     Суммарная стоимость корзины
+    /// </summary>
+    public decimal? TotalPrice => BasketItems?.Sum(basketItem => basketItem.Product.Price * basketItem.Count);
+
+
+    private Basket() { }
+
+
+    public Basket(Guid userId)
     {
-        /// <summary>
-        ///     Id пользователя, связанного с корзиной
-        /// </summary>
-        public Guid UserId { get; }
+        UserId = userId;
+    }
 
-        /// <summary>
-        ///     Товары корзины
-        /// </summary>
-        public List<BasketItem> BasketItems { get; private set; }
+    /// <summary>
+    ///     Добавляет объект <see cref="BasketItem"/> в коллекцию <see cref="BasketItems"/>
+    /// </summary>
+    public void AddItem(BasketItem basketItem)
+    {
+        BasketItems ??= [];
 
-        /// <summary>
-        ///     Суммарная стоимость корзины
-        /// </summary>
-        public decimal? TotalPrice => BasketItems?.Sum(basketItem => basketItem.Product.Price * basketItem.Count);
+        BasketItems.Add(basketItem);
+    }
 
-
-        private Basket() { }
-
-
-        public Basket(Guid userId)
-        {
-            UserId = userId;
-        }
-
-        /// <summary>
-        ///     Добавляет объект <see cref="BasketItem"/> в коллекцию <see cref="BasketItems"/>
-        /// </summary>
-        public void AddItem(BasketItem basketItem)
-        {
-            BasketItems ??= [];
-
-            BasketItems.Add(basketItem);
-        }
-
-        /// <summary>
-        ///     Удаляет объект <see cref="BasketItem"/> из коллекции <see cref="BasketItems"/>
-        /// </summary>
-        public bool RemoveItem(BasketItem basketItem)
-        {
-            return BasketItems.Remove(basketItem);
-        }
+    /// <summary>
+    ///     Удаляет объект <see cref="BasketItem"/> из коллекции <see cref="BasketItems"/>
+    /// </summary>
+    public bool RemoveItem(BasketItem basketItem)
+    {
+        return BasketItems.Remove(basketItem);
     }
 }

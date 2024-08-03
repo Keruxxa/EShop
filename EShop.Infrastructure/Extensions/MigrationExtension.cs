@@ -3,17 +3,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EShop.Infrastructure.Extensions
+namespace EShop.Infrastructure.Extensions;
+
+public static class MigrationExtension
 {
-    public static class MigrationExtension
+    public static void ApplyMigrations(this IApplicationBuilder app)
     {
-        public static void ApplyMigrations(this IApplicationBuilder app)
-        {
-            using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
+        using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
 
-            using var context = serviceScope.ServiceProvider.GetRequiredService<EShopDbContext>();
+        using var context = serviceScope.ServiceProvider.GetRequiredService<EShopDbContext>();
 
-            context.Database.Migrate();
-        }
+        context.Database.Migrate();
     }
 }

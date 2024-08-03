@@ -5,30 +5,29 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Queries.Products.List
+namespace EShop.Application.Features.Queries.Products.List;
+
+/// <summary>
+///     Представляет обработчик запроса <see cref="GetProductListQuery"/>
+/// </summary>
+public class GetProductListQueryHandler
+    : IRequestHandler<GetProductListQuery, IEnumerable<ProductListItemDto>>
 {
-    /// <summary>
-    ///     Представляет обработчик запроса <see cref="GetProductListQuery"/>
-    /// </summary>
-    public class GetProductListQueryHandler
-        : IRequestHandler<GetProductListQuery, IEnumerable<ProductListItemDto>>
+    private readonly IEShopDbContext _context;
+
+    public GetProductListQueryHandler(IEShopDbContext context)
     {
-        private readonly IEShopDbContext _context;
+        _context = context;
+    }
 
-        public GetProductListQueryHandler(IEShopDbContext context)
+    public async Task<IEnumerable<ProductListItemDto>> Handle(
+        GetProductListQuery request, CancellationToken cancellationToken)
+    {
+        var products = await _context.Products.AsNoTracking().ToListAsync(cancellationToken);
+
+        return products.Select(product =>
         {
-            _context = context;
-        }
-
-        public async Task<IEnumerable<ProductListItemDto>> Handle(
-            GetProductListQuery request, CancellationToken cancellationToken)
-        {
-            var products = await _context.Products.AsNoTracking().ToListAsync(cancellationToken);
-
-            return products.Select(product =>
-            {
-                return product.Adapt<ProductListItemDto>();
-            });
-        }
+            return product.Adapt<ProductListItemDto>();
+        });
     }
 }

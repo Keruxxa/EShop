@@ -1,29 +1,28 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Security;
 using EShop.Infrastructure.Data;
-using EShop.Infrastructure.ExternalServices.Security;
+using EShop.Infrastructure.Utilities.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EShop.Infrastructure.Extensions
+namespace EShop.Infrastructure.Extensions;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddInfrastrusture(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddInfrastrusture(this IServiceCollection services, IConfiguration configuration)
+        services.AddDbContext<EShopDbContext>(options =>
         {
-            services.AddDbContext<EShopDbContext>(options =>
-            {
-                options.UseNpgsql(configuration.GetConnectionString("EShopConnectionString"));
-            });
+            options.UseNpgsql(configuration.GetConnectionString("EShopConnectionString"));
+        });
 
-            services.AddScoped<IEShopDbContext, EShopDbContext>();
+        services.AddScoped<IEShopDbContext, EShopDbContext>();
 
-            services.AddTransient<IPasswordHasher, PasswordHasher>();
+        services.AddTransient<IPasswordHasher, PasswordHasher>();
 
-            services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));
+        services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));
 
-            return services;
-        }
+        return services;
     }
 }

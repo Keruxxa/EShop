@@ -4,32 +4,31 @@ using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Queries.Countries.ById
+namespace EShop.Application.Features.Queries.Countries.ById;
+
+/// <summary>
+///     Представляет обработчик запроса <see cref="GetCountryByIdQuery"/>
+/// </summary>
+public class GetCountryByIdQueryHandler : IRequestHandler<GetCountryByIdQuery, Country>
 {
-    /// <summary>
-    ///     Представляет обработчик запроса <see cref="GetCountryByIdQuery"/>
-    /// </summary>
-    public class GetCountryByIdQueryHandler : IRequestHandler<GetCountryByIdQuery, Country>
+    private readonly IEShopDbContext _dbContext;
+
+    public GetCountryByIdQueryHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public GetCountryByIdQueryHandler(IEShopDbContext dbContext)
+
+    public async Task<Country> Handle(GetCountryByIdQuery request, CancellationToken cancellationToken)
+    {
+        var country = await _dbContext.Countries
+            .FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
+
+        if (country is null)
         {
-            _dbContext = dbContext;
+            throw new NotFoundException(nameof(Country), request.Id);
         }
 
-
-        public async Task<Country> Handle(GetCountryByIdQuery request, CancellationToken cancellationToken)
-        {
-            var country = await _dbContext.Countries
-                .FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
-
-            if (country is null)
-            {
-                throw new NotFoundException(nameof(Country), request.Id);
-            }
-
-            return country;
-        }
+        return country;
     }
 }

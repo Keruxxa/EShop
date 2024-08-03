@@ -1,25 +1,24 @@
 ﻿using EShop.Domain.Enums;
 
-namespace EShop.Domain.Entities
+namespace EShop.Domain.Entities;
+
+/// <summary>
+///     Представляет роль
+/// </summary>
+public class Role : EntityBase<RoleType>
 {
     /// <summary>
-    ///     Представляет роль
+    ///     Наименование
     /// </summary>
-    public class Role : EntityBase<RoleType>
+    public string Name { get; }
+
+
+    private Role() { }
+
+
+    /// <param name="name">Наименование</param>
+    public Role(string name)
     {
-        /// <summary>
-        ///     Наименование
-        /// </summary>
-        public string Name { get; }
-
-
-        private Role() { }
-
-
-        /// <param name="name">Наименование</param>
-        public Role(string name)
-        {
-            Name = name;
-        }
+        Name = name;
     }
 }

@@ -1,31 +1,30 @@
-﻿namespace EShop.Domain.Entities
+﻿namespace EShop.Domain.Entities;
+
+/// <summary>
+///     Представляет страну
+/// </summary>
+public class Country : EntityBase<int>
 {
     /// <summary>
-    ///     Представляет страну
+    ///     Название
     /// </summary>
-    public class Country : EntityBase<int>
+    public string Name { get; private set; }
+
+
+    private Country() { }
+
+
+    /// <param name="name">Наименование</param>
+    public Country(string name)
     {
-        /// <summary>
-        ///     Название
-        /// </summary>
-        public string Name { get; private set; }
+        Name = name;
+    }
 
-
-        private Country() { }
-
-
-        /// <param name="name">Наименование</param>
-        public Country(string name)
-        {
-            Name = name;
-        }
-
-        /// <summary>
-        ///     Устанавливает значение наименования <see cref="Name"/>
-        /// </summary>
-        public void UpdateName(string name)
-        {
-            Name = name;
-        }
+    /// <summary>
+    ///     Устанавливает значение наименования <see cref="Name"/>
+    /// </summary>
+    public void UpdateName(string name)
+    {
+        Name = name;
     }
 }

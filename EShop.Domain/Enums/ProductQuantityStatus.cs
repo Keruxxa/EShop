@@ -1,23 +1,22 @@
-﻿namespace EShop.Domain.Enums
+﻿namespace EShop.Domain.Enums;
+
+/// <summary>
+///     Представляет перечисление, описывающее оставшееся количество товара
+/// </summary>
+public enum ProductQuantityStatus
 {
     /// <summary>
-    ///     Представляет перечисление, описывающее оставшееся количество товара
+    ///     Много (достаточно)
     /// </summary>
-    public enum ProductQuantityStatus
-    {
-        /// <summary>
-        ///     Много (достаточно)
-        /// </summary>
-        Enough,
+    Enough,
 
-        /// <summary>
-        ///     Средне
-        /// </summary>
-        Moderate,
+    /// <summary>
+    ///     Средне
+    /// </summary>
+    Moderate,
 
-        /// <summary>
-        ///     Мало
-        /// </summary>
-        Low
-    }
+    /// <summary>
+    ///     Мало
+    /// </summary>
+    Low
 }

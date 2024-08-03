@@ -1,46 +1,45 @@
 ﻿using EShop.Domain.Entities;
 
-namespace EShop.Application.Models
+namespace EShop.Application.Models;
+
+/// <summary>
+///     Представляет модель для отображения элемента в списке
+/// </summary>
+/// <typeparam name="TKey">Тип Id</typeparam>
+public class SelectListItem<TKey> : EntityBase<TKey> where TKey : struct
 {
     /// <summary>
-    ///     Представляет модель для отображения элемента в списке
+    ///     Наименование
     /// </summary>
-    /// <typeparam name="TKey">Тип Id</typeparam>
-    public class SelectListItem<TKey> : EntityBase<TKey> where TKey : struct
+    public string Name { get; set; }
+
+
+    public static SelectListItem<int> CreateItem(Country country)
     {
-        /// <summary>
-        ///     Наименование
-        /// </summary>
-        public string Name { get; set; }
-
-
-        public static SelectListItem<int> CreateItem(Country country)
+        return new SelectListItem<int>()
         {
-            return new SelectListItem<int>()
-            {
-                Id = country.Id,
-                Name = country.Name
-            };
-        }
+            Id = country.Id,
+            Name = country.Name
+        };
+    }
 
 
-        public static SelectListItem<int> CreateItem(Brand brand)
+    public static SelectListItem<int> CreateItem(Brand brand)
+    {
+        return new SelectListItem<int>()
         {
-            return new SelectListItem<int>()
-            {
-                Id = brand.Id,
-                Name = brand.Name
-            };
-        }
+            Id = brand.Id,
+            Name = brand.Name
+        };
+    }
 
 
-        public static SelectListItem<int> CreateItem(Category category)
+    public static SelectListItem<int> CreateItem(Category category)
+    {
+        return new SelectListItem<int>()
         {
-            return new SelectListItem<int>()
-            {
-                Id = category.Id,
-                Name = category.Name
-            };
-        }
+            Id = category.Id,
+            Name = category.Name
+        };
     }
 }

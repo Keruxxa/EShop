@@ -4,39 +4,38 @@ using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Commands.Categories.Create
+namespace EShop.Application.Features.Commands.Categories.Create;
+
+/// <summary>
+///     Представляет обработчик команды <see cref="CreateCategoryCommand"/>
+/// </summary>
+public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
 {
-    /// <summary>
-    ///     Представляет обработчик команды <see cref="CreateCategoryCommand"/>
-    /// </summary>
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
+    private readonly IEShopDbContext _dbContext;
+
+    public CreateCategoryCommandHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public CreateCategoryCommandHandler(IEShopDbContext dbContext)
+
+    public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    {
+        var category = await _dbContext
+            .Categories.FirstOrDefaultAsync(category =>
+                category.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+
+        if (category != null)
         {
-            _dbContext = dbContext;
+            throw new DuplicateEntityException(nameof(Category));
         }
 
+        var newCategory = new Category(request.Name);
 
-        public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
-        {
-            var category = await _dbContext
-                .Categories.FirstOrDefaultAsync(category =>
-                    category.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+        await _dbContext.Categories.AddAsync(newCategory);
 
-            if (category != null)
-            {
-                throw new DuplicateEntityException(nameof(Category));
-            }
+        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-            var newCategory = new Category(request.Name);
-
-            await _dbContext.Categories.AddAsync(newCategory);
-
-            var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-
-            return saved ? newCategory.Id : 0;
-        }
+        return saved ? newCategory.Id : 0;
     }
 }
