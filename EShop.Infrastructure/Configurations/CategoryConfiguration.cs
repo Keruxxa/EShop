@@ -2,25 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations
+namespace EShop.Infrastructure.Configurations;
+
+public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    public void Configure(EntityTypeBuilder<Category> builder)
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
-        {
-            builder.HasKey(category => category.Id);
+        builder.HasKey(category => category.Id);
 
-            builder.Property(category => category.Id)
-                .IsRequired();
+        builder.Property(category => category.Id)
+            .IsRequired();
 
-            builder.Property(category => category.Name)
-                .IsRequired()
-                .HasMaxLength(128);
+        builder.Property(category => category.Name)
+            .IsRequired()
+            .HasMaxLength(128);
 
-            builder.HasMany(category => category.CategoryProducts)
-                .WithOne()
-                .HasForeignKey(categoryProducts => categoryProducts.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+        builder.HasMany(category => category.CategoryProducts)
+            .WithOne()
+            .HasForeignKey(categoryProducts => categoryProducts.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

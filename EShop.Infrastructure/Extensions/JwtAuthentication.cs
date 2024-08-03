@@ -4,43 +4,42 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace EShop.Infrastructure.Extensions
+namespace EShop.Infrastructure.Extensions;
+
+public static class JwtAuthentication
 {
-    public static class JwtAuthentication
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            var validIssuer = configuration.GetValue<string>("Issuer");
-            var validAudience = configuration.GetValue<string>("Audience");
-            var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("Key")));
+        var validIssuer = configuration.GetValue<string>("Issuer");
+        var validAudience = configuration.GetValue<string>("Audience");
+        var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("Key")));
 
-            services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters()
+                    ValidateIssuer = true,
+                    ValidIssuer = validIssuer,
+                    ValidateAudience = true,
+                    ValidAudience = validAudience,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = issuerSigningKey,
+                    ValidateIssuerSigningKey = true,
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
                     {
-                        ValidateIssuer = true,
-                        ValidIssuer = validIssuer,
-                        ValidateAudience = true,
-                        ValidAudience = validAudience,
-                        ValidateLifetime = true,
-                        IssuerSigningKey = issuerSigningKey,
-                        ValidateIssuerSigningKey = true,
-                    };
+                        context.Token = context.Request.Cookies["eshop-server-cookies"];
 
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = context =>
-                        {
-                            context.Token = context.Request.Cookies["eshop-server-cookies"];
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
-
-            return services;
-        }
+        return services;
     }
 }

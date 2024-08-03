@@ -7,40 +7,39 @@ using Microsoft.EntityFrameworkCore;
 
 using static EShop.Application.Constants;
 
-namespace EShop.Application.Features.Commands.Users.Update
+namespace EShop.Application.Features.Commands.Users.Update;
+
+/// <summary>
+///     Представляет обработчик команды <see cref="UpdateUserCommand"/>
+/// </summary>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<bool>>
 {
-    /// <summary>
-    ///     Представляет обработчик команды <see cref="UpdateUserCommand"/>
-    /// </summary>
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<bool>>
+    private readonly IEShopDbContext _dbContext;
+
+    public UpdateUserCommandHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public UpdateUserCommandHandler(IEShopDbContext dbContext)
+
+    public async Task<Result<bool>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    {
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(user => user.Id == request.Id, cancellationToken);
+
+        if (user is null)
         {
-            _dbContext = dbContext;
+            throw new NotFoundException(nameof(User), request.Id);
         }
 
+        user.UpdateMainInfo(request.FirstName, request.LastName);
 
-        public async Task<Result<bool>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
-        {
-            var user = await _dbContext.Users
-                .FirstOrDefaultAsync(user => user.Id == request.Id, cancellationToken);
+        _dbContext.Users.Update(user);
 
-            if (user is null)
-            {
-                throw new NotFoundException(nameof(User), request.Id);
-            }
+        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-            user.UpdateMainInfo(request.FirstName, request.LastName);
-
-            _dbContext.Users.Update(user);
-
-            var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-
-            return saved
-                ? Result.Success(saved)
-                : Result.Failure<bool>(SERVER_SIDE_ERROR);
-        }
+        return saved
+            ? Result.Success(saved)
+            : Result.Failure<bool>(SERVER_SIDE_ERROR);
     }
 }

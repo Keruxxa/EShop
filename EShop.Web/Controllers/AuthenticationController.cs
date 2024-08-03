@@ -7,34 +7,33 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace EShop.Web.Controllers
+namespace EShop.Web.Controllers;
+
+public class AuthenticationController : BaseController
 {
-    public class AuthenticationController : BaseController
+    private readonly IOptions<JwtOptions> _options;
+
+    public AuthenticationController(IMediator mediator, IOptions<JwtOptions> options) : base(mediator)
     {
-        private readonly IOptions<JwtOptions> _options;
+        _options = options;
+    }
 
-        public AuthenticationController(IMediator mediator, IOptions<JwtOptions> options) : base(mediator)
+    [HttpPost("sign-up")]
+    public async Task<ActionResult<Guid>> SignUn([FromBody] SignUpUserDto signUpUserDto)
+    {
+        var result = await Mediator.Send(signUpUserDto.Adapt<SignUpUserCommand>());
+
+        if (result.IsFailure)
         {
-            _options = options;
+            return StatusCode(StatusCodes.Status500InternalServerError, result.Error);
         }
 
-        [HttpPost("sign-up")]
-        public async Task<ActionResult<Guid>> SignUn([FromBody] SignUpUserDto signUpUserDto)
-        {
-            var result = await Mediator.Send(signUpUserDto.Adapt<SignUpUserCommand>());
+        var user = result.Value;
 
-            if (result.IsFailure)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, result.Error);
-            }
+        var token = new JwtTokenService(_options).Generate(user);
 
-            var user = result.Value;
+        HttpContext.Response.Cookies.Append("eshop-server-cookies", token);
 
-            var token = new JwtTokenService(_options).Generate(user);
-
-            HttpContext.Response.Cookies.Append("eshop-server-cookies", token);
-
-            return Ok(user.Id);
-        }
+        return Ok(token);
     }
 }

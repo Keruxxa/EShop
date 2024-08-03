@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace EShop.Application.Features.Queries.Countries.ById
+namespace EShop.Application.Features.Queries.Countries.ById;
+
+/// <summary>
+///     Представляет валидатор запроса <see cref="GetCountryByIdQuery"/>
+/// </summary>
+public class GetCountryByIdQueryValidator : AbstractValidator<GetCountryByIdQuery>
 {
-    /// <summary>
-    ///     Представляет валидатор запроса <see cref="GetCountryByIdQuery"/>
-    /// </summary>
-    public class GetCountryByIdQueryValidator : AbstractValidator<GetCountryByIdQuery>
-    {
-        public GetCountryByIdQueryValidator()
-            => RuleFor(query => query.Id).GreaterThan(0);
-    }
+    public GetCountryByIdQueryValidator()
+        => RuleFor(query => query.Id).GreaterThan(0);
 }

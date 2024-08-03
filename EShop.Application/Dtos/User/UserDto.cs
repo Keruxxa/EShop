@@ -7,7 +7,7 @@
     /// <param name="LastName"> Фамилия </param>
     /// <param name="Phone"> Телефон </param>
     /// <param name="Email"> Электронная почта </param>
-    /// <param name="RoleId"> Id роли </param>
+    /// <param name="RoleTypeName"> Роль </param>
     public record UserDto(
         string? FirstName,
         string? LastName,

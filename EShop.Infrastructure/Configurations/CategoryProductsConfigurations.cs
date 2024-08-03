@@ -2,17 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations
+namespace EShop.Infrastructure.Configurations;
+
+public class CategoryProductsConfigurations : IEntityTypeConfiguration<CategoryProducts>
 {
-    public class CategoryProductsConfigurations : IEntityTypeConfiguration<CategoryProducts>
+    public void Configure(EntityTypeBuilder<CategoryProducts> builder)
     {
-        public void Configure(EntityTypeBuilder<CategoryProducts> builder)
+        builder.HasKey(categoryProducts => new
         {
-            builder.HasKey(categoryProducts => new
-            {
-                categoryProducts.CategoryId,
-                categoryProducts.ProductId
-            });
-        }
+            categoryProducts.CategoryId,
+            categoryProducts.ProductId
+        });
     }
 }

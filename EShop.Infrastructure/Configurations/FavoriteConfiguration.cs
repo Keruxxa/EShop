@@ -2,23 +2,22 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations
+namespace EShop.Infrastructure.Configurations;
+
+public class FavoriteConfiguration : IEntityTypeConfiguration<Favorite>
 {
-    public class FavoriteConfiguration : IEntityTypeConfiguration<Favorite>
+    public void Configure(EntityTypeBuilder<Favorite> builder)
     {
-        public void Configure(EntityTypeBuilder<Favorite> builder)
-        {
-            builder.HasKey(favorite => favorite.Id);
+        builder.HasKey(favorite => favorite.Id);
 
-            builder.Property(favorite => favorite.Id)
-                .IsRequired();
+        builder.Property(favorite => favorite.Id)
+            .IsRequired();
 
-            builder.Ignore(favorite => favorite.Products);
+        builder.Ignore(favorite => favorite.Products);
 
-            builder.HasMany<FavoriteProducts>()
-                .WithOne()
-                .HasForeignKey(favoriteProducts => favoriteProducts.FavoriteId)
-                .OnDelete(DeleteBehavior.Cascade);
-        }
+        builder.HasMany<FavoriteProducts>()
+            .WithOne()
+            .HasForeignKey(favoriteProducts => favoriteProducts.FavoriteId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

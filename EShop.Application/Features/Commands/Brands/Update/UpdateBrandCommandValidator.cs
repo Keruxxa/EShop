@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace EShop.Application.Features.Commands.Brands.Update
+namespace EShop.Application.Features.Commands.Brands.Update;
+
+/// <summary>
+///     Представляет валидатор команды <see cref="UpdateBrandCommand"/>
+/// </summary>
+public class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
 {
-    /// <summary>
-    ///     Представляет валидатор команды <see cref="UpdateBrandCommand"/>
-    /// </summary>
-    public class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
-    {
-        public UpdateBrandCommandValidator()
-            => RuleFor(command => command.Name).NotEmpty();
-    }
+    public UpdateBrandCommandValidator()
+        => RuleFor(command => command.Name).NotEmpty();
 }

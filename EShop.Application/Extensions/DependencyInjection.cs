@@ -6,24 +6,23 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace EShop.Application.Extensions
+namespace EShop.Application.Extensions;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        services.AddMediatR(configuration =>
         {
-            services.AddMediatR(configuration =>
-            {
-                configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
-            });
+            configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+        });
 
-            services.AddMapster();
-            MapsterConfig.ConfigureMapping();
+        services.AddMapster();
+        MapsterConfig.ConfigureMapping();
 
-            services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly()]);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly()]);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-            return services;
-        }
+        return services;
     }
 }

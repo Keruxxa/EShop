@@ -4,39 +4,38 @@ using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Commands.Brands.Create
+namespace EShop.Application.Features.Commands.Brands.Create;
+
+/// <summary>
+///     Представляет обработчик команды <see cref="CreateBrandCommand"/>
+/// </summary>
+public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, int>
 {
-    /// <summary>
-    ///     Представляет обработчик команды <see cref="CreateBrandCommand"/>
-    /// </summary>
-    public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, int>
+    private readonly IEShopDbContext _dbContext;
+
+    public CreateBrandCommandHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public CreateBrandCommandHandler(IEShopDbContext dbContext)
+
+    public async Task<int> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+    {
+        var brand = await _dbContext.Brands
+            .FirstOrDefaultAsync(brand =>
+                brand.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+
+        if (brand != null)
         {
-            _dbContext = dbContext;
+            throw new DuplicateEntityException(nameof(Brand));
         }
 
+        var newBrand = new Brand(request.Name);
 
-        public async Task<int> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
-        {
-            var brand = await _dbContext.Brands
-                .FirstOrDefaultAsync(brand =>
-                    brand.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+        await _dbContext.Brands.AddAsync(newBrand, cancellationToken);
 
-            if (brand != null)
-            {
-                throw new DuplicateEntityException(nameof(Brand));
-            }
+        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-            var newBrand = new Brand(request.Name);
-
-            await _dbContext.Brands.AddAsync(newBrand, cancellationToken);
-
-            var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-
-            return saved ? newBrand.Id : 0;
-        }
+        return saved ? newBrand.Id : 0;
     }
 }

@@ -4,34 +4,33 @@ using EShop.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Application.Features.Commands.Brands.Delete
+namespace EShop.Application.Features.Commands.Brands.Delete;
+
+/// <summary>
+///     Представляет обработчик команды <see cref="DeleteBrandCommand"/>
+/// </summary>
+public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, bool>
 {
-    /// <summary>
-    ///     Представляет обработчик команды <see cref="DeleteBrandCommand"/>
-    /// </summary>
-    public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, bool>
+    private readonly IEShopDbContext _dbContext;
+
+    public DeleteBrandCommandHandler(IEShopDbContext dbContext)
     {
-        private readonly IEShopDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public DeleteBrandCommandHandler(IEShopDbContext dbContext)
+
+    public async Task<bool> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
+    {
+        var brand = await _dbContext.Brands
+            .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
+
+        if (brand == null)
         {
-            _dbContext = dbContext;
+            throw new NotFoundException(nameof(Brand), request.Id);
         }
 
+        _dbContext.Brands.Remove(brand);
 
-        public async Task<bool> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
-        {
-            var brand = await _dbContext.Brands
-                .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
-
-            if (brand == null)
-            {
-                throw new NotFoundException(nameof(Brand), request.Id);
-            }
-
-            _dbContext.Brands.Remove(brand);
-
-            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-        }
+        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 }
