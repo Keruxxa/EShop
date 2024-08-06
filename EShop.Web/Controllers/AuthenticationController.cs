@@ -1,6 +1,6 @@
 ﻿using EShop.Application.Dtos.User;
 using EShop.Application.Features.Commands.Users.SignIn;
-using EShop.Infrastructure.Services.Auth;
+using EShop.Infrastructure.Services;
 using EShop.Infrastructure.Utilities;
 using Mapster;
 using MediatR;

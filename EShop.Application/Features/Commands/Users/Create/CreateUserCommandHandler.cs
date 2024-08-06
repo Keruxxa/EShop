@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Security;
+using EShop.Application.Interfaces.Services;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using Mapster;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 using static EShop.Application.Constants;
 
@@ -18,43 +18,36 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IUserService _userService;
 
-    public CreateUserCommandHandler(IEShopDbContext dbContext, IPasswordHasher passwordHasher)
+    public CreateUserCommandHandler(
+        IEShopDbContext dbContext,
+        IPasswordHasher passwordHasher,
+        IUserService userService)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
+        _userService = userService;
     }
 
 
     public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        if (request.Email is not null)
+        if (await _userService.IsEmailUnique(request.Email, cancellationToken))
         {
-            var emailIsUsed = await _dbContext.Users
-                .AnyAsync(user => user.Email.Equals(request.Email), cancellationToken);
-
-            if (emailIsUsed)
-            {
-                throw new DuplicateEntityException(nameof(User));
-            }
+            throw new DuplicateEntityException(nameof(User));
         }
 
-        if (request.Phone is not null)
+        if (await _userService.IsPhoneUnique(request.Phone, cancellationToken))
         {
-            var phoneIsUsed = await _dbContext.Users
-                .AnyAsync(user => user.Phone.Equals(request.Phone), cancellationToken);
-
-            if (phoneIsUsed)
-            {
-                throw new DuplicateEntityException(nameof(User));
-            }
+            throw new DuplicateEntityException(nameof(User));
         }
 
         request.HashPassword = _passwordHasher.Hash(request.Password);
 
         var user = request.Adapt<User>();
 
-        await _dbContext.Users.AddAsync(user, cancellationToken);
+        _dbContext.Users.Add(user);
 
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 

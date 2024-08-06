@@ -24,7 +24,7 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, boo
         var brand = await _dbContext.Brands
             .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
 
-        if (brand == null)
+        if (brand is null)
         {
             throw new NotFoundException(nameof(Brand), request.Id);
         }

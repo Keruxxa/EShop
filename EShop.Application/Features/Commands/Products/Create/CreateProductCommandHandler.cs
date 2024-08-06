@@ -34,8 +34,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             Id = Guid.NewGuid()
         };
 
-        await _dbContext.Products.AddAsync(product, cancellationToken);
-        await _dbContext.BrandProducts.AddAsync(new(request.BrandId, product.Id), cancellationToken);
+        _dbContext.Products.Add(product);
+        _dbContext.BrandProducts.Add(new(request.BrandId, product.Id));
 
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 

@@ -21,21 +21,21 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
     public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _dbContext
-            .Categories.FirstOrDefaultAsync(category =>
+        var categoryExists = await _dbContext.Categories
+            .AnyAsync(category =>
                 category.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
-        if (category != null)
+        if (categoryExists)
         {
             throw new DuplicateEntityException(nameof(Category));
         }
 
-        var newCategory = new Category(request.Name);
+        var category = new Category(request.Name);
 
-        await _dbContext.Categories.AddAsync(newCategory);
+        _dbContext.Categories.Add(category);
 
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved ? newCategory.Id : 0;
+        return saved ? category.Id : 0;
     }
 }

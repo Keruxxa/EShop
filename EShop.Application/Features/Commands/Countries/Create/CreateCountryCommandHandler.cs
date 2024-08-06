@@ -1,6 +1,8 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Domain.Entities;
+using EShop.Domain.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Features.Commands.Countries.Create;
 
@@ -19,9 +21,17 @@ public class CreateCountryCommandHandler : IRequestHandler<CreateCountryCommand,
 
     public async Task<int> Handle(CreateCountryCommand request, CancellationToken cancellationToken)
     {
+        var countryExists = await _dbContext.Countries
+            .AnyAsync(country => country.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+
+        if (countryExists)
+        {
+            throw new DuplicateEntityException(nameof(Country));
+        }
+
         var country = new Country(request.Name);
 
-        await _dbContext.Countries.AddAsync(country, cancellationToken);
+        _dbContext.Countries.Add(country);
 
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 

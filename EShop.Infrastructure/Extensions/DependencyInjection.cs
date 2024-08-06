@@ -1,6 +1,8 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Security;
+using EShop.Application.Interfaces.Services;
 using EShop.Infrastructure.Data;
+using EShop.Infrastructure.Services;
 using EShop.Infrastructure.Utilities.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<IEShopDbContext, EShopDbContext>();
 
         services.AddTransient<IPasswordHasher, PasswordHasher>();
+        services.AddTransient<IUserService, UserService>();
 
         services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));
 

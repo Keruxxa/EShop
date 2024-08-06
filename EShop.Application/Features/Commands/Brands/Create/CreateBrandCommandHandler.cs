@@ -21,21 +21,21 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, int
 
     public async Task<int> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
     {
-        var brand = await _dbContext.Brands
-            .FirstOrDefaultAsync(brand =>
+        var brandExists = await _dbContext.Brands
+            .AnyAsync(brand =>
                 brand.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
-        if (brand != null)
+        if (brandExists)
         {
             throw new DuplicateEntityException(nameof(Brand));
         }
 
-        var newBrand = new Brand(request.Name);
+        var brand = new Brand(request.Name);
 
-        await _dbContext.Brands.AddAsync(newBrand, cancellationToken);
+        _dbContext.Brands.Add(brand);
 
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved ? newBrand.Id : 0;
+        return saved ? brand.Id : 0;
     }
 }
