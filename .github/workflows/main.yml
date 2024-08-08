@@ -19,5 +19,5 @@ jobs:
       - name: Build
         run: dotnet build ./EShop.sln --configuration release --no-restore
 
-      - name: Publish
-        run: dotnet publish ./EShop.sln --configuration release
+      - name: Unit tests
+        run: dotnet test ./EShop.sln
