@@ -25,7 +25,7 @@ public class UsersController : BaseController
         var result = await Mediator.Send(new GetUserByIdQuery(id), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            ? Ok(result.Value)
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
@@ -38,7 +38,7 @@ public class UsersController : BaseController
     }
 
 
-    [HttpPost("create")]
+    [HttpPost]
     [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<Result<Guid>>> Create(
         [FromBody] CreateUserDto createUserDto,
@@ -52,28 +52,31 @@ public class UsersController : BaseController
     }
 
 
-    [HttpPatch("update-main-info")]
+    [HttpPatch("{id:Guid}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result<bool>>> UpdateMainInfo(
+    public async Task<ActionResult<Result>> UpdateMainInfo(
+        Guid id,
         [FromBody] UpdateUserDto updateUserDto,
         CancellationToken cancellationToken)
     {
+        updateUserDto.Id = id;
+
         var result = await Mediator.Send(updateUserDto.Adapt<UpdateUserCommand>(), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
 
     [HttpDelete("{id:Guid}")]
     [Authorize(Roles = "Administrator, RegisteredUser")]
-    public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result>> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteUserCommand(id), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 }

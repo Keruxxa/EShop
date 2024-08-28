@@ -9,4 +9,4 @@ namespace EShop.Application.Features.Commands.Users.Update;
 public record UpdateUserCommand(
     Guid Id,
     string? FirstName,
-    string? LastName) : IRequest<Result<bool>>;
+    string? LastName) : IRequest<Result>;

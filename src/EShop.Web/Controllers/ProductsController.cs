@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Controllers;
 
+[AllowAnonymous]
 public class ProductsController : BaseController
 {
     public ProductsController(IMediator mediator) : base(mediator)
@@ -39,7 +40,6 @@ public class ProductsController : BaseController
 
 
     [HttpPost]
-    [Route("create")]
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<Guid>>> Create(
         [FromBody] CreateProductDto createProductDto,
@@ -48,33 +48,36 @@ public class ProductsController : BaseController
         var result = await Mediator.Send(createProductDto.Adapt<CreateProductCommand>(), cancellationToken);
 
         return result.IsSuccess
-            ? RedirectToAction(nameof(GetById), new { id = result.Value })
+            ? Ok(result.Value)
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
 
-    [HttpPut("update")]
+    [HttpPatch("{id:Guid}")]
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result>> Update(
+        Guid id,
         [FromBody] UpdateProductDto updateProductDto,
         CancellationToken cancellationToken)
     {
+        updateProductDto.Id = id;
+
         var result = await Mediator.Send(updateProductDto.Adapt<UpdateProductCommand>(), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK)
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
 
     [HttpDelete("{id:Guid}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result>> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteProductCommand(id), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status204NoContent, result.Value)
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 }

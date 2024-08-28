@@ -35,13 +35,13 @@ public class CountriesController : BaseController
     {
         var country = await Mediator.Send(new GetCountryByIdQuery(id), cancellationToken);
 
-        return StatusCode(StatusCodes.Status200OK, country);
+        return Ok(country);
     }
 
 
     [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<int>> Create(string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<int>> Create([FromQuery] string name, CancellationToken cancellationToken)
     {
         var id = await Mediator.Send(new CreateCountryCommand(name), cancellationToken);
 
@@ -49,16 +49,16 @@ public class CountriesController : BaseController
     }
 
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<Result<int>>> Update(
+    [HttpPatch("{id:int}")]
+    public async Task<ActionResult<Result>> Update(
         int id,
-        [FromRoute] string name,
+        [FromQuery] string name,
         CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new UpdateCountryCommand(id, name), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
@@ -66,13 +66,10 @@ public class CountriesController : BaseController
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<bool>> Delete(int id, CancellationToken cancellationToken)
     {
-        if (id <= 0)
-        {
-            return StatusCode(StatusCodes.Status400BadRequest);
-        }
+        var result = await Mediator.Send(new DeleteCountryCommand(id), cancellationToken);
 
-        var deleted = await Mediator.Send(new DeleteCountryCommand(id), cancellationToken);
-
-        return StatusCode(StatusCodes.Status204NoContent, deleted);
+        return result.IsSuccess
+            ? NoContent()
+            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 }

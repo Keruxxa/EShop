@@ -48,7 +48,7 @@ public class BrandsController : BaseController
     }
 
 
-    [HttpPost("{id:int}")]
+    [HttpPatch("{id:int}")]
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<int>>> Update(
         int id,

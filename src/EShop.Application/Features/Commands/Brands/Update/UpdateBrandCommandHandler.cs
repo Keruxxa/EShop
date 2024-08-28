@@ -30,8 +30,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
         }
 
         var isNameTaken = await _dbContext.Brands
-            .AnyAsync(brand =>
-                brand.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+            .AnyAsync(brand => brand.Name.Equals(request.Name), cancellationToken);
 
         if (isNameTaken)
         {

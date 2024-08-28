@@ -12,7 +12,7 @@ namespace EShop.Application.Features.Commands.Users.Update;
 /// <summary>
 ///     Представляет обработчик команды <see cref="UpdateUserCommand"/>
 /// </summary>
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<bool>>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result>
 {
     private readonly IEShopDbContext _dbContext;
 
@@ -22,7 +22,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Resul
     }
 
 
-    public async Task<Result<bool>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(user => user.Id == request.Id, cancellationToken);
@@ -39,7 +39,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Resul
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success(saved)
-            : Result.Failure<bool>(SERVER_SIDE_ERROR);
+            ? Result.Success()
+            : Result.Failure(SERVER_SIDE_ERROR);
     }
 }

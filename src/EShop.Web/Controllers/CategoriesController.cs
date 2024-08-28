@@ -38,9 +38,9 @@ public class CategoriesController : BaseController
     }
 
 
-    [HttpPost("create")]
+    [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<bool>> Create(string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<bool>> Create([FromQuery] string name, CancellationToken cancellationToken)
     {
         var id = await Mediator.Send(new CreateCategoryCommand(name), cancellationToken);
 
@@ -48,7 +48,7 @@ public class CategoriesController : BaseController
     }
 
 
-    [HttpPut("{id:int}")]
+    [HttpPatch("{id:int}")]
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<int>>> Update(
         int id,
@@ -58,7 +58,7 @@ public class CategoriesController : BaseController
         var result = await Mediator.Send(new UpdateCategoryCommand(id, name), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
