@@ -23,7 +23,8 @@ public static class MapsterConfig
 
         TypeAdapterConfig<CreateUserCommand, User>
             .NewConfig()
-            .MapWith(src => new User(
+            .Ignore(dest => dest.Password)
+            .ConstructUsing(src => new User(
                 Guid.NewGuid(),
                 src.FirstName,
                 src.LastName,
@@ -51,9 +52,12 @@ public static class MapsterConfig
                 src.Email,
                 src.Password));
 
+        TypeAdapterConfig<SignUpUserCommand, User>.NewConfig().MapToConstructor(true);
+
         TypeAdapterConfig<SignUpUserCommand, User>
             .NewConfig()
-            .MapWith(src => new User(
+            .Ignore(dest => dest.Password)
+            .ConstructUsing(src => new User(
                 Guid.NewGuid(),
                 src.FirstName,
                 src.LastName,

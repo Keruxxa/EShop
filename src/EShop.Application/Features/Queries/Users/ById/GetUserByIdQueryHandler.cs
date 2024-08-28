@@ -1,8 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.Dtos.User;
 using EShop.Application.Interfaces;
-using EShop.Domain.Entities;
-using EShop.Domain.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +28,7 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<
 
         if (user is null)
         {
-            throw new NotFoundException(nameof(User), request.Id);
+            return Result.Failure<UserDto>($"User with id '{request.Id}' not found");
         }
 
         return user.Adapt<UserDto>();
