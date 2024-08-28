@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace EShop.Infrastructure.Extensions;
@@ -27,8 +28,10 @@ public static class JwtAuthentication
                     ValidateLifetime = true,
                     IssuerSigningKey = issuerSigningKey,
                     ValidateIssuerSigningKey = true,
+                    RoleClaimType = ClaimTypes.Role
                 };
 
+                // This should be removed but it's not yet because it's used to check authorization
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>

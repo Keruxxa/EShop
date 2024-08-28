@@ -1,7 +1,7 @@
 ﻿namespace EShop.Application.Dtos.Product;
 
 /// <summary>
-///     Представляет модель DTO товара для отображения в списке
+///     Представляет объект DTO товара для отображения в списке
 /// </summary>
 /// <param name="Name"> Наименование </param>
 /// <param name="Description"> Описание </param>
