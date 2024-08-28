@@ -11,7 +11,7 @@ namespace EShop.Application.Features.Commands.Categories.Update;
 /// <summary>
 ///     Представляет обработчик команды <see cref="UpdateCategoryCommand"/>
 /// </summary>
-public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result<int>>
+public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result>
 {
     private readonly IEShopDbContext _dbContext;
 
@@ -21,7 +21,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
     }
 
 
-    public async Task<Result<int>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories
             .FirstOrDefaultAsync(category => category.Id == request.Id, cancellationToken);
@@ -32,8 +32,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         }
 
         var nameIsTaken = await _dbContext.Categories
-            .AnyAsync(category
-                => category.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+            .AnyAsync(category => category.Name.Equals(request.Name), cancellationToken);
 
         if (nameIsTaken)
         {
@@ -46,7 +45,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success(category.Id)
-            : Result.Failure<int>(SERVER_SIDE_ERROR);
+            ? Result.Success()
+            : Result.Failure(SERVER_SIDE_ERROR);
     }
 }

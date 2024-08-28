@@ -12,7 +12,7 @@ namespace EShop.Application.Features.Commands.Countries.Update;
 /// <summary>
 ///     Представляет обработчик команды <see cref="UpdateCountryCommand"/>
 /// </summary>
-public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand, Result<int>>
+public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand, Result>
 {
     private readonly IEShopDbContext _dbContext;
 
@@ -22,7 +22,7 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
     }
 
 
-    public async Task<Result<int>> Handle(UpdateCountryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCountryCommand request, CancellationToken cancellationToken)
     {
         var country = await _dbContext.Countries
             .FirstOrDefaultAsync(country => country.Id == request.Id, cancellationToken);
@@ -34,7 +34,8 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
 
         var nameIsTaken = await _dbContext.Countries
             .AnyAsync(country =>
-                country.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+                country.Name.Equals(request.Name) &&
+                country.Id != request.Id, cancellationToken);
 
         if (nameIsTaken)
         {
@@ -47,7 +48,7 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success(country.Id)
+            ? Result.Success()
             : Result.Failure<int>(SERVER_SIDE_ERROR);
     }
 }

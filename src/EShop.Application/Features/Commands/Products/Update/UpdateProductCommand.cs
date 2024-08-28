@@ -21,6 +21,4 @@ public record UpdateProductCommand(
     decimal Price,
     int CategoryId,
     int BrandId,
-    int? CountryManufacturerId) : IRequest<Result>
-{
-}
+    int? CountryManufacturerId) : IRequest<Result>;

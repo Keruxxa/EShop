@@ -32,7 +32,6 @@ public class JwtTokenService : IJwtTokenService
             new(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(ClaimTypes.Role, _roleTypeService.GetRoleTypeName(user.RoleId))
-
         };
 
         var signingCredentials = new SigningCredentials(

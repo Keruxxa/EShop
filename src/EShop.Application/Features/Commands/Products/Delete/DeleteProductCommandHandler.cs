@@ -12,7 +12,7 @@ namespace EShop.Application.Features.Commands.Products.Delete;
 /// <summary>
 ///     Представляет обработчик команды <see cref="DeleteProductCommand"/>
 /// </summary>
-public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result<bool>>
+public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result>
 {
     private readonly IEShopDbContext _dbContext;
 
@@ -22,7 +22,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
     }
 
 
-    public async Task<Result<bool>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
             .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
@@ -37,7 +37,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
         var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success(saved)
-            : Result.Failure<bool>(SERVER_SIDE_ERROR);
+            ? Result.Success()
+            : Result.Failure(SERVER_SIDE_ERROR);
     }
 }

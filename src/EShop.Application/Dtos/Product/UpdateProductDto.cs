@@ -11,11 +11,13 @@
 /// <param name="BrandId"> Id бренда </param>
 /// <param name="CountryManufacturerId"> Id страны-производителя </param>
 public record UpdateProductDto(
-    Guid Id,
     string Name,
     string? Description,
     DateTime? ReleaseDate,
     decimal Price,
     int CategoryId,
     int BrandId,
-    int? CountryManufacturerId);
+    int? CountryManufacturerId)
+{
+    public Guid Id { get; set; }
+};
