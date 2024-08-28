@@ -22,8 +22,11 @@ public static class DependencyInjection
 
         services.AddScoped<IEShopDbContext, EShopDbContext>();
 
-        services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IRoleTypeService, RoleTypeService>();
+        services.AddTransient<IJwtTokenService, JwtTokenService>();
+
+        services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IMapper, Mapper>();
 
         services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));

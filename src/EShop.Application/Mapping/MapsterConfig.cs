@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Dtos.User;
 using EShop.Application.Features.Commands.Users.Create;
-using EShop.Application.Features.Commands.Users.SignIn;
+using EShop.Application.Features.Queries.Users.SignIn;
+using EShop.Application.Features.Commands.Users.SignUp;
 using EShop.Domain.Entities;
 using EShop.Domain.Enums;
 using Mapster;
@@ -61,5 +62,11 @@ public static class MapsterConfig
                 src.HashPassword,
                 RoleType.RegisteredUser
             ));
+
+        TypeAdapterConfig<SignInUserDto, SignInUserQuery>
+            .NewConfig()
+            .ConstructUsing(src => new SignInUserQuery(
+                src.Email,
+                src.Password));
     }
 }

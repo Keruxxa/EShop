@@ -3,7 +3,7 @@
 namespace EShop.Application.Models;
 
 /// <summary>
-///     Представляет модель для отображения элемента в списке
+///     Представляет объект для отображения элемента в списке
 /// </summary>
 /// <typeparam name="TKey">Тип Id</typeparam>
 public class SelectListItem<TKey> : EntityBase<TKey> where TKey : struct

@@ -9,7 +9,7 @@ using MediatR;
 
 using static EShop.Application.Constants;
 
-namespace EShop.Application.Features.Commands.Users.SignIn;
+namespace EShop.Application.Features.Commands.Users.SignUp;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="SignUpUserCommandHandler"/>
@@ -33,12 +33,12 @@ public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Resul
 
     public async Task<Result<User>> Handle(SignUpUserCommand request, CancellationToken cancellationToken)
     {
-        if (await _userService.IsEmailUniqueAsync(request.Email, cancellationToken))
+        if (!await _userService.IsEmailUniqueAsync(request.Email, cancellationToken))
         {
             throw new DuplicateEntityException(nameof(User));
         }
 
-        if (await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
+        if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
         {
             throw new DuplicateEntityException(nameof(User));
         }

@@ -2,7 +2,7 @@
 using EShop.Domain.Entities;
 using MediatR;
 
-namespace EShop.Application.Features.Commands.Users.SignIn;
+namespace EShop.Application.Features.Commands.Users.SignUp;
 
 /// <summary>
 ///     Представляет команду для регистрации пользователя

@@ -7,10 +7,12 @@ using EShop.Application.Features.Queries.Countries.SelectList;
 using EShop.Application.Models;
 using EShop.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Controllers;
 
+[Authorize]
 public class CountriesController : BaseController
 {
     public CountriesController(IMediator mediator) : base(mediator)
@@ -28,6 +30,7 @@ public class CountriesController : BaseController
 
 
     [HttpGet("{id:int}")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Country>> GetById(int id, CancellationToken cancellationToken)
     {
         var country = await Mediator.Send(new GetCountryByIdQuery(id), cancellationToken);
@@ -36,7 +39,8 @@ public class CountriesController : BaseController
     }
 
 
-    [HttpPost("create")]
+    [HttpPost]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<int>> Create(string name, CancellationToken cancellationToken)
     {
         var id = await Mediator.Send(new CreateCountryCommand(name), cancellationToken);

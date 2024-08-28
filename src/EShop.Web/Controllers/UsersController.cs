@@ -7,6 +7,7 @@ using EShop.Application.Features.Queries.Users.ById;
 using EShop.Application.Features.Queries.Users.List;
 using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Controllers;
@@ -30,6 +31,7 @@ public class UsersController : BaseController
 
 
     [HttpGet("list")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<IEnumerable<UsersListItemDto>> GetList(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetUsersListItemQuery(), cancellationToken);
@@ -37,6 +39,7 @@ public class UsersController : BaseController
 
 
     [HttpPost("create")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<Result<Guid>>> Create(
         [FromBody] CreateUserDto createUserDto,
         CancellationToken cancellationToken)
@@ -50,6 +53,7 @@ public class UsersController : BaseController
 
 
     [HttpPatch("update-main-info")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<bool>>> UpdateMainInfo(
         [FromBody] UpdateUserDto updateUserDto,
         CancellationToken cancellationToken)
@@ -63,6 +67,7 @@ public class UsersController : BaseController
 
 
     [HttpDelete("{id:Guid}")]
+    [Authorize(Roles = "Administrator, RegisteredUser")]
     public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteUserCommand(id), cancellationToken);

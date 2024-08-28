@@ -7,6 +7,7 @@ using EShop.Application.Features.Queries.Products.ById;
 using EShop.Application.Features.Queries.Products.List;
 using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Controllers;
@@ -39,6 +40,7 @@ public class ProductsController : BaseController
 
     [HttpPost]
     [Route("create")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<Guid>>> Create(
         [FromBody] CreateProductDto createProductDto,
         CancellationToken cancellationToken)
@@ -52,6 +54,7 @@ public class ProductsController : BaseController
 
 
     [HttpPut("update")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result>> Update(
         [FromBody] UpdateProductDto updateProductDto,
         CancellationToken cancellationToken)
@@ -65,6 +68,7 @@ public class ProductsController : BaseController
 
 
     [HttpDelete("{id:Guid}")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<bool>>> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteProductCommand(id), cancellationToken);
