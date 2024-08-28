@@ -39,7 +39,7 @@ public class UsersController : BaseController
 
 
     [HttpPost]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Result<Guid>>> Create(
         [FromBody] CreateUserDto createUserDto,
         CancellationToken cancellationToken)
@@ -48,12 +48,12 @@ public class UsersController : BaseController
 
         return result.IsSuccess
             ? StatusCode(StatusCodes.Status201Created, result.Value)
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+            : NotFound(result.Error);
     }
 
 
     [HttpPatch("{id:Guid}")]
-    [Authorize(Roles = "Administrator, Manager")]
+    [Authorize(Roles = "Administrator, Manager, RegisteredUser")]
     public async Task<ActionResult<Result>> UpdateMainInfo(
         Guid id,
         [FromBody] UpdateUserDto updateUserDto,
@@ -70,7 +70,7 @@ public class UsersController : BaseController
 
 
     [HttpDelete("{id:Guid}")]
-    [Authorize(Roles = "Administrator, RegisteredUser")]
+    [Authorize(Roles = "Administrator, Manager, RegisteredUser")]
     public async Task<ActionResult<Result>> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteUserCommand(id), cancellationToken);

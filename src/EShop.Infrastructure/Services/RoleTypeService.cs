@@ -11,6 +11,7 @@ namespace EShop.Infrastructure.Services
             {
                 RoleType.Administrator => RoleType.Administrator.ToString(),
                 RoleType.Manager => RoleType.Manager.ToString(),
+                RoleType.RegisteredUser => RoleType.RegisteredUser.ToString(),
                 _ => throw new ArgumentOutOfRangeException(nameof(roleType))
             };
         }
