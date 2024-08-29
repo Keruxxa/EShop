@@ -29,6 +29,8 @@ public static class DependencyInjection
         services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IMapper, Mapper>();
 
+        services.AddMediatr();
+
         services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));
 
         return services;

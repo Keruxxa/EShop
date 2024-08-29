@@ -1,9 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using EShop.Application.Features.Commands.Categories.Create;
-using EShop.Application.Features.Commands.Categories.Delete;
-using EShop.Application.Features.Commands.Categories.Update;
-using EShop.Application.Features.Queries.Categories.ById;
-using EShop.Application.Features.Queries.Categories.SelectList;
+using EShop.Application.CQRS.Commands.Categories;
+using EShop.Application.CQRS.Queries.Categories;
 using EShop.Application.Models;
 using EShop.Domain.Entities;
 using MediatR;

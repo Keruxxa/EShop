@@ -1,12 +1,12 @@
 ﻿using EShop.Application.Dtos.User;
-using EShop.Application.Features.Commands.Users.SignUp;
-using EShop.Application.Features.Queries.Users.SignIn;
 using EShop.Application.Interfaces.Security;
 using EShop.Infrastructure.Utilities;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using EShop.Application.CQRS.Commands.Users;
+using EShop.Application.CQRS.Queries.Users;
 using static EShop.Application.Constants;
 
 namespace EShop.Web.Controllers;
