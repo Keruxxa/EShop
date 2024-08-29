@@ -1,10 +1,9 @@
 ﻿using EShop.Application.Dtos.User;
-using EShop.Application.Features.Commands.Users.Create;
-using EShop.Application.Features.Queries.Users.SignIn;
-using EShop.Application.Features.Commands.Users.SignUp;
 using EShop.Domain.Entities;
 using EShop.Domain.Enums;
 using Mapster;
+using EShop.Application.CQRS.Commands.Users;
+using EShop.Application.CQRS.Queries.Users;
 
 namespace EShop.Application.Mapping;
 

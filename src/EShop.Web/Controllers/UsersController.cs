@@ -1,14 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.Dtos.User;
-using EShop.Application.Features.Commands.Users.Create;
-using EShop.Application.Features.Commands.Users.Delete;
-using EShop.Application.Features.Commands.Users.Update;
-using EShop.Application.Features.Queries.Users.ById;
-using EShop.Application.Features.Queries.Users.List;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using EShop.Application.CQRS.Commands.Users;
+using EShop.Application.CQRS.Queries.Users;
 
 namespace EShop.Web.Controllers;
 

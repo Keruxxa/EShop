@@ -1,14 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.Dtos.Product;
-using EShop.Application.Features.Commands.Products.Create;
-using EShop.Application.Features.Commands.Products.Delete;
-using EShop.Application.Features.Commands.Products.Update;
-using EShop.Application.Features.Queries.Products.ById;
-using EShop.Application.Features.Queries.Products.List;
+using EShop.Application.CQRS.Commands.Products;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using EShop.Application.CQRS.Queries.Products;
 
 namespace EShop.Web.Controllers;
 

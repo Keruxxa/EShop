@@ -1,9 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using EShop.Application.Features.Commands.Countries.Create;
-using EShop.Application.Features.Commands.Countries.Delete;
-using EShop.Application.Features.Commands.Countries.Update;
-using EShop.Application.Features.Queries.Countries.ById;
-using EShop.Application.Features.Queries.Countries.SelectList;
+using EShop.Application.CQRS.Commands.Countries;
+using EShop.Application.CQRS.Queries.Countries;
 using EShop.Application.Models;
 using EShop.Domain.Entities;
 using MediatR;
