@@ -38,7 +38,7 @@ public class Program
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.ApplyMigrations();
+            //app.ApplyMigrations();
         }
 
         app.UseCors("AllowAnyOrigin");

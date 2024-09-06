@@ -26,6 +26,8 @@ public static class DependencyInjection
         services.AddTransient<IRoleTypeService, RoleTypeService>();
         services.AddTransient<IJwtTokenService, JwtTokenService>();
 
+        services.AddRepositories();
+
         services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IMapper, Mapper>();
 
