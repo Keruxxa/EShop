@@ -1,0 +1,40 @@
+version: '3.4'
+name: eshop_web_application
+
+networks:
+  eshop_network:
+    driver: bridge
+
+services:
+
+  eshop.web:
+    image: eshop.backend:v1
+    container_name: EShop.Backend
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 5000:5000
+    networks:
+      - eshop_network
+    depends_on:
+      -  eshop.database
+    environment:
+      - ConnectionStrings__EShopConnectionString=Host=eshop.database;Port=5432;Database=eshop;User Id=postgres;Password=superuser;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+
+  eshop.database:
+    image: postgres:latest
+    container_name: EShop.Database
+    environment:
+      - POSTGRES_DB=eshop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=superuser
+    volumes:
+      - ./.containers/eshop-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - eshop_network
