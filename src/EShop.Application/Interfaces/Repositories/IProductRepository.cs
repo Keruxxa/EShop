@@ -35,7 +35,7 @@ public interface IProductRepository
     void Delete(Product product);
 
     /// <summary>
-    ///     Сохраняет изменения
+    ///     Сохраняет изменения контекста
     /// </summary>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
