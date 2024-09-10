@@ -51,7 +51,7 @@ public class UsersController : BaseController
 
     [HttpPatch("{id:Guid}")]
     [Authorize(Roles = "Administrator, Manager, RegisteredUser")]
-    public async Task<ActionResult<Result>> UpdateMainInfo(
+    public async Task<ActionResult<Result>> Update(
         Guid id,
         [FromBody] UpdateUserDto updateUserDto,
         CancellationToken cancellationToken)
