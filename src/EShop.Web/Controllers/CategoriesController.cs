@@ -17,7 +17,7 @@ public class CategoriesController : BaseController
 
 
     [HttpGet("select-list")]
-    public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetList(CancellationToken cancellationToken)
     {
         var categories = await Mediator.Send(new GetCategorySelectListQuery(), cancellationToken);
 
