@@ -92,7 +92,9 @@ public class Product : EntityBase<Guid>
         CountryManufacturerId = countryManufacturerId;
     }
 
-
+    /// <summary>
+    ///     Обновляет поля сущности
+    /// </summary>
     public void UpdateEntity(string name, string? description, DateTime? releaseDate,
         decimal price, int categoryId, int brandId, int? countryManufacturerId)
     {

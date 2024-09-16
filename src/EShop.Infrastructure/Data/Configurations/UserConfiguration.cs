@@ -3,7 +3,7 @@ using EShop.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations;
+namespace EShop.Infrastructure.Data.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
@@ -35,6 +35,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .ValueGeneratedNever()
             .HasDefaultValue(RoleType.UnregisteredUser);
+
+        builder.HasOne<Basket>()
+            .WithOne()
+            .HasForeignKey<Basket>(basket => basket.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(user => user.Role)
             .WithMany()

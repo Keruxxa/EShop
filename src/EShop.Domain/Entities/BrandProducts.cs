@@ -6,7 +6,6 @@
 /// </summary>
 public class BrandProducts
 {
-
     /// <summary>
     ///     Id бренда
     /// </summary>
@@ -19,7 +18,6 @@ public class BrandProducts
 
 
     private BrandProducts() { }
-
 
     public BrandProducts(int brandId, Guid productId)
     {

@@ -3,17 +3,23 @@
 /// <summary>
 ///     Представляет корзину
 /// </summary>
-public class Basket : EntityBase<Guid>
+public class Basket
 {
+    /// <summary>
+    ///     Товары корзины
+    /// </summary>
+    private List<BasketItem> _busketItems = [];
+
     /// <summary>
     ///     Id пользователя, связанного с корзиной
     /// </summary>
+    /// <remarks> <c> Является первичным ключом </c>  </remarks>
     public Guid UserId { get; }
 
     /// <summary>
     ///     Товары корзины
     /// </summary>
-    public List<BasketItem> BasketItems { get; private set; }
+    public IReadOnlyCollection<BasketItem> BasketItems => _busketItems.AsReadOnly();
 
     /// <summary>
     ///     Суммарная стоимость корзины
@@ -22,7 +28,6 @@ public class Basket : EntityBase<Guid>
 
 
     private Basket() { }
-
 
     public Basket(Guid userId)
     {
@@ -34,9 +39,13 @@ public class Basket : EntityBase<Guid>
     /// </summary>
     public void AddItem(BasketItem basketItem)
     {
-        BasketItems ??= [];
+        if (_busketItems.Contains(basketItem))
+        {
+            basketItem.IncrementItemCount();
+            return;
+        }
 
-        BasketItems.Add(basketItem);
+        _busketItems.Add(basketItem);
     }
 
     /// <summary>
@@ -44,6 +53,12 @@ public class Basket : EntityBase<Guid>
     /// </summary>
     public bool RemoveItem(BasketItem basketItem)
     {
-        return BasketItems.Remove(basketItem);
+        if (_busketItems.Contains(basketItem))
+        {
+            basketItem.DecrementItemCount();
+            return true;
+        }
+
+        return _busketItems.Remove(basketItem);
     }
 }

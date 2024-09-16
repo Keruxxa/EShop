@@ -6,7 +6,7 @@
 public class BasketItem : EntityBase<Guid>
 {
     /// <summary>
-    ///     Id корзины, с которой связан данный отдельный товар
+    ///     Id корзины, с которой связан товар
     /// </summary>
     public Guid BasketId { get; }
 
@@ -28,7 +28,6 @@ public class BasketItem : EntityBase<Guid>
 
     private BasketItem() { }
 
-
     public BasketItem(Guid basketId, Guid productId)
     {
         BasketId = basketId;
@@ -38,12 +37,18 @@ public class BasketItem : EntityBase<Guid>
 
 
     /// <summary>
-    ///     Увеличивает на единицу количество товара в корзине
+    ///     Увеличивает на единицу количество товара в корзине, к которой он относится
     /// </summary>
     public void IncrementItemCount() => Count++;
 
     /// <summary>
-    ///     Уменьшает на единицу количество товара в корзине
+    ///     Уменьшает на единицу количество товара в корзине, к которой он относится
     /// </summary>
-    public void DecrementItemCount() => Count--;
+    public void DecrementItemCount()
+    {
+        if (Count > 0)
+        {
+            Count--;
+        }
+    }
 }

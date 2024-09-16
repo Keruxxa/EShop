@@ -13,8 +13,6 @@ public class Country : EntityBase<int>
 
     private Country() { }
 
-
-    /// <param name="name">Наименование</param>
     public Country(string name)
     {
         Name = name;
