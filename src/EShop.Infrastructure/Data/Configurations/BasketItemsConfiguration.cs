@@ -16,8 +16,6 @@ public class BasketItemsConfiguration : IEntityTypeConfiguration<BasketItem>
             basketItem.ProductId
         });
 
-        builder.HasIndex(basketItem => basketItem.BasketId);
-
         builder.HasOne<Basket>()
             .WithMany(basket => basket.BasketItems)
             .HasForeignKey(basketItem => basketItem.BasketId)
