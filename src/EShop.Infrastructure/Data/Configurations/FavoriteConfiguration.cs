@@ -8,17 +8,13 @@ public class FavoriteConfiguration : IEntityTypeConfiguration<Favorite>
 {
     public void Configure(EntityTypeBuilder<Favorite> builder)
     {
-        builder.HasKey(favorite => favorite.UserId)
-            .HasName("Id");
-
-        builder.HasIndex(favorite => favorite.UserId)
-            .IsUnique();
+        builder.HasKey(favorite => favorite.Id);
 
         builder.Ignore(favorite => favorite.Products);
 
         builder.HasOne<User>()
             .WithOne()
-            .HasForeignKey<Favorite>(favorite => favorite.UserId)
+            .HasForeignKey<Favorite>(favorite => favorite.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany<FavoriteProducts>()

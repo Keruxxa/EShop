@@ -3,18 +3,12 @@
 /// <summary>
 ///     Представляет коллекцию избранного
 /// </summary>
-public class Favorite
+public class Favorite : EntityBase<Guid>
 {
     /// <summary>
     ///     Товары, содержащиеся в коллекции избранного
     /// </summary>
     private List<Product> _products = [];
-
-    /// <summary>
-    ///     Id пользователя, с которым связана коллекция избранного
-    /// </summary>
-    /// <remarks> <c> Является первичным ключом </c>  </remarks>
-    public Guid UserId { get; private set; }
 
     /// <summary>
     ///     Товары, содержащиеся в коллекции избранного
@@ -26,7 +20,7 @@ public class Favorite
 
     public Favorite(Guid userId)
     {
-        UserId = userId;
+        Id = userId;
     }
 
     /// <summary>

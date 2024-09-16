@@ -8,11 +8,7 @@ public class BasketConfiguration : IEntityTypeConfiguration<Basket>
 {
     public void Configure(EntityTypeBuilder<Basket> builder)
     {
-        builder.HasKey(basket => basket.UserId)
-            .HasName("Id");
-
-        builder.HasIndex(basket => basket.UserId)
-            .IsUnique();
+        builder.HasKey(basket => basket.Id);
 
         builder.HasMany(basket => basket.BasketItems)
             .WithOne()
@@ -21,7 +17,7 @@ public class BasketConfiguration : IEntityTypeConfiguration<Basket>
 
         builder.HasOne<User>()
             .WithOne()
-            .HasForeignKey<Basket>(basket => basket.UserId)
+            .HasForeignKey<Basket>(basket => basket.Id)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

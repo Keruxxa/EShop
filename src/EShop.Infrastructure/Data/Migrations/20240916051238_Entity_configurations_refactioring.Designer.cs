@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EShop.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(EShopDbContext))]
-    [Migration("20240916033014_Entity_configurations_refactioring")]
+    [Migration("20240916051238_Entity_configurations_refactioring")]
     partial class Entity_configurations_refactioring
     {
         /// <inheritdoc />
@@ -27,14 +27,10 @@ namespace EShop.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("EShop.Domain.Entities.Basket", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserId")
-                        .HasName("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("Baskets");
                 });
@@ -49,9 +45,6 @@ namespace EShop.Infrastructure.Data.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
 
                     b.HasKey("BasketId", "ProductId");
 
@@ -180,14 +173,10 @@ namespace EShop.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("EShop.Domain.Entities.Favorite", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserId")
-                        .HasName("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("Favorites");
                 });
@@ -354,7 +343,7 @@ namespace EShop.Infrastructure.Data.Migrations
                 {
                     b.HasOne("EShop.Domain.Entities.User", null)
                         .WithOne()
-                        .HasForeignKey("EShop.Domain.Entities.Basket", "UserId")
+                        .HasForeignKey("EShop.Domain.Entities.Basket", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -410,7 +399,7 @@ namespace EShop.Infrastructure.Data.Migrations
                 {
                     b.HasOne("EShop.Domain.Entities.User", null)
                         .WithOne()
-                        .HasForeignKey("EShop.Domain.Entities.Favorite", "UserId")
+                        .HasForeignKey("EShop.Domain.Entities.Favorite", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
