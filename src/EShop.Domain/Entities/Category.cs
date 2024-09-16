@@ -20,7 +20,6 @@ public class Category : EntityBase<int>
 
     private Category() { }
 
-
     public Category(string name)
     {
         Name = name;

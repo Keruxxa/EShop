@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations;
+namespace EShop.Infrastructure.Data.Configurations;
 
 public class BrandProductsConfiguration : IEntityTypeConfiguration<BrandProducts>
 {

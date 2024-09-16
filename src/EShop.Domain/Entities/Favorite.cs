@@ -3,23 +3,27 @@
 /// <summary>
 ///     Представляет коллекцию избранного
 /// </summary>
-public class Favorite : EntityBase<Guid>
+public class Favorite
 {
+    /// <summary>
+    ///     Товары, содержащиеся в коллекции избранного
+    /// </summary>
+    private List<Product> _products = [];
+
     /// <summary>
     ///     Id пользователя, с которым связана коллекция избранного
     /// </summary>
+    /// <remarks> <c> Является первичным ключом </c>  </remarks>
     public Guid UserId { get; private set; }
 
     /// <summary>
     ///     Товары, содержащиеся в коллекции избранного
     /// </summary>
-    public List<Product> Products { get; private set; }
+    public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
 
 
     private Favorite() { }
 
-
-    /// <param name="userId">Id пользователя</param>
     public Favorite(Guid userId)
     {
         UserId = userId;
@@ -30,9 +34,10 @@ public class Favorite : EntityBase<Guid>
     /// </summary>
     public void AddItem(Product product)
     {
-        Products ??= [];
-
-        Products.Add(product);
+        if (!_products.Contains(product))
+        {
+            _products.Add(product);
+        }
     }
 
     /// <summary>
@@ -40,6 +45,6 @@ public class Favorite : EntityBase<Guid>
     /// </summary>
     public bool RemoveItem(Product product)
     {
-        return Products.Remove(product);
+        return _products.Remove(product);
     }
 }

@@ -23,10 +23,6 @@ public class Review : EntityBase<Guid>
 
     private Review() { }
 
-
-    /// <param name="productId">Id товара</param>
-    /// <param name="rating">Рейтинг</param>
-    /// <param name="text">Текстовая часть отзыва</param>
     public Review(Guid productId, int rating, string? text)
     {
         ProductId = productId;

@@ -3,7 +3,7 @@ using EShop.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations;
+namespace EShop.Infrastructure.Data.Configurations;
 
 public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {

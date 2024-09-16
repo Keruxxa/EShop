@@ -2,16 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EShop.Infrastructure.Configurations;
+namespace EShop.Infrastructure.Data.Configurations;
 
-public class BasketItemConfiguration : IEntityTypeConfiguration<BasketItem>
+public class BasketItemsConfiguration : IEntityTypeConfiguration<BasketItem>
 {
     public void Configure(EntityTypeBuilder<BasketItem> builder)
     {
-        builder.HasKey(basketItem => basketItem.Id);
+        builder.ToTable("BasketItems");
 
-        builder.Property(basketItem => basketItem.Id)
-            .IsRequired();
+        builder.HasKey(basketItem => new
+        {
+            basketItem.BasketId,
+            basketItem.ProductId
+        });
+
+        builder.HasIndex(basketItem => basketItem.BasketId);
 
         builder.HasOne<Basket>()
             .WithMany(basket => basket.BasketItems)
