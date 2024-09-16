@@ -38,7 +38,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasOne<Basket>()
             .WithOne()
-            .HasForeignKey<Basket>(basket => basket.UserId)
+            .HasForeignKey<Basket>(basket => basket.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(user => user.Role)

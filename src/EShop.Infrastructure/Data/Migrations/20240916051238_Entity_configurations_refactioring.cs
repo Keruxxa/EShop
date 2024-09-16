@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -11,6 +12,10 @@ namespace EShop.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_Baskets_Users_UserId",
+                table: "Baskets");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_BasketsItems_Baskets_BasketId",
                 table: "BasketsItems");
 
@@ -18,30 +23,25 @@ namespace EShop.Infrastructure.Data.Migrations
                 name: "FK_BasketsItems_Products_ProductId",
                 table: "BasketsItems");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_FavoriteProducts_Favorites_FavoriteId",
-                table: "FavoriteProducts");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Favorites",
-                table: "Favorites");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Baskets",
+            migrationBuilder.DropIndex(
+                name: "IX_Baskets_UserId",
                 table: "Baskets");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_BasketsItems",
                 table: "BasketsItems");
 
-            migrationBuilder.RenameColumn(
+            migrationBuilder.DropColumn(
                 name: "UserId",
-                table: "Favorites",
-                newName: "Id");
+                table: "Favorites");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Baskets");
 
             migrationBuilder.DropColumn(
                 name: "Id",
-                table: "Baskets");
+                table: "BasketsItems");
 
             migrationBuilder.RenameTable(
                 name: "BasketsItems",
@@ -52,33 +52,22 @@ namespace EShop.Infrastructure.Data.Migrations
                 table: "BasketItems",
                 newName: "IX_BasketItems_ProductId");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "Id",
-                table: "Favorites",
-                column: "Id");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "Id",
-                table: "Baskets",
-                column: "UserId");
+            migrationBuilder.RenameIndex(
+                name: "IX_BasketsItems_BasketId",
+                table: "BasketItems",
+                newName: "IX_BasketItems_BasketId");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_BasketItems",
                 table: "BasketItems",
                 columns: new[] { "BasketId", "ProductId" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Favorites_UserId",
-                table: "Favorites",
-                column: "Id",
-                unique: true);
-
             migrationBuilder.AddForeignKey(
                 name: "FK_BasketItems_Baskets_BasketId",
                 table: "BasketItems",
                 column: "BasketId",
                 principalTable: "Baskets",
-                principalColumn: "UserId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -90,15 +79,15 @@ namespace EShop.Infrastructure.Data.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_FavoriteProducts_Favorites_FavoriteId",
-                table: "FavoriteProducts",
-                column: "FavoriteId",
-                principalTable: "Favorites",
-                principalColumn: "UserId",
+                name: "FK_Baskets_Users_Id",
+                table: "Baskets",
+                column: "Id",
+                principalTable: "Users",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Favorites_Users_UserId",
+                name: "FK_Favorites_Users_Id",
                 table: "Favorites",
                 column: "Id",
                 principalTable: "Users",
@@ -118,24 +107,12 @@ namespace EShop.Infrastructure.Data.Migrations
                 table: "BasketItems");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_FavoriteProducts_Favorites_FavoriteId",
-                table: "FavoriteProducts");
+                name: "FK_Baskets_Users_Id",
+                table: "Baskets");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Favorites_Users_UserId",
+                name: "FK_Favorites_Users_Id",
                 table: "Favorites");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "Id",
-                table: "Favorites");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Favorites_UserId",
-                table: "Favorites");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "Id",
-                table: "Baskets");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_BasketItems",
@@ -156,33 +133,44 @@ namespace EShop.Infrastructure.Data.Migrations
                 newName: "IX_BasketsItems_BasketId");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "Id",
+                name: "UserId",
                 table: "Favorites",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<Guid>(
-                name: "Id",
+                name: "UserId",
                 table: "Baskets",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Favorites",
-                table: "Favorites",
-                column: "Id");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Baskets",
-                table: "Baskets",
-                column: "Id");
+            migrationBuilder.AddColumn<Guid>(
+                name: "Id",
+                table: "BasketsItems",
+                type: "uuid",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_BasketsItems",
                 table: "BasketsItems",
                 column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Baskets_UserId",
+                table: "Baskets",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Baskets_Users_UserId",
+                table: "Baskets",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_BasketsItems_Baskets_BasketId",
@@ -197,14 +185,6 @@ namespace EShop.Infrastructure.Data.Migrations
                 table: "BasketsItems",
                 column: "ProductId",
                 principalTable: "Products",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FavoriteProducts_Favorites_FavoriteId",
-                table: "FavoriteProducts",
-                column: "FavoriteId",
-                principalTable: "Favorites",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

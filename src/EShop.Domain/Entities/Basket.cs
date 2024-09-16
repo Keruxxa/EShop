@@ -3,18 +3,12 @@
 /// <summary>
 ///     Представляет корзину
 /// </summary>
-public class Basket
+public class Basket : EntityBase<Guid>
 {
     /// <summary>
     ///     Товары корзины
     /// </summary>
     private List<BasketItem> _busketItems = [];
-
-    /// <summary>
-    ///     Id пользователя, связанного с корзиной
-    /// </summary>
-    /// <remarks> <c> Является первичным ключом </c>  </remarks>
-    public Guid UserId { get; }
 
     /// <summary>
     ///     Товары корзины
@@ -31,7 +25,7 @@ public class Basket
 
     public Basket(Guid userId)
     {
-        UserId = userId;
+        Id = userId;
     }
 
     /// <summary>

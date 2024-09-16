@@ -3,7 +3,7 @@
 /// <summary>
 ///     Представляет отдельный товар корзины
 /// </summary>
-public class BasketItem : EntityBase<Guid>
+public class BasketItem
 {
     /// <summary>
     ///     Id корзины, с которой связан товар
