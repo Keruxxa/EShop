@@ -18,7 +18,7 @@ public class Basket : EntityBase<Guid>
     /// <summary>
     ///     Суммарная стоимость корзины
     /// </summary>
-    public decimal? TotalPrice => BasketItems?.Sum(basketItem => basketItem.Product.Price * basketItem.Count);
+    public decimal TotalPrice => BasketItems.Sum(basketItem => basketItem.Product.Price * basketItem.Count);
 
 
     private Basket() { }
