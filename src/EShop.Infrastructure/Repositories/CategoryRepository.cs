@@ -15,14 +15,14 @@ class CategoryRepository : ICategoryRepository
     }
 
 
-    public async Task<List<Category>> GetList(CancellationToken cancellationToken)
+    public async Task<List<Category>> GetListAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Categories
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Category> GetById(int id, CancellationToken cancellationToken)
+    public async Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _dbContext.Categories.FirstOrDefaultAsync(category => category.Id == id, cancellationToken);
     }

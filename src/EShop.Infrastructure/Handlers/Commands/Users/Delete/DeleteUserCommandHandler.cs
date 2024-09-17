@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using static EShop.Application.Constants;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.Delete;
@@ -15,6 +15,7 @@ namespace EShop.Infrastructure.Handlers.Commands.Users.Delete;
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IUserRepository _userRepository;
 
     public DeleteUserCommandHandler(IEShopDbContext dbContext)
     {
@@ -24,17 +25,16 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Resul
 
     public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(user => user.Id == request.Id, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (user is null)
         {
             throw new NotFoundException(nameof(User), request.Id);
         }
 
-        _dbContext.Users.Remove(user);
+        _userRepository.Delete(user);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
             ? Result.Success()

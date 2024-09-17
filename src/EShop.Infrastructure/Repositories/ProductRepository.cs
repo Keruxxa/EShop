@@ -15,14 +15,14 @@ public class ProductRepository : IProductRepository
     }
 
 
-    public async Task<List<Product>> GetList(CancellationToken cancellationToken)
+    public async Task<List<Product>> GetListAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Products
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Product> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Products
             .Include(product => product.Category)
@@ -30,7 +30,7 @@ public class ProductRepository : IProductRepository
             .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
     }
 
-    public async Task<Product> GetByIdEmptyNavProps(Guid id, CancellationToken cancellationToken)
+    public async Task<Product> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Products
             .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
@@ -44,6 +44,8 @@ public class ProductRepository : IProductRepository
     public Guid Create(Product product)
     {
         var addedProduct = _dbContext.Products.Add(product).Entity;
+
+        _dbContext.BrandProducts.Add(new(product.BrandId, addedProduct.Id));
 
         return addedProduct.Id;
     }

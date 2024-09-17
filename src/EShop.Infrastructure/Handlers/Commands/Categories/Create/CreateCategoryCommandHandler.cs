@@ -1,5 +1,6 @@
 ﻿using EShop.Application.CQRS.Commands.Categories;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
@@ -13,10 +14,12 @@ namespace EShop.Infrastructure.Handlers.Commands.Categories.Create;
 public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public CreateCategoryCommandHandler(IEShopDbContext dbContext)
+    public CreateCategoryCommandHandler(IEShopDbContext dbContext, ICategoryRepository categoryRepository)
     {
         _dbContext = dbContext;
+        _categoryRepository = categoryRepository;
     }
 
 
@@ -32,9 +35,9 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
         var category = new Category(request.Name);
 
-        _dbContext.Categories.Add(category);
+        _categoryRepository.Create(category);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved ? category.Id : 0;
     }

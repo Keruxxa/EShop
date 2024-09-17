@@ -1,9 +1,9 @@
 ﻿using EShop.Application.CQRS.Queries.Products;
 using EShop.Application.Dtos.Product;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using Mapster;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Products.List;
 
@@ -14,18 +14,18 @@ public class GetProductListQueryHandler
     : IRequestHandler<GetProductListQuery, IEnumerable<ProductListItemDto>>
 {
     private readonly IEShopDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public GetProductListQueryHandler(IEShopDbContext context)
+    public GetProductListQueryHandler(IEShopDbContext context, IProductRepository productRepository)
     {
         _context = context;
+        _productRepository = productRepository;
     }
 
     public async Task<IEnumerable<ProductListItemDto>> Handle(
         GetProductListQuery request, CancellationToken cancellationToken)
     {
-        var products = await _context.Products
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var products = await _productRepository.GetListAsync(cancellationToken);
 
         return products.Select(product =>
         {

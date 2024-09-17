@@ -1,9 +1,9 @@
 ﻿using EShop.Application.CQRS.Queries.Brands;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Brands.ById;
 
@@ -13,18 +13,18 @@ namespace EShop.Infrastructure.Handlers.Queries.Brands.ById;
 public class GetBrandByIdQueryHandler : IRequestHandler<GetBrandByIdQuery, Brand>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IBrandRepository _brandRepository;
 
-    public GetBrandByIdQueryHandler(IEShopDbContext dbContext)
+    public GetBrandByIdQueryHandler(IEShopDbContext dbContext, IBrandRepository brandRepository)
     {
         _dbContext = dbContext;
+        _brandRepository = brandRepository;
     }
 
 
     public async Task<Brand> Handle(GetBrandByIdQuery request, CancellationToken cancellationToken)
     {
-        var brand = await _dbContext.Brands
-            .Include(brand => brand.BrandProducts)
-            .FirstOrDefaultAsync(brand => brand.Id == request.Id, cancellationToken);
+        var brand = await _brandRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (brand is null)
         {

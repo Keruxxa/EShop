@@ -7,12 +7,12 @@ public interface ICountryRepository
     /// <summary>
     ///     Получает список категорий
     /// </summary>
-    Task<List<Country>> GetList(CancellationToken cancellationToken);
+    Task<List<Country>> GetListAsync(CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает страну
     /// </summary>
-    Task<Country> GetById(int id, CancellationToken cancellationToken);
+    Task<Country> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Создает страну

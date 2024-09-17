@@ -7,12 +7,12 @@ public interface ICategoryRepository
     /// <summary>
     ///     Получает список категорий
     /// </summary>
-    Task<List<Category>> GetList(CancellationToken cancellationToken);
+    Task<List<Category>> GetListAsync(CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает категорию
     /// </summary>
-    Task<Category> GetById(int id, CancellationToken cancellationToken);
+    Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Создает категорию

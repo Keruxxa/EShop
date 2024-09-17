@@ -1,8 +1,8 @@
 ﻿using EShop.Application.CQRS.Queries.Brands;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Brands.SelectList;
 
@@ -13,10 +13,12 @@ public class GetBrandSelectListQueryHandler :
     IRequestHandler<GetBrandSelectListQuery, IEnumerable<SelectListItem<int>>>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IBrandRepository _brandRepository;
 
-    public GetBrandSelectListQueryHandler(IEShopDbContext dbContext)
+    public GetBrandSelectListQueryHandler(IEShopDbContext dbContext, IBrandRepository brandRepository)
     {
         _dbContext = dbContext;
+        _brandRepository = brandRepository;
     }
 
 
@@ -24,9 +26,7 @@ public class GetBrandSelectListQueryHandler :
         GetBrandSelectListQuery request,
         CancellationToken cancellationToken)
     {
-        var brands = await _dbContext.Brands
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var brands = await _brandRepository.GetListAsync(cancellationToken);
 
         return brands
             .Select(SelectListItem<int>.CreateItem)

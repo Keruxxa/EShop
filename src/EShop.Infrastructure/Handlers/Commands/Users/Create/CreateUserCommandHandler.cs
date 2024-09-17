@@ -1,12 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
-using EShop.Application.Interfaces.Services;
+using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
+using EShop.Application.Interfaces.Security;
+using EShop.Application.Interfaces.Services;
 using EShop.Domain.Entities;
 using MapsterMapper;
 using MediatR;
-using EShop.Application.Interfaces.Security;
 using static EShop.Application.Constants;
-using EShop.Application.CQRS.Commands.Users;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.Create;
 
@@ -16,16 +17,19 @@ namespace EShop.Infrastructure.Handlers.Commands.Users.Create;
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Guid>>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
 
     public CreateUserCommandHandler(
+        IUserRepository userRepository,
         IEShopDbContext dbContext,
         IPasswordHasher passwordHasher,
         IUserService userService,
         IMapper mapper)
     {
+        _userRepository = userRepository;
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
         _userService = userService;
@@ -49,9 +53,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 
         var user = _mapper.From(request).AdaptToType<User>();
 
-        _dbContext.Users.Add(user);
+        _userRepository.Create(user);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
             ? Result.Success(user.Id)

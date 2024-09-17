@@ -1,9 +1,9 @@
 ﻿using EShop.Application.CQRS.Queries.Categories;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Categories.ById;
 
@@ -13,17 +13,18 @@ namespace EShop.Infrastructure.Handlers.Queries.Categories.ById;
 public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Category>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public GetCategoryByIdQueryHandler(IEShopDbContext dbContext)
+    public GetCategoryByIdQueryHandler(IEShopDbContext dbContext, ICategoryRepository categoryRepository)
     {
         _dbContext = dbContext;
+        _categoryRepository = categoryRepository;
     }
 
 
     public async Task<Category> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(category => category.Id == request.Id, cancellationToken);
+        var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (category is null)
         {

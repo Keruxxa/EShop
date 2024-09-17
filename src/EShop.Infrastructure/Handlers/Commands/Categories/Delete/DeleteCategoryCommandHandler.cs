@@ -1,9 +1,9 @@
 ﻿using EShop.Application.CQRS.Commands.Categories;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Commands.Categories.Delete;
 
@@ -13,25 +13,26 @@ namespace EShop.Infrastructure.Handlers.Commands.Categories.Delete;
 public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public DeleteCategoryCommandHandler(IEShopDbContext dbContext)
+    public DeleteCategoryCommandHandler(IEShopDbContext dbContext, ICategoryRepository categoryRepository)
     {
         _dbContext = dbContext;
+        _categoryRepository = categoryRepository;
     }
 
 
     public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(category => category.Id == request.Id, cancellationToken);
+        var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (category == null)
         {
             throw new NotFoundException(nameof(Category), request.Id);
         }
 
-        _dbContext.Categories.Remove(category);
+        _categoryRepository.Delete(category);
 
-        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        return await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
     }
 }

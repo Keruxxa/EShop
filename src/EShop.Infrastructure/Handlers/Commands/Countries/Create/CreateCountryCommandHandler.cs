@@ -1,5 +1,6 @@
 ﻿using EShop.Application.CQRS.Commands.Countries;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
@@ -13,10 +14,12 @@ namespace EShop.Infrastructure.Handlers.Commands.Countries.Create;
 public class CreateCountryCommandHandler : IRequestHandler<CreateCountryCommand, int>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly ICountryRepository _countryRepository;
 
-    public CreateCountryCommandHandler(IEShopDbContext dbContext)
+    public CreateCountryCommandHandler(IEShopDbContext dbContext, ICountryRepository countryRepository)
     {
         _dbContext = dbContext;
+        _countryRepository = countryRepository;
     }
 
 
@@ -32,9 +35,9 @@ public class CreateCountryCommandHandler : IRequestHandler<CreateCountryCommand,
 
         var country = new Country(request.Name);
 
-        _dbContext.Countries.Add(country);
+        _countryRepository.Create(country);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved ? country.Id : 0;
     }

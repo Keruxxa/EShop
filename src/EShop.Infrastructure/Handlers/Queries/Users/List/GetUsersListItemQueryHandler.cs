@@ -1,10 +1,9 @@
 ﻿using EShop.Application.CQRS.Queries.Users;
 using EShop.Application.Dtos.User;
 using EShop.Application.Interfaces;
-using EShop.Domain.Enums;
+using EShop.Application.Interfaces.Repositories;
 using Mapster;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Users.List;
 
@@ -14,10 +13,12 @@ namespace EShop.Infrastructure.Handlers.Queries.Users.List;
 public class GetUsersListItemQueryHandler : IRequestHandler<GetUsersListItemQuery, IEnumerable<UsersListItemDto>>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IUserRepository _userRepository;
 
-    public GetUsersListItemQueryHandler(IEShopDbContext dbContext)
+    public GetUsersListItemQueryHandler(IEShopDbContext dbContext, IUserRepository userRepository)
     {
         _dbContext = dbContext;
+        _userRepository = userRepository;
     }
 
 
@@ -25,9 +26,7 @@ public class GetUsersListItemQueryHandler : IRequestHandler<GetUsersListItemQuer
         GetUsersListItemQuery request,
         CancellationToken cancellationToken)
     {
-        var users = await _dbContext.Users
-            .Where(user => user.RoleId == RoleType.Manager)
-            .ToListAsync(cancellationToken);
+        var users = await _userRepository.GetListAsync(cancellationToken);
 
         return users.Select(user =>
         {

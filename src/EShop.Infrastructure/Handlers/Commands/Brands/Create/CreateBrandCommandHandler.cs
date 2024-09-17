@@ -1,5 +1,6 @@
 ﻿using EShop.Application.CQRS.Commands.Brands;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
@@ -13,10 +14,12 @@ namespace EShop.Infrastructure.Handlers.Commands.Brands.Create;
 public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, int>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IBrandRepository _brandRepository;
 
-    public CreateBrandCommandHandler(IEShopDbContext dbContext)
+    public CreateBrandCommandHandler(IEShopDbContext dbContext, IBrandRepository brandRepository)
     {
         _dbContext = dbContext;
+        _brandRepository = brandRepository;
     }
 
 
@@ -33,9 +36,9 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, int
 
         var brand = new Brand(request.Name);
 
-        _dbContext.Brands.Add(brand);
+        _brandRepository.Create(brand);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved ? brand.Id : 0;
     }
