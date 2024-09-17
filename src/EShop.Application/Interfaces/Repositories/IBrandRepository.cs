@@ -7,12 +7,12 @@ public interface IBrandRepository
     /// <summary>
     ///     Получает список брендов
     /// </summary>
-    Task<List<Brand>> GetList(CancellationToken cancellationToken);
+    Task<List<Brand>> GetListAsync(CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает бренд
     /// </summary>
-    Task<Brand> GetById(int id, CancellationToken cancellationToken);
+    Task<Brand> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Создает бренд

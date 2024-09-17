@@ -2,11 +2,11 @@
 using EShop.Application.CQRS.Queries.Products;
 using EShop.Application.Dtos.Product;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using Mapster;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Products.ById;
 
@@ -16,19 +16,18 @@ namespace EShop.Infrastructure.Handlers.Queries.Products.ById;
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto>>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IProductRepository _productRepository;
 
-    public GetProductByIdQueryHandler(IEShopDbContext dbContext)
+    public GetProductByIdQueryHandler(IEShopDbContext dbContext, IProductRepository productRepository)
     {
         _dbContext = dbContext;
+        _productRepository = productRepository;
     }
 
 
     public async Task<Result<ProductDto>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        var product = await _dbContext.Products
-            .Include(product => product.Category)
-            .Include(product => product.CountryManufacturer)
-            .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
+        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (product is null)
         {

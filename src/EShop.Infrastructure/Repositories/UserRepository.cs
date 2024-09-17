@@ -16,19 +16,21 @@ public class UserRepository : IUserRepository
     }
 
 
-    public async Task<List<User>> GetList(CancellationToken cancellationToken)
+    public async Task<List<User>> GetListAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Users
             .Where(user => user.RoleId == RoleType.Manager)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<User> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
+        return await _dbContext.Users
+            .Include(user => user.Role)
+            .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
     }
 
-    public async Task<User> SignIn(string email, CancellationToken cancellationToken)
+    public async Task<User> SignInAsync(string email, CancellationToken cancellationToken)
     {
         return await _dbContext.Users
             .Include(user => user.Role)

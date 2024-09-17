@@ -15,14 +15,14 @@ public class BrandRepository : IBrandRepository
     }
 
 
-    public async Task<List<Brand>> GetList(CancellationToken cancellationToken)
+    public async Task<List<Brand>> GetListAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Brands
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Brand> GetById(int id, CancellationToken cancellationToken)
+    public async Task<Brand> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _dbContext.Brands
             .Include(brand => brand.BrandProducts)

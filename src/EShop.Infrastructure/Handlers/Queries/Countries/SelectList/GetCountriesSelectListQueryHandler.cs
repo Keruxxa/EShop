@@ -1,8 +1,8 @@
 ﻿using EShop.Application.CQRS.Queries.Countries;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Countries.SelectList;
 
@@ -13,10 +13,12 @@ public class GetCountriesSelectListQueryHandler
     : IRequestHandler<GetCountriesSelectListQuery, IEnumerable<SelectListItem<int>>>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly ICountryRepository _countryRepository;
 
-    public GetCountriesSelectListQueryHandler(IEShopDbContext dbContext)
+    public GetCountriesSelectListQueryHandler(IEShopDbContext dbContext, ICountryRepository countryRepository)
     {
         _dbContext = dbContext;
+        _countryRepository = countryRepository;
     }
 
 
@@ -24,9 +26,7 @@ public class GetCountriesSelectListQueryHandler
         GetCountriesSelectListQuery request,
         CancellationToken cancellationToken)
     {
-        var countriesEntities = await _dbContext.Countries
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var countriesEntities = await _countryRepository.GetListAsync(cancellationToken);
 
         return countriesEntities
             .Select(SelectListItem<int>.CreateItem)

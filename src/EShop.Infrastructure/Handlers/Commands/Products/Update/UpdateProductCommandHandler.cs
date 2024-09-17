@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
@@ -15,17 +16,18 @@ namespace EShop.Infrastructure.Handlers.Commands.Products.Update;
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IProductRepository _productRepository;
 
-    public UpdateProductCommandHandler(IEShopDbContext dbContext)
+    public UpdateProductCommandHandler(IEShopDbContext dbContext, IProductRepository productRepository)
     {
         _dbContext = dbContext;
+        _productRepository = productRepository;
     }
 
 
     public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _dbContext.Products
-            .FirstOrDefaultAsync(product => product.Id == request.Id, cancellationToken);
+        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (product is null)
         {
@@ -43,9 +45,9 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.UpdateEntity(request.Name, request.Description, request.ReleaseDate,
             request.Price, request.CategoryId, request.BrandId, request.CountryManufacturerId);
 
-        _dbContext.Products.Update(product);
+        _productRepository.Update(product);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
             ? Result.Success()

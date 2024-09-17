@@ -7,17 +7,17 @@ public interface IProductRepository
     /// <summary>
     ///     Получает список товаров
     /// </summary>
-    Task<List<Product>> GetList(CancellationToken cancellationToken);
+    Task<List<Product>> GetListAsync(CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает товар с заполненными навигационными свойствами
     /// </summary>
-    Task<Product> GetById(Guid id, CancellationToken cancellationToken);
+    Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает товар с пустыми навигационными свойствами
     /// </summary>
-    Task<Product> GetByIdEmptyNavProps(Guid id, CancellationToken cancellationToken);
+    Task<Product> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Создает товар

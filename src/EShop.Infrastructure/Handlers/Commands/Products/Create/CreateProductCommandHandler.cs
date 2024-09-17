@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
 using MediatR;
@@ -15,10 +16,12 @@ namespace EShop.Infrastructure.Handlers.Commands.Products.Create;
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Guid>>
 {
     private readonly IEShopDbContext _dbContext;
+    private readonly IProductRepository _productRepository;
 
-    public CreateProductCommandHandler(IEShopDbContext dbContext)
+    public CreateProductCommandHandler(IEShopDbContext dbContext, IProductRepository productRepository)
     {
         _dbContext = dbContext;
+        _productRepository = productRepository;
     }
 
 
@@ -44,10 +47,9 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             Id = Guid.NewGuid()
         };
 
-        _dbContext.Products.Add(product);
-        _dbContext.BrandProducts.Add(new(request.BrandId, product.Id));
+        _productRepository.Create(product);
 
-        var saved = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
             ? Result.Success(product.Id)
