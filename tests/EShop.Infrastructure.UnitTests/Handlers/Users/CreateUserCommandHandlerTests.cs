@@ -1,5 +1,6 @@
 ﻿using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.Interfaces;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Security;
 using EShop.Application.Interfaces.Services;
 using EShop.Domain.Entities;
@@ -17,6 +18,7 @@ public class CreateUserCommandHandlerTests
 {
     private readonly CreateUserCommandHandler _handler;
     private readonly Mock<IEShopDbContext> _dbContextMock = new();
+    private readonly Mock<IUserRepository> _userRepositoryMock = new();
     private readonly Mock<IPasswordHasher> _passwordHasherMock = new();
     private readonly Mock<IUserService> _userServiceMock = new();
     private readonly Mock<IMapper> _mapperMock = new();
@@ -36,6 +38,7 @@ public class CreateUserCommandHandlerTests
     public CreateUserCommandHandlerTests()
     {
         _handler = new CreateUserCommandHandler(
+            _userRepositoryMock.Object,
             _dbContextMock.Object,
             _passwordHasherMock.Object,
             _userServiceMock.Object,
