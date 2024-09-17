@@ -5,7 +5,7 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Domain.Exceptions;
-using Mapster;
+using MapsterMapper;
 using MediatR;
 
 namespace EShop.Infrastructure.Handlers.Queries.Products.ById;
@@ -17,11 +17,13 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, R
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
+    private readonly IMapper _mapper;
 
-    public GetProductByIdQueryHandler(IEShopDbContext dbContext, IProductRepository productRepository)
+    public GetProductByIdQueryHandler(IEShopDbContext dbContext, IProductRepository productRepository, IMapper mapper)
     {
         _dbContext = dbContext;
         _productRepository = productRepository;
+        _mapper = mapper;
     }
 
 
@@ -34,7 +36,9 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, R
             throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        return Result.Success(product.Adapt<ProductDto>());
+        var productDto = _mapper.From(product).AdaptToType<ProductDto>();
+
+        return Result.Success(productDto);
     }
 }
 
