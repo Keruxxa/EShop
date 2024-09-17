@@ -112,11 +112,11 @@ public class CreateUserCommandHandlerTests
             .Setup(x => x.AdaptToType<User>())
             .Returns(user);
 
-        _dbContextMock
-            .Setup(x => x.Users)
-            .Returns(new Mock<DbSet<User>>().Object);
+        _userRepositoryMock
+            .Setup(x => x.Create(user))
+            .Returns(id);
 
-        _dbContextMock
+        _userRepositoryMock
             .Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(entityCountSaved);
 
