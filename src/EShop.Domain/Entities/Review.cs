@@ -6,7 +6,12 @@
 public class Review : EntityBase<Guid>
 {
     /// <summary>
-    ///     Id товара, связанного с отзывом
+    ///     Id пользователя
+    /// </summary>
+    public Guid UserId { get; }
+
+    /// <summary>
+    ///     Id товара
     /// </summary>
     public Guid ProductId { get; }
 

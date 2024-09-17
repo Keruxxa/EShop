@@ -19,6 +19,11 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
         builder.Property(review => review.Rating)
             .IsRequired();
 
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(review => review.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder
             .HasOne<Product>()
             .WithMany(product => product.Reviews)
