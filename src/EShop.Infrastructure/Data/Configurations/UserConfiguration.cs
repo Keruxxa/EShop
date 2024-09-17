@@ -41,6 +41,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey<Basket>(basket => basket.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany<Review>()
+            .WithOne()
+            .HasForeignKey(review => review.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasOne(user => user.Role)
             .WithMany()
             .HasForeignKey(user => user.RoleId)

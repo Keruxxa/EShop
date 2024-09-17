@@ -1,6 +1,9 @@
 ﻿namespace EShop.Application.Dtos.Review;
 
-/// <param name="ProductId"> Id товара, связанного с отзывом </param>
+/// <summary>
+///     Представляет объект DTO для обновления отзыва
+/// </summary>
+/// <param name="Id"> Id отзыва </param>
 /// <param name="Rating"> Рейтинг </param>
 /// <param name="Text"> Текстовая часть отзыва </param>
-public record UpdateReviewDto(Guid ProductId, int Rating, string? Text);
+public record UpdateReviewDto(Guid Id, int Rating, string? Text);
