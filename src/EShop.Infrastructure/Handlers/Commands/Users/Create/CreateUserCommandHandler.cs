@@ -49,7 +49,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
             return Result.Failure<Guid>(USER_PHONE_IS_NOT_UNIQUE);
         }
 
-        request.HashPassword = _passwordHasher.Hash(request.Password);
+        request.SetHashPassword(_passwordHasher.Hash(request.Password));
 
         var user = _mapper.From(request).AdaptToType<User>();
 
