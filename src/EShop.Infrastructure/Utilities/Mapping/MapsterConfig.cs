@@ -5,7 +5,7 @@ using Mapster;
 using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.CQRS.Queries.Users;
 
-namespace EShop.Application.Mapping;
+namespace EShop.Infrastructure.Utilities.Mapping;
 
 public static class MapsterConfig
 {
