@@ -13,5 +13,8 @@ public record CreateUserCommand(
     string Email,
     string Password) : IRequest<Result<Guid>>
 {
-    public string HashPassword { get; set; }
+    public string HashPassword { get; private set; }
+
+    public void SetHashPassword(string hashPassword)
+        => HashPassword = hashPassword;
 }

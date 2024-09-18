@@ -14,5 +14,8 @@ public record SignUpUserCommand(
     string Email,
     string Password) : IRequest<Result<User>>
 {
-    public string HashPassword { get; set; }
+    public string HashPassword { get; private set; }
+
+    public void SetHashPassword(string hashPassword)
+        => HashPassword = hashPassword;
 }

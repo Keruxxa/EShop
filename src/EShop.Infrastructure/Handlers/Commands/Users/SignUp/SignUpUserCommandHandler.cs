@@ -50,7 +50,7 @@ public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Resul
             throw new DuplicateEntityException(nameof(User));
         }
 
-        request.HashPassword = _passwordHasher.Hash(request.Password);
+        request.SetHashPassword(_passwordHasher.Hash(request.Password));
 
         var user = _mapper.From(request).AdaptToType<User>();
 
