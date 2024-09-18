@@ -6,13 +6,13 @@ using System.Reflection;
 
 namespace EShop.Infrastructure.Extensions;
 
-public static class Mediatr
+public static class MediatrInjection
 {
     public static IServiceCollection AddMediatr(this IServiceCollection services)
     {
         services.AddMediatR(configuration =>
         {
-            configuration.RegisterServicesFromAssembly(typeof(Mediatr).Assembly);
+            configuration.RegisterServicesFromAssembly(typeof(MediatrInjection).Assembly);
         });
 
         services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly()]);
