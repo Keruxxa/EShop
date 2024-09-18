@@ -1,10 +1,5 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Application.Interfaces.Security;
-using EShop.Application.Interfaces.Services;
 using EShop.Infrastructure.Data;
-using EShop.Infrastructure.Services;
-using EShop.Infrastructure.Utilities.Security;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,16 +17,13 @@ public static class DependencyInjection
 
         services.AddScoped<IEShopDbContext, EShopDbContext>();
 
-        services.AddTransient<IUserService, UserService>();
-        services.AddTransient<IRoleTypeService, RoleTypeService>();
-        services.AddTransient<IJwtTokenService, JwtTokenService>();
-
         services.AddRepositories();
+        services.AddServices();
 
-        services.AddTransient<IPasswordHasher, PasswordHasher>();
-        services.AddTransient<IMapper, Mapper>();
+        services.AddUtilities();
 
         services.AddMediatr();
+        services.AddMapster();
 
         services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));
 
