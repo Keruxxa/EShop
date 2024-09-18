@@ -1,5 +1,4 @@
-﻿using Mapster;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace EShop.Application.Extensions;
 
@@ -7,8 +6,6 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddMapster();
-
         return services;
     }
 }
