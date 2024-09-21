@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Brands;
 using EShop.Application.Exceptions;
+using EShop.Application.Issues.Errors;
 using EShop.Domain.Entities;
 using EShop.Infrastructure.Data;
 using EShop.Infrastructure.Repositories;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Benchmarks.Brands;
 
+#pragma warning disable CS8618
 [MemoryDiagnoser]
 public class DeleteBrandBenchmark
 {
@@ -19,7 +21,8 @@ public class DeleteBrandBenchmark
     [GlobalSetup]
     public void Setup()
     {
-        var options = new DbContextOptionsBuilder<EShopDbContext>().UseNpgsql("Host=localhost; Port=5432; Database=EShop; Username=postgres; Password=superuser").Options;
+        var options = new DbContextOptionsBuilder<EShopDbContext>()
+            .UseNpgsql("Host=localhost; Port=5432; Database=EShop; Username=postgres; Password=superuser").Options;
         _dbContext = new EShopDbContext(options);
         _brandRepository = new BrandRepository(_dbContext);
     }
@@ -61,7 +64,7 @@ public class DeleteBrandBenchmark
 
         if (brand is null)
         {
-            return Result.Failure(new NotFoundEntity(nameof(Brand), request.Id).Message);
+            return Result.Failure(new NotFoundEntityError(nameof(Brand), request.Id).Message);
         }
 
         _brandRepository.Delete(brand);

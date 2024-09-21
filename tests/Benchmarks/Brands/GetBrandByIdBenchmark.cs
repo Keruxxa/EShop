@@ -9,6 +9,7 @@ using EShop.Application.Exceptions;
 
 namespace Benchmarks.Brands;
 
+#pragma warning disable CS8618
 [MemoryDiagnoser]
 public class GetBrandByIdBenchmark
 {
@@ -16,17 +17,11 @@ public class GetBrandByIdBenchmark
     private EShopDbContext _dbContext;
     private int wrongId = 50;
 
-    //public GetBrandByIdBenchmark()
-    //{
-    //    var options = new DbContextOptionsBuilder<EShopDbContext>().UseNpgsql("Host=localhost; Port=5432; Database=EShop; Username=postgres; Password=superuser").Options;
-    //    _dbContext = new EShopDbContext(options);
-    //    _brandRepository = new BrandRepository(_dbContext);
-    //}
-
     [GlobalSetup]
     public void Setup()
     {
-        var options = new DbContextOptionsBuilder<EShopDbContext>().UseNpgsql("Host=localhost; Port=5432; Database=EShop; Username=postgres; Password=superuser").Options;
+        var options = new DbContextOptionsBuilder<EShopDbContext>()
+            .UseNpgsql("Host=localhost; Port=5432; Database=EShop; Username=postgres; Password=superuser").Options;
         _dbContext = new EShopDbContext(options);
         _brandRepository = new BrandRepository(_dbContext);
     }

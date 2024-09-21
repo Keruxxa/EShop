@@ -1,9 +1,9 @@
 ﻿using EShop.Application.CQRS.Queries.Brands;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
 using CSharpFunctionalExtensions;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Queries.Brands.ById;
 
@@ -26,7 +26,7 @@ public class GetBrandByIdQueryHandler : IRequestHandler<GetBrandByIdQuery, Resul
 
         if (brand is null)
         {
-            return Result.Failure<Brand>(new NotFoundEntity(nameof(Brand), request.Id).Message);
+            return Result.Failure<Brand>(new NotFoundEntityError(nameof(Brand), request.Id).Message);
         }
 
         return brand;
