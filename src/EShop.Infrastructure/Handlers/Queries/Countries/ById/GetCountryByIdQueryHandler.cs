@@ -2,7 +2,7 @@
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Domain.Exceptions;
+using EShop.Application.Exceptions;
 using MediatR;
 
 namespace EShop.Infrastructure.Handlers.Queries.Countries.ById;

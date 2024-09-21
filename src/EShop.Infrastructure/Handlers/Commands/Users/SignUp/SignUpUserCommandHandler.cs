@@ -5,7 +5,7 @@ using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Security;
 using EShop.Application.Interfaces.Services;
 using EShop.Domain.Entities;
-using EShop.Domain.Exceptions;
+using EShop.Application.Exceptions;
 using MapsterMapper;
 using MediatR;
 using static EShop.Application.Constants;
