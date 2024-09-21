@@ -28,7 +28,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
 
         if (brand is null)
         {
-            throw new NotFoundException(nameof(Brand), request.Id);
+            return Result.Failure(new NotFoundEntity(nameof(Brand), request.Id).Message);
         }
 
         var isNameTaken = await _dbContext.Brands
@@ -36,7 +36,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
 
         if (isNameTaken)
         {
-            return Result.Failure(new DuplicateEntityException(nameof(Brand)).Message);
+            return Result.Failure(new DuplicateEntity(nameof(Brand)).Message);
         }
 
         brand.UpdateName(request.Name);

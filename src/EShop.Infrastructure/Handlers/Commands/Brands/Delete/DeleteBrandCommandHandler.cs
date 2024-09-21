@@ -3,13 +3,15 @@ using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Application.Exceptions;
 using MediatR;
+using CSharpFunctionalExtensions;
+using static EShop.Application.Constants;
 
 namespace EShop.Infrastructure.Handlers.Commands.Brands.Delete;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="DeleteBrandCommand"/>
 /// </summary>
-public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, bool>
+public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, Result>
 {
     private readonly IBrandRepository _brandRepository;
 
@@ -19,17 +21,21 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, boo
     }
 
 
-    public async Task<bool> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
     {
         var brand = await _brandRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (brand is null)
         {
-            throw new NotFoundException(nameof(Brand), request.Id);
+            return Result.Failure(new NotFoundEntity(nameof(Brand), request.Id).Message);
         }
 
         _brandRepository.Delete(brand);
 
-        return await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
+
+        return saved
+            ? Result.Success()
+            : Result.Failure(SERVER_SIDE_ERROR);
     }
 }

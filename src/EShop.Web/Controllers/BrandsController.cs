@@ -29,9 +29,11 @@ public class BrandsController : BaseController
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<Brand>> GetById(int id, CancellationToken cancellationToken)
     {
-        var brand = await Mediator.Send(new GetBrandByIdQuery(id), cancellationToken);
+        var result = await Mediator.Send(new GetBrandByIdQuery(id), cancellationToken);
 
-        return StatusCode(StatusCodes.Status200OK, brand);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(result.Error);
     }
 
 
@@ -39,9 +41,11 @@ public class BrandsController : BaseController
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<int>> Create([FromQuery] string name, CancellationToken cancellationToken)
     {
-        var id = await Mediator.Send(new CreateBrandCommand(name), cancellationToken);
+        var result = await Mediator.Send(new CreateBrandCommand(name), cancellationToken);
 
-        return StatusCode(StatusCodes.Status201Created, id);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
 
@@ -55,7 +59,7 @@ public class BrandsController : BaseController
         var result = await Mediator.Send(new UpdateBrandCommand(id, name), cancellationToken);
 
         return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
+            ? Ok()
             : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
     }
 
@@ -64,8 +68,10 @@ public class BrandsController : BaseController
     [Authorize(Roles = "Administrator, Manager")]
     public async Task<ActionResult<bool>> Delete(int id, CancellationToken cancellationToken)
     {
-        var deleted = await Mediator.Send(new DeleteBrandCommand(id), cancellationToken);
+        var result = await Mediator.Send(new DeleteBrandCommand(id), cancellationToken);
 
-        return StatusCode(StatusCodes.Status204NoContent, deleted);
+        return result.IsSuccess
+            ? NoContent()
+            : StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
