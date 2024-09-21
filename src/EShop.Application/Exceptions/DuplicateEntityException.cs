@@ -1,4 +1,4 @@
-﻿namespace EShop.Domain.Exceptions;
+﻿namespace EShop.Application.Exceptions;
 
 public class DuplicateEntityException : Exception
 {

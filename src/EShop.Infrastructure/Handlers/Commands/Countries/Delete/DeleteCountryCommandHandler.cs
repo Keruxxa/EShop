@@ -3,7 +3,7 @@ using EShop.Application.CQRS.Commands.Countries;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Domain.Exceptions;
+using EShop.Application.Exceptions;
 using MediatR;
 using static EShop.Application.Constants;
 

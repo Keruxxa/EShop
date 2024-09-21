@@ -1,8 +1,7 @@
 ﻿using EShop.Application.CQRS.Commands.Brands;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Domain.Exceptions;
+using EShop.Application.Exceptions;
 using MediatR;
 
 namespace EShop.Infrastructure.Handlers.Commands.Brands.Delete;
@@ -12,12 +11,10 @@ namespace EShop.Infrastructure.Handlers.Commands.Brands.Delete;
 /// </summary>
 public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, bool>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IBrandRepository _brandRepository;
 
-    public DeleteBrandCommandHandler(IEShopDbContext dbContext, IBrandRepository brandRepository)
+    public DeleteBrandCommandHandler(IBrandRepository brandRepository)
     {
-        _dbContext = dbContext;
         _brandRepository = brandRepository;
     }
 
