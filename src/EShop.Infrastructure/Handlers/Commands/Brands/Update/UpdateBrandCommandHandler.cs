@@ -3,14 +3,14 @@ using EShop.Application.CQRS.Commands.Brands;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
 
 namespace EShop.Infrastructure.Handlers.Commands.Brands.Update;
 
-public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Result>
+public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IBrandRepository _brandRepository;
@@ -22,13 +22,13 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
     }
 
 
-    public async Task<Result> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
     {
         var brand = await _brandRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (brand is null)
         {
-            return Result.Failure(new NotFoundEntity(nameof(Brand), request.Id).Message);
+            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Brand), request.Id), ErrorType.NotFound));
         }
 
         var isNameTaken = await _dbContext.Brands
@@ -36,7 +36,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
 
         if (isNameTaken)
         {
-            return Result.Failure(new DuplicateEntity(nameof(Brand)).Message);
+            return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Brand)), ErrorType.Duplicate));
         }
 
         brand.UpdateName(request.Name);
@@ -46,7 +46,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
         var saved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success()
-            : Result.Failure(SERVER_SIDE_ERROR);
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
