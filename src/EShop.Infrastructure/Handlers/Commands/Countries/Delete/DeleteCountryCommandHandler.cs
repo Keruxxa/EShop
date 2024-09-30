@@ -3,16 +3,16 @@ using EShop.Application.CQRS.Commands.Countries;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Countries.Delete;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="DeleteCountryCommand"/>
 /// </summary>
-public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand, Result>
+public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly ICountryRepository _countryRepository;
@@ -23,13 +23,13 @@ public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand,
         _countryRepository = countryRepository;
     }
 
-    public async Task<Result> Handle(DeleteCountryCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(DeleteCountryCommand request, CancellationToken cancellationToken)
     {
         var country = await _countryRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (country is null)
         {
-            throw new NotFoundException(nameof(Country), request.Id);
+            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Country), request.Id), ErrorType.NotFound));
         }
 
         _countryRepository.Delete(country);
@@ -37,7 +37,7 @@ public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand,
         var saved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success()
-            : Result.Failure(SERVER_SIDE_ERROR);
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
