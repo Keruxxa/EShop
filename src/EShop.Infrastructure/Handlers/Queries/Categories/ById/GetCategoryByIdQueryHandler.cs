@@ -2,15 +2,16 @@
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
+using CSharpFunctionalExtensions;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Queries.Categories.ById;
 
 /// <summary>
 ///     Представляет обработчик запроса <see cref="GetCategoryByIdQuery"/>
 /// </summary>
-public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Category>
+public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Result<Category>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly ICategoryRepository _categoryRepository;
@@ -22,13 +23,13 @@ public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery,
     }
 
 
-    public async Task<Category> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Category>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (category is null)
         {
-            throw new NotFoundException(nameof(Category), request.Id);
+            return Result.Failure<Category>(new NotFoundEntityError(nameof(Category), request.Id).Message);
         }
 
         return category;
