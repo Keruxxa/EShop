@@ -3,16 +3,16 @@ using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.Update;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="UpdateUserCommand"/>
 /// </summary>
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
@@ -24,13 +24,13 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Resul
     }
 
 
-    public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (user is null)
         {
-            throw new NotFoundException(nameof(User), request.Id);
+            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
         user.UpdateMainInfo(request.FirstName, request.LastName);
@@ -40,8 +40,8 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Resul
         var saved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success()
-            : Result.Failure(SERVER_SIDE_ERROR);
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
 

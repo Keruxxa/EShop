@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using EShop.Application.Issues.Errors.Base;
 using MediatR;
 
 namespace EShop.Application.CQRS.Commands.Users;
@@ -11,7 +12,7 @@ public record CreateUserCommand(
     string? LastName,
     string? Phone,
     string Email,
-    string Password) : IRequest<Result<Guid>>
+    string Password) : IRequest<Result<Guid, Error>>
 {
     public string HashPassword { get; private set; }
 

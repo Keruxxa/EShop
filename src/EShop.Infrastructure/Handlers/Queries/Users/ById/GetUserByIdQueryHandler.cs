@@ -3,6 +3,8 @@ using EShop.Application.CQRS.Queries.Users;
 using EShop.Application.Dtos.User;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
+using EShop.Application.Issues.Errors;
+using EShop.Domain.Entities;
 using Mapster;
 using MediatR;
 
@@ -29,7 +31,7 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<
 
         if (user is null)
         {
-            return Result.Failure<UserDto>($"User with id '{request.Id}' not found");
+            return Result.Failure<UserDto>(new NotFoundEntityError(nameof(User), request.Id).Message);
         }
 
         return user.Adapt<UserDto>();
