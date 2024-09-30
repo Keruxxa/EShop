@@ -1,4 +1,5 @@
-﻿using EShop.Domain.Entities;
+﻿using CSharpFunctionalExtensions;
+using EShop.Domain.Entities;
 using MediatR;
 
 namespace EShop.Application.CQRS.Queries.Categories;
@@ -6,4 +7,4 @@ namespace EShop.Application.CQRS.Queries.Categories;
 /// <summary>
 ///     Представляет запрос для получения категории по ее Id
 /// </summary>
-public record GetCategoryByIdQuery(int Id) : IRequest<Category>;
+public record GetCategoryByIdQuery(int Id) : IRequest<Result<Category>>;

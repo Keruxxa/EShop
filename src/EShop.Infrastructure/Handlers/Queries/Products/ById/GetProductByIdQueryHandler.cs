@@ -4,9 +4,9 @@ using EShop.Application.Dtos.Product;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MapsterMapper;
 using MediatR;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Queries.Products.ById;
 
@@ -33,7 +33,7 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, R
 
         if (product is null)
         {
-            throw new NotFoundException(nameof(Product), request.Id);
+            return Result.Failure<ProductDto>(new NotFoundEntityError(nameof(Product), request.Id).Message);
         }
 
         var productDto = _mapper.From(product).AdaptToType<ProductDto>();
