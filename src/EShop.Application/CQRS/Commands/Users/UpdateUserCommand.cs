@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using EShop.Application.Issues.Errors.Base;
 using MediatR;
 
 namespace EShop.Application.CQRS.Commands.Users;
@@ -9,4 +10,4 @@ namespace EShop.Application.CQRS.Commands.Users;
 public record UpdateUserCommand(
     Guid Id,
     string? FirstName,
-    string? LastName) : IRequest<Result>;
+    string? LastName) : IRequest<Result<Unit, Error>>;

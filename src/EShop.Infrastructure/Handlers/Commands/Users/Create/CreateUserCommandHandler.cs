@@ -4,6 +4,8 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Security;
 using EShop.Application.Interfaces.Services;
+using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Domain.Entities;
 using MapsterMapper;
 using MediatR;
@@ -14,7 +16,7 @@ namespace EShop.Infrastructure.Handlers.Commands.Users.Create;
 /// <summary>
 ///     Представляет обработчик команды <see cref="CreateUserCommandHandler"/>
 /// </summary>
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Guid>>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Guid, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
@@ -37,16 +39,18 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
     }
 
 
-    public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         if (!await _userService.IsEmailUniqueAsync(request.Email, cancellationToken))
         {
-            return Result.Failure<Guid>(USER_EMAIL_IS_NOT_UNIQUE);
+            return Result.Failure<Guid, Error>(new Error(
+                new DuplicateEntityError(nameof(User), USER_EMAIL_IS_NOT_UNIQUE), ErrorType.Duplicate));
         }
 
         if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
         {
-            return Result.Failure<Guid>(USER_PHONE_IS_NOT_UNIQUE);
+            return Result.Failure<Guid, Error>(new Error(
+                new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate));
         }
 
         request.SetHashPassword(_passwordHasher.Hash(request.Password));
@@ -58,7 +62,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
         var saved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success(user.Id)
-            : Result.Failure<Guid>(SERVER_SIDE_ERROR);
+            ? Result.Success<Guid, Error>(user.Id)
+            : Result.Failure<Guid, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }

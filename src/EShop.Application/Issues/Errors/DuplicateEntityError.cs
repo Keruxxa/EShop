@@ -12,4 +12,6 @@ public class DuplicateEntityError : IEntityError
     public DuplicateEntityError(string entityType)
         => Message = $"Entity '{entityType}' with such parameters already exists";
 
+    public DuplicateEntityError(string entityType, string errorMessage)
+        => Message = $"Error on '{entityType}'. {errorMessage}";
 }

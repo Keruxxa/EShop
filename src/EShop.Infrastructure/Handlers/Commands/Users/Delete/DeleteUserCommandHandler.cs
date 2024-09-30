@@ -5,14 +5,15 @@ using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using EShop.Application.Exceptions;
 using MediatR;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.Delete;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="DeleteUserCommand"/>
 /// </summary>
-public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result>
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
@@ -23,7 +24,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Resul
     }
 
 
-    public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
@@ -37,7 +38,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Resul
         var saved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success()
-            : Result.Failure(SERVER_SIDE_ERROR);
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
