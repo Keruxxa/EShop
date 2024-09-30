@@ -3,17 +3,17 @@ using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Products.Update;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="UpdateProductCommand"/>
 /// </summary>
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
@@ -25,13 +25,13 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
     }
 
 
-    public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (product is null)
         {
-            throw new NotFoundException(nameof(Product), request.Id);
+            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
         var productExists = await _dbContext.Products
@@ -39,7 +39,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         if (productExists)
         {
-            throw new DuplicateEntityException(nameof(Product));
+            return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Product)), ErrorType.Duplicate));
         }
 
         product.UpdateEntity(request.Name, request.Description, request.ReleaseDate,
@@ -50,7 +50,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success()
-            : Result.Failure(SERVER_SIDE_ERROR);
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }

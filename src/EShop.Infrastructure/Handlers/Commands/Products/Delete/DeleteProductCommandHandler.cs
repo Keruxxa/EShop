@@ -3,16 +3,16 @@ using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Products.Delete;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="DeleteProductCommand"/>
 /// </summary>
-public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result>
+public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
@@ -24,13 +24,13 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
     }
 
 
-    public async Task<Result> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (product is null)
         {
-            throw new NotFoundException(nameof(Product), request.Id);
+            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
         _dbContext.Products.Remove(product);
@@ -38,7 +38,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
         var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success()
-            : Result.Failure(SERVER_SIDE_ERROR);
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
