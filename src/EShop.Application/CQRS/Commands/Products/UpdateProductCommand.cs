@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using EShop.Application.Issues.Errors.Base;
 using MediatR;
 
 namespace EShop.Application.CQRS.Commands.Products;
@@ -21,4 +22,4 @@ public record UpdateProductCommand(
     decimal Price,
     int CategoryId,
     int BrandId,
-    int? CountryManufacturerId) : IRequest<Result>;
+    int? CountryManufacturerId) : IRequest<Result<Unit, Error>>;

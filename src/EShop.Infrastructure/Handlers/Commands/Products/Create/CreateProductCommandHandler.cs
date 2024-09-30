@@ -3,17 +3,17 @@ using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static EShop.Application.Constants;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Products.Create;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="CreateProductCommand"/>
 /// </summary>
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Guid>>
+public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Guid, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
@@ -25,14 +25,14 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     }
 
 
-    public async Task<Result<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var productExists = await _dbContext.Products
             .AnyAsync(product => product.Name.Equals(request.Name));
 
         if (productExists)
         {
-            throw new DuplicateEntityException(nameof(Product));
+            return Result.Failure<Guid, Error>(new Error(new DuplicateEntityError(nameof(Product)), ErrorType.Duplicate));
         }
 
         var product = new Product(
@@ -52,8 +52,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
         return saved
-            ? Result.Success(product.Id)
-            : Result.Failure<Guid>(SERVER_SIDE_ERROR);
+            ? Result.Success<Guid, Error>(product.Id)
+            : Result.Failure<Guid, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
 
