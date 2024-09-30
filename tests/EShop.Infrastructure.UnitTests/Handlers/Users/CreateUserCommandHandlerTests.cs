@@ -3,6 +3,8 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Security;
 using EShop.Application.Interfaces.Services;
+using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Domain.Entities;
 using EShop.Domain.Enums;
 using EShop.Infrastructure.Handlers.Commands.Users.Create;
@@ -52,6 +54,8 @@ public class CreateUserCommandHandlerTests
         //Arrange
         var command = GetCreateUserCommand();
 
+        var error = new Error(new DuplicateEntityError(nameof(User), USER_EMAIL_IS_NOT_UNIQUE), ErrorType.Duplicate);
+
         _userServiceMock
             .Setup(x => x.IsEmailUniqueAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
@@ -60,7 +64,8 @@ public class CreateUserCommandHandlerTests
         var result = await _handler.Handle(command, default);
 
         //Assert
-        Assert.Equal(USER_EMAIL_IS_NOT_UNIQUE, result.Error);
+        Assert.IsType<DuplicateEntityError>(result.Error.EntityError);
+        Assert.Equal(error.ErrorType, result.Error.ErrorType);
     }
 
     [Fact]
@@ -68,6 +73,8 @@ public class CreateUserCommandHandlerTests
     {
         //Arrange
         var command = GetCreateUserCommand();
+
+        var error = new Error(new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate);
 
         _userServiceMock
             .Setup(x => x.IsEmailUniqueAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -81,7 +88,8 @@ public class CreateUserCommandHandlerTests
         var result = await _handler.Handle(command, default);
 
         //Assert
-        Assert.Equal(USER_PHONE_IS_NOT_UNIQUE, result.Error);
+        Assert.IsType<DuplicateEntityError>(result.Error.EntityError);
+        Assert.Equal(error.ErrorType, result.Error.ErrorType);
     }
 
     [Fact]
@@ -135,6 +143,8 @@ public class CreateUserCommandHandlerTests
 
         var user = GetUser();
 
+        var error = new Error(new ServerEntityError(), ErrorType.ServerError);
+
         _userServiceMock
             .Setup(x => x.IsEmailUniqueAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
@@ -166,7 +176,8 @@ public class CreateUserCommandHandlerTests
         var result = await _handler.Handle(command, default);
 
         //Assert
-        Assert.Equal(SERVER_SIDE_ERROR, result.Error);
+        Assert.IsType<ServerEntityError>(result.Error.EntityError);
+        Assert.Equal(error.ErrorType, result.Error.ErrorType);
     }
 
     private CreateUserCommand GetCreateUserCommand()
