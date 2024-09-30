@@ -2,15 +2,17 @@
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
-using EShop.Application.Exceptions;
 using MediatR;
+using CSharpFunctionalExtensions;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Issues.Errors;
 
 namespace EShop.Infrastructure.Handlers.Commands.Categories.Delete;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="DeleteCategoryCommand"/>
 /// </summary>
-public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
+public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result<Unit, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly ICategoryRepository _categoryRepository;
@@ -22,17 +24,21 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
     }
 
 
-    public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit, Error>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (category == null)
         {
-            throw new NotFoundException(nameof(Category), request.Id);
+            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Category), request.Id), ErrorType.NotFound));
         }
 
         _categoryRepository.Delete(category);
 
-        return await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
+        var saved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
+
+        return saved
+            ? Result.Success<Unit, Error>(Unit.Value)
+            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }
