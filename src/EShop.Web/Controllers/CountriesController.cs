@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Countries;
 using EShop.Application.CQRS.Queries.Countries;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Models;
 using EShop.Domain.Entities;
 using MediatR;
@@ -16,8 +17,8 @@ public class CountriesController : BaseController
     {
     }
 
-
     [HttpGet("select-list")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList(CancellationToken cancellationToken)
     {
         var getListQuery = await Mediator.Send(new GetCountriesSelectListQuery(), cancellationToken);
@@ -28,45 +29,82 @@ public class CountriesController : BaseController
 
     [HttpGet("{id:int}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Country>> GetById(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<Country, Error>>> GetById(int id, CancellationToken cancellationToken)
     {
-        var country = await Mediator.Send(new GetCountryByIdQuery(id), cancellationToken);
+        var result = await Mediator.Send(new GetCountryByIdQuery(id), cancellationToken);
 
-        return Ok(country);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(result.Error);
     }
 
 
     [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<int>> Create([FromQuery] string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<int, Error>>> Create([FromQuery] string name, CancellationToken cancellationToken)
     {
-        var id = await Mediator.Send(new CreateCountryCommand(name), cancellationToken);
+        var result = await Mediator.Send(new CreateCountryCommand(name), cancellationToken);
 
-        return StatusCode(StatusCodes.Status201Created, id);
+        if (result.IsSuccess)
+        {
+            return StatusCode(StatusCodes.Status201Created, result.Value);
+        }
+
+        var error = result.Error;
+
+        return error.ErrorType switch
+        {
+            ErrorType.Duplicate => Conflict(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+            _ => BadRequest()
+        };
     }
 
 
     [HttpPatch("{id:int}")]
-    public async Task<ActionResult<Result>> Update(
+    [Authorize(Roles = "Administrator, Manager")]
+    public async Task<ActionResult<Result<Unit, Error>>> Update(
         int id,
         [FromQuery] string name,
         CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new UpdateCountryCommand(id, name), cancellationToken);
 
-        return result.IsSuccess
-            ? NoContent()
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+
+        var error = result.Error;
+
+        return error.ErrorType switch
+        {
+            ErrorType.NotFound => NotFound(error),
+            ErrorType.Duplicate => Conflict(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+            _ => BadRequest()
+        };
     }
 
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<bool>> Delete(int id, CancellationToken cancellationToken)
+    [Authorize(Roles = "Administrator, Manager")]
+    public async Task<ActionResult<Result<Unit, Error>>> Delete(int id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteCountryCommand(id), cancellationToken);
 
-        return result.IsSuccess
-            ? NoContent()
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+
+        var error = result.Error;
+
+        return error.ErrorType switch
+        {
+            ErrorType.NotFound => NotFound(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+            _ => BadRequest()
+        };
     }
 }

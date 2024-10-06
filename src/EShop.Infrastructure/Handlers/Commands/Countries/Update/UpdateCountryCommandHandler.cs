@@ -1,12 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Countries;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Issues.Errors;
+using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Countries.Update;
 
@@ -15,13 +14,13 @@ namespace EShop.Infrastructure.Handlers.Commands.Countries.Update;
 /// </summary>
 public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly ICountryRepository _countryRepository;
+    private readonly ICountryService _countryService;
 
-    public UpdateCountryCommandHandler(IEShopDbContext dbContext, ICountryRepository countryRepository)
+    public UpdateCountryCommandHandler(ICountryRepository countryRepository, ICountryService countryService)
     {
-        _dbContext = dbContext;
         _countryRepository = countryRepository;
+        _countryService = countryService;
     }
 
 
@@ -34,12 +33,7 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Country), request.Id), ErrorType.NotFound));
         }
 
-        var nameIsTaken = await _dbContext.Countries
-            .AnyAsync(country =>
-                country.Name.Equals(request.Name) &&
-                country.Id != request.Id, cancellationToken);
-
-        if (nameIsTaken)
+        if (!await _countryService.IsNameUniqueAsync(request.Name, cancellationToken))
         {
             return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Country)), ErrorType.Duplicate));
         }

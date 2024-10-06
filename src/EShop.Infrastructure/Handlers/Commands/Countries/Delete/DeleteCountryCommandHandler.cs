@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Countries;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
@@ -14,12 +13,10 @@ namespace EShop.Infrastructure.Handlers.Commands.Countries.Delete;
 /// </summary>
 public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly ICountryRepository _countryRepository;
 
-    public DeleteCountryCommandHandler(IEShopDbContext dbContext, ICountryRepository countryRepository)
+    public DeleteCountryCommandHandler(ICountryRepository countryRepository)
     {
-        _dbContext = dbContext;
         _countryRepository = countryRepository;
     }
 
