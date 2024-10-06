@@ -10,8 +10,10 @@ public static class ServicesInjection
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<ICountryService, CountryService>();
         services.AddTransient<IRoleTypeService, RoleTypeService>();
         services.AddTransient<IJwtTokenService, JwtTokenService>();
+        services.AddTransient<ICountryService, CountryService>();
 
         return services;
     }
