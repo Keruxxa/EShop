@@ -12,8 +12,11 @@ public static class ServicesInjection
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<ICountryService, CountryService>();
         services.AddTransient<IRoleTypeService, RoleTypeService>();
-        services.AddTransient<IJwtTokenService, JwtTokenService>();
         services.AddTransient<ICountryService, CountryService>();
+        services.AddTransient<ICountryService, CountryService>();
+        services.AddTransient<IBrandService, BrandService>();
+
+        services.AddTransient<IJwtTokenService, JwtTokenService>();
 
         return services;
     }

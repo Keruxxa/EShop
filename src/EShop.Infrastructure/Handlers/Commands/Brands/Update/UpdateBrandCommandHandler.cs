@@ -1,24 +1,23 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Brands;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using EShop.Application.Issues.Errors;
 using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Brands.Update;
 
 public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IBrandRepository _brandRepository;
+    private readonly IBrandService _brandService;
 
-    public UpdateBrandCommandHandler(IEShopDbContext dbContext, IBrandRepository brandRepository)
+    public UpdateBrandCommandHandler(IBrandRepository brandRepository, IBrandService brandService)
     {
-        _dbContext = dbContext;
         _brandRepository = brandRepository;
+        _brandService = brandService;
     }
 
 
@@ -31,10 +30,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Res
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Brand), request.Id), ErrorType.NotFound));
         }
 
-        var isNameTaken = await _dbContext.Brands
-            .AnyAsync(brand => brand.Name.Equals(request.Name), cancellationToken);
-
-        if (isNameTaken)
+        if (!await _brandService.IsNameUniqueAsync(request.Name, cancellationToken))
         {
             return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Brand)), ErrorType.Duplicate));
         }

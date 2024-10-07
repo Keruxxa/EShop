@@ -1,12 +1,11 @@
 ﻿using EShop.Application.CQRS.Commands.Brands;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using CSharpFunctionalExtensions;
 using EShop.Application.Issues.Errors;
 using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Brands.Create;
 
@@ -15,23 +14,19 @@ namespace EShop.Infrastructure.Handlers.Commands.Brands.Create;
 /// </summary>
 public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Result<int, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IBrandRepository _brandRepository;
+    private readonly IBrandService _brandService;
 
-    public CreateBrandCommandHandler(IEShopDbContext dbContext, IBrandRepository brandRepository)
+    public CreateBrandCommandHandler(IBrandRepository brandRepository, IBrandService brandService)
     {
-        _dbContext = dbContext;
         _brandRepository = brandRepository;
+        _brandService = brandService;
     }
 
 
     public async Task<Result<int, Error>> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
     {
-        var brandExists = await _dbContext.Brands
-            .AnyAsync(brand =>
-                brand.Name.Equals(request.Name), cancellationToken);
-
-        if (brandExists)
+        if (!await _brandService.IsNameUniqueAsync(request.Name, cancellationToken))
         {
             return Result.Failure<int, Error>(new Error(new DuplicateEntityError(nameof(Brand)), ErrorType.Duplicate));
         }
