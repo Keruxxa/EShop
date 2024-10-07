@@ -1,12 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Products;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Issues.Errors;
+using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Products.Update;
 
@@ -15,13 +14,13 @@ namespace EShop.Infrastructure.Handlers.Commands.Products.Update;
 /// </summary>
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
+    private readonly IProductService _productService;
 
-    public UpdateProductCommandHandler(IEShopDbContext dbContext, IProductRepository productRepository)
+    public UpdateProductCommandHandler(IProductRepository productRepository, IProductService productService)
     {
-        _dbContext = dbContext;
         _productRepository = productRepository;
+        _productService = productService;
     }
 
 
@@ -34,10 +33,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
-        var productExists = await _dbContext.Products
-            .AnyAsync(product => product.Name.Equals(request.Name));
-
-        if (productExists)
+        if (!await _productService.IsNameUniqueAsync(request.Name, cancellationToken))
         {
             return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Product)), ErrorType.Duplicate));
         }
