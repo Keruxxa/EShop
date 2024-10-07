@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Queries.Users;
 using EShop.Application.Dtos.User;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Issues.Errors;
 using EShop.Domain.Entities;
@@ -15,12 +14,10 @@ namespace EShop.Infrastructure.Handlers.Queries.Users.ById;
 /// </summary>
 public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<UserDto>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
 
-    public GetUserByIdQueryHandler(IEShopDbContext dbContext, IUserRepository userRepository)
+    public GetUserByIdQueryHandler(IUserRepository userRepository)
     {
-        _dbContext = dbContext;
         _userRepository = userRepository;
     }
 

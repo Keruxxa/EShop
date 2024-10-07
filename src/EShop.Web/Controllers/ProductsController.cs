@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EShop.Application.CQRS.Queries.Products;
+using EShop.Application.Issues.Errors.Base;
 
 namespace EShop.Web.Controllers;
 
@@ -17,22 +18,23 @@ public class ProductsController : BaseController
     }
 
 
-    [HttpGet("{id:Guid}")]
-    public async Task<ActionResult<Result<ProductDto>>> GetById(Guid id, CancellationToken cancellationToken)
-    {
-        var result = await Mediator.Send(new GetProductByIdQuery(id), cancellationToken);
-
-        return result.IsSuccess
-            ? StatusCode(StatusCodes.Status200OK, result.Value)
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
-    }
-
 
     [HttpGet]
     [Route("list")]
     public async Task<IEnumerable<ProductListItemDto>> GetList(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetProductListQuery(), cancellationToken);
+    }
+
+
+    [HttpGet("{id:Guid}")]
+    public async Task<ActionResult<Result<ProductDto>>> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(new GetProductByIdQuery(id), cancellationToken);
+
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(result.Error);
     }
 
 
@@ -44,9 +46,19 @@ public class ProductsController : BaseController
     {
         var result = await Mediator.Send(createProductDto.Adapt<CreateProductCommand>(), cancellationToken);
 
-        return result.IsSuccess
-            ? Ok(result.Value)
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+        if (result.IsSuccess)
+        {
+            return StatusCode(StatusCodes.Status201Created, result.Value);
+        }
+
+        var error = result.Error;
+
+        return error.ErrorType switch
+        {
+            ErrorType.Duplicate => Conflict(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+            _ => BadRequest()
+        };
     }
 
 
@@ -61,9 +73,20 @@ public class ProductsController : BaseController
 
         var result = await Mediator.Send(updateProductDto.Adapt<UpdateProductCommand>(), cancellationToken);
 
-        return result.IsSuccess
-            ? NoContent()
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+
+        var error = result.Error;
+
+        return error.ErrorType switch
+        {
+            ErrorType.NotFound => NotFound(error),
+            ErrorType.Duplicate => Conflict(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+            _ => BadRequest()
+        };
     }
 
 
@@ -73,8 +96,18 @@ public class ProductsController : BaseController
     {
         var result = await Mediator.Send(new DeleteProductCommand(id), cancellationToken);
 
-        return result.IsSuccess
-            ? NoContent()
-            : StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+
+        var error = result.Error;
+
+        return error.ErrorType switch
+        {
+            ErrorType.NotFound => NotFound(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+            _ => BadRequest()
+        };
     }
 }

@@ -1,12 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Products;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Issues.Errors;
+using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Products.Create;
 
@@ -15,22 +14,19 @@ namespace EShop.Infrastructure.Handlers.Commands.Products.Create;
 /// </summary>
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Guid, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
+    private readonly IProductService _productService;
 
-    public CreateProductCommandHandler(IEShopDbContext dbContext, IProductRepository productRepository)
+    public CreateProductCommandHandler(IProductRepository productRepository, IProductService productService)
     {
-        _dbContext = dbContext;
         _productRepository = productRepository;
+        _productService = productService;
     }
 
 
     public async Task<Result<Guid, Error>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var productExists = await _dbContext.Products
-            .AnyAsync(product => product.Name.Equals(request.Name));
-
-        if (productExists)
+        if (!await _productService.IsNameUniqueAsync(request.Name, cancellationToken))
         {
             return Result.Failure<Guid, Error>(new Error(new DuplicateEntityError(nameof(Product)), ErrorType.Duplicate));
         }

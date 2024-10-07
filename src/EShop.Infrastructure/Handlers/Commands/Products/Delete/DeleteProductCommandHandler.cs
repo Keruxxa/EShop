@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Products;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
@@ -14,12 +13,10 @@ namespace EShop.Infrastructure.Handlers.Commands.Products.Delete;
 /// </summary>
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IProductRepository _productRepository;
 
-    public DeleteProductCommandHandler(IEShopDbContext dbContext, IProductRepository productRepository)
+    public DeleteProductCommandHandler(IProductRepository productRepository)
     {
-        _dbContext = dbContext;
         _productRepository = productRepository;
     }
 
@@ -33,7 +30,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
-        _dbContext.Products.Remove(product);
+        _productRepository.Delete(product);
 
         var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
