@@ -18,6 +18,7 @@ public class BrandsController : BaseController
 
 
     [HttpGet("select-list")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<SelectListItem<int>>>> GetSelectList(CancellationToken cancellationToken)
     {
         var brands = await Mediator.Send(new GetBrandSelectListQuery(), cancellationToken);
@@ -28,7 +29,7 @@ public class BrandsController : BaseController
 
     [HttpGet("{id:int}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Brand>> GetById(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<Brand, Error>>> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetBrandByIdQuery(id), cancellationToken);
 
@@ -40,21 +41,21 @@ public class BrandsController : BaseController
 
     [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<int>> Create([FromQuery] string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<int, Error>>> Create([FromQuery] string name, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new CreateBrandCommand(name), cancellationToken);
 
         if (result.IsSuccess)
         {
-            return Ok(result.Value);
+            return StatusCode(StatusCodes.Status201Created, result.Value);
         }
 
-        var errorMessage = result.Error.EntityError.Message;
+        var error = result.Error;
 
-        return result.Error.ErrorType switch
+        return error.ErrorType switch
         {
-            ErrorType.Duplicate => Conflict(errorMessage),
-            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, errorMessage),
+            ErrorType.Duplicate => Conflict(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
             _ => BadRequest()
         };
     }
@@ -71,16 +72,16 @@ public class BrandsController : BaseController
 
         if (result.IsSuccess)
         {
-            return Ok();
+            return NoContent();
         }
 
-        var errorMessage = result.Error.EntityError.Message;
+        var error = result.Error;
 
         return result.Error.ErrorType switch
         {
-            ErrorType.NotFound => NotFound(errorMessage),
-            ErrorType.Duplicate => Conflict(errorMessage),
-            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, errorMessage),
+            ErrorType.NotFound => NotFound(error),
+            ErrorType.Duplicate => Conflict(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
             _ => BadRequest()
         };
     }
@@ -94,15 +95,15 @@ public class BrandsController : BaseController
 
         if (result.IsSuccess)
         {
-            return Ok();
+            return NoContent();
         }
 
-        var errorMessage = result.Error.EntityError.Message;
+        var error = result.Error;
 
         return result.Error.ErrorType switch
         {
-            ErrorType.NotFound => NotFound(errorMessage),
-            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, errorMessage),
+            ErrorType.NotFound => NotFound(error),
+            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
             _ => BadRequest()
         };
     }
