@@ -1,6 +1,6 @@
 ﻿namespace EShop.Application.Interfaces.Services;
 
-public interface IBrandService
+public interface ICategoryService
 {
     /// <summary>
     ///     Проверяет, является ли <paramref name="name"/> уникальным
