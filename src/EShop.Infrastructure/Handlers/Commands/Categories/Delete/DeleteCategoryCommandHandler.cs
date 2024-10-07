@@ -1,5 +1,4 @@
 ﻿using EShop.Application.CQRS.Commands.Categories;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
@@ -14,12 +13,10 @@ namespace EShop.Infrastructure.Handlers.Commands.Categories.Delete;
 /// </summary>
 public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly ICategoryRepository _categoryRepository;
 
-    public DeleteCategoryCommandHandler(IEShopDbContext dbContext, ICategoryRepository categoryRepository)
+    public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository)
     {
-        _dbContext = dbContext;
         _categoryRepository = categoryRepository;
     }
 

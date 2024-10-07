@@ -1,12 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Categories;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Issues.Errors;
+using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Categories.Update;
 
@@ -15,13 +14,13 @@ namespace EShop.Infrastructure.Handlers.Commands.Categories.Update;
 /// </summary>
 public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryService _categoryService;
 
-    public UpdateCategoryCommandHandler(IEShopDbContext dbContext, ICategoryRepository categoryRepository)
+    public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository, ICategoryService categoryService)
     {
-        _dbContext = dbContext;
         _categoryRepository = categoryRepository;
+        _categoryService = categoryService;
     }
 
 
@@ -34,10 +33,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Category), request.Id), ErrorType.NotFound));
         }
 
-        var nameIsTaken = await _dbContext.Categories
-            .AnyAsync(category => category.Name.Equals(request.Name), cancellationToken);
-
-        if (nameIsTaken)
+        if (!await _categoryService.IsNameUniqueAsync(request.Name, cancellationToken))
         {
             return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Category)), ErrorType.Duplicate));
         }
