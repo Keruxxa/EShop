@@ -9,5 +9,6 @@ public enum ErrorType
     NotFound,
     InvalidRequest,
     Duplicate,
+    BadRequest,
     ServerError
 }
