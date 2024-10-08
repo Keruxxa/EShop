@@ -35,9 +35,9 @@ public class CreateCountryCommandHandler : IRequestHandler<CreateCountryCommand,
 
         _countryRepository.Create(country);
 
-        var saved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<int, Error>(country.Id)
             : Result.Failure<int, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

@@ -5,6 +5,6 @@ using MediatR;
 namespace EShop.Application.CQRS.Commands.Brands;
 
 /// <summary>
-///     Представляет команду для добавления бренда
+///     Представляет команду для создания бренда
 /// </summary>
 public record CreateBrandCommand(string Name) : IRequest<Result<int, Error>>;

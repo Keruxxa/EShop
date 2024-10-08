@@ -9,12 +9,13 @@ public static class ServicesInjection
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddTransient<IUserService, UserService>();
-        services.AddTransient<ICountryService, CountryService>();
-        services.AddTransient<IRoleTypeService, RoleTypeService>();
-        services.AddTransient<ICountryService, CountryService>();
-        services.AddTransient<ICountryService, CountryService>();
+        services.AddTransient<IBasketService, BasketService>();
         services.AddTransient<IBrandService, BrandService>();
+        services.AddTransient<ICategoryService, CategoryService>();
+        services.AddTransient<ICountryService, CountryService>();
+        services.AddTransient<IProductService, ProductService>();
+        services.AddTransient<IRoleTypeService, RoleTypeService>();
+        services.AddTransient<IUserService, UserService>();
 
         services.AddTransient<IJwtTokenService, JwtTokenService>();
 

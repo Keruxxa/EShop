@@ -13,7 +13,7 @@ public class Basket : EntityBase<Guid>
     /// <summary>
     ///     Товары корзины
     /// </summary>
-    public IReadOnlyCollection<BasketItem> BasketItems => _busketItems.AsReadOnly();
+    public IReadOnlyCollection<BasketItem> BasketItems => _busketItems;
 
     /// <summary>
     ///     Суммарная стоимость корзины
@@ -31,28 +31,40 @@ public class Basket : EntityBase<Guid>
     /// <summary>
     ///     Добавляет объект <see cref="BasketItem"/> в коллекцию <see cref="BasketItems"/>
     /// </summary>
-    public void AddItem(BasketItem basketItem)
+    public void AddItem(BasketItem basketItemToAdd)
     {
-        if (_busketItems.Contains(basketItem))
+        var basketItem = _busketItems.FirstOrDefault(item => item.BasketId == basketItemToAdd.BasketId && item.ProductId == basketItemToAdd.ProductId);
+
+        if (basketItem is not null)
         {
             basketItem.IncrementItemCount();
             return;
         }
 
-        _busketItems.Add(basketItem);
+        _busketItems.Add(basketItemToAdd);
     }
 
     /// <summary>
     ///     Удаляет объект <see cref="BasketItem"/> из коллекции <see cref="BasketItems"/>
     /// </summary>
-    public bool RemoveItem(BasketItem basketItem)
+    public bool DeleteItem(BasketItem basketItemToDelete)
     {
-        if (_busketItems.Contains(basketItem))
+        var basketItem = _busketItems.FirstOrDefault(item => item.BasketId == basketItemToDelete.BasketId && item.ProductId == basketItemToDelete.ProductId);
+
+        if (basketItem is not null)
         {
-            basketItem.DecrementItemCount();
-            return true;
+            var isDecremented = basketItem.DecrementItemCount();
+
+            if (isDecremented)
+            {
+                return true;
+            }
+            else
+            {
+                return _busketItems.Remove(basketItem);
+            }
         }
 
-        return _busketItems.Remove(basketItem);
+        return false;
     }
 }

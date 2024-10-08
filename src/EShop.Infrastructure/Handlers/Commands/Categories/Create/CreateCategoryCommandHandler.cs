@@ -35,9 +35,9 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
         _categoryRepository.Create(category);
 
-        var saved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<int, Error>(category.Id)
             : Result.Failure<int, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

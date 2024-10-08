@@ -59,9 +59,9 @@ public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Resul
 
         _userRepository.Create(user);
 
-        var saved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<User, Error>(user)
             : Result.Failure<User, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

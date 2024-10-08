@@ -18,4 +18,9 @@ public class ProductService : IProductService
     {
         return !await _dbContext.Products.AnyAsync(product => product.Name.Equals(name), cancellationToken);
     }
+
+    public async Task<bool> IsProductExistAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Products.AnyAsync(product => product.Id == id, cancellationToken);
+    }
 }
