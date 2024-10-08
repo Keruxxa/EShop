@@ -32,9 +32,9 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 
         _categoryRepository.Delete(category);
 
-        var saved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<Unit, Error>(Unit.Value)
             : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

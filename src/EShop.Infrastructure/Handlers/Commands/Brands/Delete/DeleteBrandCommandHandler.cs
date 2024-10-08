@@ -32,9 +32,9 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, Res
 
         _brandRepository.Delete(brand);
 
-        var saved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<Unit, Error>(Unit.Value)
             : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

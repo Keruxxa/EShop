@@ -4,6 +4,8 @@ using EShop.Domain.Enums;
 using Mapster;
 using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.CQRS.Queries.Users;
+using EShop.Application.Dtos.Basket;
+using EShop.Application.Dtos.Product;
 
 namespace EShop.Infrastructure.Utilities.Mapping;
 
@@ -71,5 +73,16 @@ public static class MapsterConfig
             .ConstructUsing(src => new SignInUserQuery(
                 src.Email,
                 src.Password));
+
+        TypeAdapterConfig<Basket, BasketDto>
+            .NewConfig()
+            .ConstructUsing(src => new BasketDto(
+                src.Id,
+                src.TotalPrice,
+                src.BasketItems.Select(basketItem => new ProductInBasketDto(
+                    basketItem.Product.Id,
+                    basketItem.Product.Name,
+                    basketItem.Product.Price,
+                    basketItem.Count)).ToList()));
     }
 }

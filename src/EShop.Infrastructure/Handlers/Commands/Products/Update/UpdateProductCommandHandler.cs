@@ -43,9 +43,9 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         _productRepository.Update(product);
 
-        var saved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<Unit, Error>(Unit.Value)
             : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

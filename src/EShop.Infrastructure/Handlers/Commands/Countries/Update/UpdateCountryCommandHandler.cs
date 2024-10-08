@@ -42,9 +42,9 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
 
         _countryRepository.Update(country);
 
-        var saved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<Unit, Error>(Unit.Value)
             : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

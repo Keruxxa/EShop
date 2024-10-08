@@ -37,18 +37,21 @@ public class BasketItem
 
 
     /// <summary>
-    ///     Увеличивает на единицу количество товара в корзине, к которой он относится
+    ///     Увеличивает на единицу количество товара в корзине
     /// </summary>
     public void IncrementItemCount() => Count++;
 
     /// <summary>
-    ///     Уменьшает на единицу количество товара в корзине, к которой он относится
+    ///     Уменьшает на единицу количество товара в корзине
     /// </summary>
-    public void DecrementItemCount()
+    public bool DecrementItemCount()
     {
         if (Count > 0)
         {
             Count--;
+            return true;
         }
+
+        return false;
     }
 }

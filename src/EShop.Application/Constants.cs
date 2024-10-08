@@ -12,6 +12,12 @@
 
         #endregion
 
+        #region Basket
+
+        public const string PRODUCT_DOES_NOT_EXIST_IN_BASKET = "Product does not exist in the basket";
+
+        #endregion
+
         public const string SERVER_SIDE_ERROR = "An error occured on the server side";
 
         public const string ESHOP_SERVER_COOKIES = "eshop-server-cookies";

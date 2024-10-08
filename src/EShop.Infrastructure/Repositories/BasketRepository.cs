@@ -19,7 +19,13 @@ public class BasketRepository : IBasketRepository
     {
         return await _dbContext.Baskets
             .Include(basket => basket.BasketItems)
+                .ThenInclude(basketItem => basketItem.Product)
             .FirstOrDefaultAsync(basket => basket.Id == id, cancellationToken);
+    }
+
+    public Guid Create(Basket basket)
+    {
+        return _dbContext.Baskets.Add(basket).Entity.Id;
     }
 
     public void Delete(Basket basket)

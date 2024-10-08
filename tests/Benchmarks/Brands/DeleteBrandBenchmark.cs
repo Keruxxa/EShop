@@ -69,9 +69,9 @@ public class DeleteBrandBenchmark
 
         _brandRepository.Delete(brand);
 
-        var saved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success()
             : Result.Failure("Error");
     }

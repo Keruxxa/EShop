@@ -35,9 +35,9 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Res
 
         _brandRepository.Create(brand);
 
-        var saved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
+        var isSaved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
 
-        return saved
+        return isSaved
             ? Result.Success<int, Error>(brand.Id)
             : Result.Failure<int, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }

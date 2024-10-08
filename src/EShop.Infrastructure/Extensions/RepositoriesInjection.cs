@@ -13,6 +13,7 @@ public static class RepositoriesInjection
         services.AddTransient<ICountryRepository, CountryRepository>();
         services.AddTransient<IProductRepository, ProductRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IBasketRepository, BasketRepository>();
 
         return services;
     }

@@ -10,6 +10,11 @@ public interface IBasketRepository
     Task<Basket> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
+    ///     Создает корзину
+    /// </summary>
+    public Guid Create(Basket basket);
+
+    /// <summary>
     ///     Удаляет корзину
     /// </summary>
     void Delete(Basket basket);
