@@ -1,4 +1,6 @@
-﻿namespace EShop.Application.Issues.Errors.Base;
+﻿using EShop.Application.Issues.Errors.Base;
+
+namespace EShop.Application.Issues.Errors;
 
 public class BadRequestEntityError : IEntityError
 {
