@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.CQRS.Queries.Users;
+using EShop.Application.Issues.Errors.Base;
 using static EShop.Application.Constants;
+using CSharpFunctionalExtensions;
 
 namespace EShop.Web.Controllers;
 
@@ -33,7 +35,14 @@ public class AuthenticationController : BaseController
 
         if (result.IsFailure)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, result.Error);
+            var error = result.Error;
+
+            return error.ErrorType switch
+            {
+                ErrorType.Duplicate => Conflict(error),
+                ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
+                _ => BadRequest(error)
+            };
         }
 
         var user = result.Value;
@@ -47,18 +56,25 @@ public class AuthenticationController : BaseController
 
 
     [HttpPost("sign-in")]
-    public async Task<ActionResult<SignInUserResponseDto>> SignIn([FromBody] SignInUserDto signInUserDto)
+    public async Task<ActionResult<Result<SignInUserResponseDto, Error>>> SignIn([FromBody] SignInUserDto signInUserDto)
     {
         if (User.Identity.IsAuthenticated)
         {
-            return BadRequest("User is already signed in");
+            return BadRequest(USER_IS_ALREADY_AUTHENTICATED);
         }
 
         var result = await Mediator.Send(signInUserDto.Adapt<SignInUserQuery>());
 
         if (result.IsFailure)
         {
-            return NotFound(result.Error);
+            var error = result.Error;
+
+            return error.ErrorType switch
+            {
+                ErrorType.NotFound => NotFound(error),
+                ErrorType.BadRequest => BadRequest(error),
+                _ => BadRequest(error)
+            };
         }
 
         var user = result.Value;
