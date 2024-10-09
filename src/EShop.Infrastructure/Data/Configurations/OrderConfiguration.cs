@@ -8,7 +8,12 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
+        builder.ToTable("Orders");
+
         builder.HasKey(order => order.Id);
+
+        builder.Property(order => order.OrderingDate)
+            .IsRequired();
 
         builder.HasOne<User>()
             .WithMany()
