@@ -10,6 +10,9 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     {
         builder.HasKey(orderItem => orderItem.Id);
 
+        builder.Property(orderItem => orderItem.Count)
+            .IsRequired();
+
         builder.HasOne(orderItem => orderItem.Product)
             .WithMany()
             .HasForeignKey(orderItem => orderItem.ProductId)
