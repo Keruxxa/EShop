@@ -18,7 +18,7 @@ public class Order : EntityBase<Guid>
     /// <summary>
     ///     Товары заказа
     /// </summary>
-    public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
+    public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
     /// <summary>
     ///     Суммарная стоимость
@@ -26,7 +26,6 @@ public class Order : EntityBase<Guid>
     public decimal TotalPrice
     {
         get => _orderItems.Sum(orderItem => orderItem.Product.Price * orderItem.Count);
-        //private set { }
     }
 
     /// <summary>
@@ -51,7 +50,6 @@ public class Order : EntityBase<Guid>
     {
         UserId = userId;
         OrderingDate = DateTime.Now.ToUniversalTime();
-        //TotalPrice = _orderItems.Sum(orderItem => orderItem.Product.Price * orderItem.Count);
     }
 
 

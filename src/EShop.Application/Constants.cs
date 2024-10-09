@@ -18,6 +18,12 @@
 
         #endregion
 
+        #region Order
+
+        public const string ORDER_ITEM_DOES_NOT_EXIST = "Some products in the order does not exist";
+
+        #endregion
+
         public const string SERVER_SIDE_ERROR = "An error occured on the server side";
 
         public const string ESHOP_SERVER_COOKIES = "eshop-server-cookies";

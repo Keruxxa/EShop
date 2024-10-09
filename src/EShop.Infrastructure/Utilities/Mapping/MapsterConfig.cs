@@ -6,6 +6,7 @@ using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.CQRS.Queries.Users;
 using EShop.Application.Dtos.Basket;
 using EShop.Application.Dtos.Product;
+using EShop.Application.Dtos.Orders;
 
 namespace EShop.Infrastructure.Utilities.Mapping;
 
@@ -84,5 +85,15 @@ public static class MapsterConfig
                     basketItem.Product.Name,
                     basketItem.Product.Price,
                     basketItem.Count)).ToList()));
+
+        TypeAdapterConfig<Order, OrderDto>
+            .NewConfig()
+            .ConstructUsing(src => new OrderDto(
+                src.OrderingDate,
+                src.TotalPrice,
+                src.OrderItems.Select(x => new ProductInOrderDto(
+                    x.Product.Id,
+                    x.Product.Name,
+                    x.Product.Price)).ToList()));
     }
 }

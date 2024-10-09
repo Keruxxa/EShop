@@ -16,6 +16,7 @@ public static class ServicesInjection
         services.AddTransient<IProductService, ProductService>();
         services.AddTransient<IRoleTypeService, RoleTypeService>();
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IOrderService, OrderService>();
 
         services.AddTransient<IJwtTokenService, JwtTokenService>();
 
