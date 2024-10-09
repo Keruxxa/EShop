@@ -18,4 +18,9 @@ public interface IOrderRepository
     ///     Создает заказ
     /// </summary>
     Guid Create(Order order);
+
+    /// <summary>
+    ///     Сохраняет изменения контекста
+    /// </summary>
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
