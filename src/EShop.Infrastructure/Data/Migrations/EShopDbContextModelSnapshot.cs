@@ -29,7 +29,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Baskets");
+                    b.ToTable("Baskets", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.BasketItem", b =>
@@ -65,7 +65,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.BrandProducts", b =>
@@ -80,7 +80,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BrandProducts");
+                    b.ToTable("BrandProducts", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Category", b =>
@@ -98,7 +98,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.CategoryProducts", b =>
@@ -113,7 +113,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CategoryProducts");
+                    b.ToTable("CategoryProducts", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Country", b =>
@@ -131,7 +131,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasData(
                         new
@@ -173,7 +173,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorites", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.FavoriteProducts", b =>
@@ -188,7 +188,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("FavoriteProducts");
+                    b.ToTable("FavoriteProducts", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Order", b =>
@@ -237,7 +237,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Product", b =>
@@ -281,7 +281,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("CountryManufacturerId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Review", b =>
@@ -309,7 +309,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Role", b =>
@@ -324,7 +324,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -385,7 +385,7 @@ namespace EShop.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.Basket", b =>

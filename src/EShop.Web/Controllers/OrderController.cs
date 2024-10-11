@@ -1,4 +1,4 @@
-﻿using EShop.Application.CQRS.Commands.Orders.Create;
+﻿using EShop.Application.CQRS.Commands.Orders;
 using EShop.Application.CQRS.Queries.Orders;
 using EShop.Application.Dtos.Orders;
 using EShop.Application.Issues.Errors.Base;

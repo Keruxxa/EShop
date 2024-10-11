@@ -8,12 +8,12 @@ public class Favorite : EntityBase<Guid>
     /// <summary>
     ///     Товары, содержащиеся в коллекции избранного
     /// </summary>
-    private List<Product> _products = [];
+    private List<FavoriteProducts> _favoriteProducts = [];
 
     /// <summary>
     ///     Товары, содержащиеся в коллекции избранного
     /// </summary>
-    public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
+    public IReadOnlyCollection<FavoriteProducts> FavoriteProducts => _favoriteProducts;
 
 
     private Favorite() { }
@@ -24,21 +24,40 @@ public class Favorite : EntityBase<Guid>
     }
 
     /// <summary>
-    ///     Добавляет объект <see cref="Product"/> в коллекцию <see cref="Products"/>
+    ///     Добавляет объект <see cref="Product"/> в коллекцию <see cref="FavoriteProducts"/>
     /// </summary>
-    public void AddItem(Product product)
+    public bool AddProduct(Guid productId)
     {
-        if (!_products.Contains(product))
+        var favoriteProductExists = _favoriteProducts.FirstOrDefault(favoriteProduct =>
+            favoriteProduct.FavoriteId == Id &&
+            favoriteProduct.ProductId == productId);
+
+        if (favoriteProductExists is null)
         {
-            _products.Add(product);
+            _favoriteProducts.Add(new FavoriteProducts(Id, productId));
+
+            return true;
         }
+
+        return false;
     }
 
     /// <summary>
-    ///     Удаляет объект <see cref="Product"/> из коллекции <see cref="Products"/>
+    ///     Удаляет объект <see cref="Product"/> из коллекции <see cref="FavoriteProducts"/>
     /// </summary>
-    public bool RemoveItem(Product product)
+    public bool DeleteProduct(Guid productId)
     {
-        return _products.Remove(product);
+        var favoriteProductExists = _favoriteProducts.FirstOrDefault(favoriteProduct =>
+            favoriteProduct.FavoriteId == Id &&
+            favoriteProduct.ProductId == productId);
+
+        if (favoriteProductExists is not null)
+        {
+            _favoriteProducts.Remove(new FavoriteProducts(Id, productId));
+
+            return true;
+        }
+
+        return false;
     }
 }

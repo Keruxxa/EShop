@@ -13,5 +13,10 @@ public class FavoriteProductsConfiguration : IEntityTypeConfiguration<FavoritePr
             favoriteProducts.FavoriteId,
             favoriteProducts.ProductId
         });
+
+        builder.HasOne(favoriteProduct => favoriteProduct.Product)
+            .WithMany()
+            .HasForeignKey(favoriteProduct => favoriteProduct.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

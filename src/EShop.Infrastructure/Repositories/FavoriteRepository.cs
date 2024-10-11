@@ -18,8 +18,14 @@ public class FavoriteRepository : IFavoriteRepository
     public async Task<Favorite> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Favorites
-            .Include(favorite => favorite.Products)
+            .Include(favorite => favorite.FavoriteProducts)
+                .ThenInclude(favoriteProduct => favoriteProduct.Product)
             .FirstOrDefaultAsync(favorite => favorite.Id == id, cancellationToken);
+    }
+
+    public void Create(Favorite favorite)
+    {
+        _dbContext.Favorites.Add(favorite);
     }
 
     public void Delete(Favorite favorite)

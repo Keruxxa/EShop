@@ -13,7 +13,7 @@ public class Brand : EntityBase<int>
     /// <summary>
     ///     Наименование
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; private set; }
 
     /// <summary>
     ///     Товары, относящиеся к данному бренду

@@ -10,14 +10,14 @@ public class FavoriteConfiguration : IEntityTypeConfiguration<Favorite>
     {
         builder.HasKey(favorite => favorite.Id);
 
-        builder.Ignore(favorite => favorite.Products);
+        builder.Ignore(favorite => favorite.FavoriteProducts);
 
         builder.HasOne<User>()
             .WithOne()
             .HasForeignKey<Favorite>(favorite => favorite.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany<FavoriteProducts>()
+        builder.HasMany(favoriteProduct => favoriteProduct.FavoriteProducts)
             .WithOne()
             .HasForeignKey(favoriteProducts => favoriteProducts.FavoriteId)
             .OnDelete(DeleteBehavior.Cascade);

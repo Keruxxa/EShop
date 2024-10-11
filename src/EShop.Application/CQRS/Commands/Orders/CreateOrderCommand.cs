@@ -3,7 +3,7 @@ using EShop.Application.Dtos.Orders;
 using EShop.Application.Issues.Errors.Base;
 using MediatR;
 
-namespace EShop.Application.CQRS.Commands.Orders.Create;
+namespace EShop.Application.CQRS.Commands.Orders;
 
 /// <summary>
 ///     Представляет команду для создания заказа
