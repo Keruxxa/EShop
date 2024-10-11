@@ -15,6 +15,7 @@ public static class RepositoriesInjection
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IBasketRepository, BasketRepository>();
         services.AddTransient<IOrderRepository, OrderRepository>();
+        services.AddTransient<IFavoriteRepository, FavoriteRepository>();
 
         return services;
     }

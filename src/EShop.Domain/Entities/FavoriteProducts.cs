@@ -16,6 +16,11 @@ public class FavoriteProducts
     /// </summary>
     public Guid ProductId { get; private set; }
 
+    /// <summary>
+    ///     Товар
+    /// </summary>
+    public Product Product { get; }
+
 
     private FavoriteProducts() { }
 

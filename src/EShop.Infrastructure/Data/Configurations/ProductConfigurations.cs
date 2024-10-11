@@ -34,7 +34,7 @@ public class ProductConfigurations : IEntityTypeConfiguration<Product>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany<FavoriteProducts>()
-            .WithOne()
+            .WithOne(favoriteProduct => favoriteProduct.Product)
             .HasForeignKey(favoriteProducts => favoriteProducts.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 

@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using EShop.Application.CQRS.Commands.Orders.Create;
+using EShop.Application.CQRS.Commands.Orders;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Services;
 using EShop.Application.Issues.Errors;

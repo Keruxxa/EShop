@@ -7,6 +7,7 @@ using EShop.Application.CQRS.Queries.Users;
 using EShop.Application.Dtos.Basket;
 using EShop.Application.Dtos.Product;
 using EShop.Application.Dtos.Orders;
+using EShop.Application.Dtos.Favorite;
 
 namespace EShop.Infrastructure.Utilities.Mapping;
 
@@ -95,5 +96,14 @@ public static class MapsterConfig
                     x.Product.Id,
                     x.Product.Name,
                     x.Product.Price)).ToList()));
+
+        TypeAdapterConfig<Favorite, FavoriteDto>
+            .NewConfig()
+            .ConstructUsing(src => new FavoriteDto(
+                src.Id,
+                src.FavoriteProducts.Select(favoriteProduct => new ProductInFavoriteDto(
+                    favoriteProduct.Product.Id,
+                    favoriteProduct.Product.Name,
+                    favoriteProduct.Product.Price)).ToList()));
     }
 }
