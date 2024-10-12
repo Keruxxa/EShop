@@ -11,4 +11,9 @@ public interface IProductService
     ///     Проверяет, существует ли товар с данным Id
     /// </summary>
     Task<bool> IsProductExistAsync(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Определяет, существуют ли товары <paramref name="productIds"/>
+    /// </summary>
+    Task<bool> IsAllProductsExistAsync(IEnumerable<Guid> productIds, CancellationToken cancellationToken);
 }
