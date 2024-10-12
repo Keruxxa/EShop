@@ -26,27 +26,6 @@ public class BasketController : BaseController
     }
 
 
-    [HttpPost]
-    public async Task<ActionResult<Result<Guid, Error>>> CreateAsync([FromQuery] Guid id, CancellationToken cancellationToken)
-    {
-        var result = await Mediator.Send(new CreateBasketCommand(id), cancellationToken);
-
-        if (result.IsSuccess)
-        {
-            return StatusCode(StatusCodes.Status201Created, result.Value);
-        }
-
-        var error = result.Error;
-
-        return error.ErrorType switch
-        {
-            ErrorType.Duplicate => Conflict(error),
-            ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
-            _ => BadRequest(error)
-        };
-    }
-
-
     [HttpPost("add-product")]
     public async Task<ActionResult<Result<Unit, Error>>> AddProductAsync(
         [FromQuery] Guid basketId,
@@ -57,7 +36,7 @@ public class BasketController : BaseController
 
         if (result.IsSuccess)
         {
-            return NoContent();
+            return Created();
         }
 
         var error = result.Error;

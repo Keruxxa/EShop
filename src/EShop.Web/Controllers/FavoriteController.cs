@@ -35,7 +35,7 @@ public class FavoriteController : BaseController
 
         if (result.IsSuccess)
         {
-            return NoContent();
+            return Created();
         }
 
         var error = result.Error;

@@ -26,19 +26,20 @@ public class AddProductToBasketCommandHandler : IRequestHandler<AddProductToBask
 
     public async Task<Result<Unit, Error>> Handle(AddProductToBasketCommand request, CancellationToken cancellationToken)
     {
-        var basket = await _basketRepository.GetByIdAsync(request.BasketId, cancellationToken);
-
-        if (basket is null)
-        {
-            return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Basket), request.BasketId), ErrorType.NotFound));
-        }
-
         if (!await _productService.IsProductExistAsync(request.ProductId, cancellationToken))
         {
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.ProductId), ErrorType.NotFound));
         }
 
-        basket.AddItem(new BasketItem(request.BasketId, request.ProductId));
+        var basket = await _basketRepository.GetByIdAsync(request.BasketId, cancellationToken);
+
+        if (basket is null)
+        {
+            basket = new Basket(request.BasketId);
+            _basketRepository.Create(basket);
+        }
+
+        basket.AddItem(request.ProductId);
 
         var isSaved = await _basketRepository.SaveChangesAsync(cancellationToken) > 0;
 

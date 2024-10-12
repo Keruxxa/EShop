@@ -24,7 +24,7 @@ public class Favorite : EntityBase<Guid>
     }
 
     /// <summary>
-    ///     Добавляет объект <see cref="Product"/> в коллекцию <see cref="FavoriteProducts"/>
+    ///     Добавляет товар в коллекцию <see cref="FavoriteProducts"/>
     /// </summary>
     public bool AddProduct(Guid productId)
     {
