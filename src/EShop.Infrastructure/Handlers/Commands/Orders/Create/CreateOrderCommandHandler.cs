@@ -17,12 +17,12 @@ namespace EShop.Infrastructure.Handlers.Commands.Orders.Create;
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Result<Guid, Error>>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IOrderService _orderService;
+    private readonly IProductService _productService;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IOrderService orderService)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, IProductService productService)
     {
         _orderRepository = orderRepository;
-        _orderService = orderService;
+        _productService = productService;
     }
 
 
@@ -30,7 +30,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
     {
         var productIds = request.СreateOrderDto.CreateOrderItemDtos.Select(itemDto => itemDto.ProductId);
 
-        if (!await _orderService.IsAllProductsExistAsync(productIds, cancellationToken))
+        if (!await _productService.IsAllProductsExistAsync(productIds, cancellationToken))
         {
             return Result.Failure<Guid, Error>(new Error(new BadRequestEntityError(ORDER_ITEM_DOES_NOT_EXIST), ErrorType.BadRequest));
         }
