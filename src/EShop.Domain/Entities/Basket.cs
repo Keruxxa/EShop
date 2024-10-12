@@ -31,17 +31,17 @@ public class Basket : EntityBase<Guid>
     /// <summary>
     ///     Добавляет объект <see cref="BasketItem"/> в коллекцию <see cref="BasketItems"/>
     /// </summary>
-    public void AddItem(BasketItem basketItemToAdd)
+    public void AddItem(Guid productId)
     {
-        var basketItem = _busketItems.FirstOrDefault(item => item.BasketId == basketItemToAdd.BasketId && item.ProductId == basketItemToAdd.ProductId);
+        var basketItem = _busketItems.FirstOrDefault(item => item.BasketId == Id && item.ProductId == productId);
 
-        if (basketItem is not null)
+        if (basketItem is null)
         {
-            basketItem.IncrementItemCount();
+            _busketItems.Add(new BasketItem(Id, productId));
             return;
         }
 
-        _busketItems.Add(basketItemToAdd);
+        basketItem.IncrementItemCount();
     }
 
     /// <summary>
