@@ -10,7 +10,7 @@ public class AddProductToFavoriteCommandValidator : AbstractValidator<AddProduct
 {
     public AddProductToFavoriteCommandValidator()
     {
-        RuleFor(command => command.UserId).NotEmpty();
+        RuleFor(command => command.Id).NotEmpty();
         RuleFor(command => command.ProductId).NotEmpty();
     }
 }
