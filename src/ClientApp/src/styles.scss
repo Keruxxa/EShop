@@ -2,16 +2,18 @@
 @import 'primeng/resources/primeng.css';
 @import 'primeicons/primeicons.css';
 @import 'primeflex/primeflex.css';
+@import 'variables.scss';
 
 body {
   font-family: var(--font-family);
-  font-size: 14 px;
+  font-size: 16px;
+  background-color: var(--background-color);
 }
+
 @layer reset, primeng;
 @layer reset {
   button {
     padding: 0.5rem 1rem;
-    font-size: 0.1rem;
     span {
       font-size: 0.85rem;
     }
