@@ -1,0 +1,9 @@
+@import 'primeflex/primeflex.scss';
+
+.container {
+  @include styleclass('flex justify-content-center mt-8');
+}
+
+.adapt-width {
+  @include styleclass('sm:w-6 md:w-6 lg:w-4 xl:w-3');
+}
