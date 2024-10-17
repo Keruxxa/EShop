@@ -10,15 +10,32 @@ body {
   background-color: var(--background-color);
 }
 
-@layer reset, primeng;
+// @layer reset, primeng;
 @layer reset {
-  button {
-    padding: 0.5rem 1rem;
-    span {
-      font-size: 0.85rem;
-    }
-  }
   input {
     padding: 0.5rem 0.75rem;
+  }
+}
+
+@layer primeng {
+  .p-message .p-message-wrapper {
+    padding: 0.4rem !important;
+  }
+
+  .p-message-error .p-message-icon {
+    visibility: hidden;
+  }
+
+  // Button
+  .p-button {
+    padding: 0.7rem 1rem !important;
+  }
+  .p-button-label {
+    font-size: 0.85rem;
+  }
+
+  //Input
+  .p-inputtext {
+    padding: 0.7rem 0.75rem !important;
   }
 }
