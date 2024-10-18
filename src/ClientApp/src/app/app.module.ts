@@ -6,8 +6,8 @@ import { RouterOutlet } from '@angular/router';
 import { PrimeNGConfig, SharedModule } from 'primeng/api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LayoutComponent } from './components/layout/layout.component';
 import { CoreModule } from './core/core.module';
-import { SignInComponent } from './features/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +17,7 @@ import { SignInComponent } from './features/sign-in/sign-in.component';
     CoreModule,
     SharedModule,
     AppRoutingModule,
-    SignInComponent,
+    LayoutComponent,
     RouterOutlet,
   ],
   providers: [provideClientHydration(), provideHttpClient(withFetch())],
