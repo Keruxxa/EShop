@@ -22,6 +22,11 @@ public class UserService : IUserService
 
     public async Task<bool> IsPhoneUniqueAsync(string phone, CancellationToken cancellationToken)
     {
+        if (phone is null)
+        {
+            return true;
+        }
+
         return !await _dbContext.Users
             .AnyAsync(user => user.Phone.Equals(phone), cancellationToken);
     }
