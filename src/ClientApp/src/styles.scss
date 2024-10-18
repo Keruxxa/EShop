@@ -13,13 +13,13 @@ body {
 // @layer reset, primeng;
 @layer reset {
   input {
-    padding: 0.5rem 0.75rem;
+    padding: 0.5em 0.75em;
   }
 }
 
 @layer primeng {
   .p-message .p-message-wrapper {
-    padding: 0.4rem !important;
+    padding: 0.4em !important;
   }
 
   .p-message-error .p-message-icon {
@@ -28,7 +28,7 @@ body {
 
   // Button
   .p-button {
-    padding: 0.7rem 1rem !important;
+    padding: 0.7em 1em !important;
   }
   .p-button-label {
     font-size: 0.85rem;
@@ -36,6 +36,6 @@ body {
 
   //Input
   .p-inputtext {
-    padding: 0.7rem 0.75rem !important;
+    padding: 0.7em 0.75em !important;
   }
 }

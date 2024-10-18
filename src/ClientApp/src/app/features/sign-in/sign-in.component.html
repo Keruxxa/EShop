@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="adapt-width">
+    <div class="window">
+      <div class="center-text">
+        <a routerLink="/"
+          ><img
+            class="logo"
+            src="/EShop.svg"
+            alt="Logo"
+            height="90"
+        /></a>
+
+        <div class="eshop-text">EShop</div>
+        <span class="text">Еще нет аккаунта?</span>
+        <a
+          class="sign-link"
+          routerLink="/sign-up"
+          >Создать</a
+        >
+      </div>
+
+      <div>
+        <form [formGroup]="formGroup">
+          <input
+            class="input-email"
+            id="email"
+            type="text"
+            placeholder="Email"
+            pInputText
+            formControlName="email"
+            (ngModelChange)="emailChange()"
+            [ngClass]="{
+              'mb-3': !isEmailInvalid,
+              'mb-2': isEmailInvalid
+            }"
+          />
+          <div
+            *ngIf="isEmailInvalid"
+            class="input-error"
+          >
+            Заполните поле
+          </div>
+
+          <input
+            class="input-password"
+            id="password"
+            type="password"
+            placeholder="Пароль"
+            pInputText
+            formControlName="password"
+            (ngModelChange)="passwordChange()"
+            [ngClass]="{
+              'mb-3': !isPasswordInvalid,
+              'mb-2': isPasswordInvalid
+            }"
+          />
+          <div
+            *ngIf="isPasswordInvalid"
+            class="input-error"
+          >
+            Заполните поле
+          </div>
+
+          <div class="forgot-password-container">
+            <a class="forgot-password-link">Забыли пароль?</a>
+          </div>
+
+          <p-messages (onClose)="changeVisibility()" />
+
+          <button
+            class="sign-button"
+            pButton
+            pRipple
+            label="Войти"
+            icon="pi pi-user"
+            type="submit"
+            (click)="onSignIn()"
+            [loading]="isLoading"
+          ></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

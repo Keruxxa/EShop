@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -33,12 +33,13 @@ import { SignInUserResponseModel } from './models/sign-in-user-response-model';
     ReactiveFormsModule,
     MessageModule,
     MessagesModule,
+    RouterLink,
   ],
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss',
+  templateUrl: './sign-in.component.html',
+  styleUrl: './sign-in.component.scss',
   providers: [MessageService],
 })
-export class AuthComponent implements OnDestroy {
+export class SignInComponent implements OnDestroy {
   @Output() signIn = new EventEmitter<SignInUserResponseModel>();
   public formGroup: FormGroup;
   public isOpened: boolean = false;

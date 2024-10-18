@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="adapt-width">
+    <div class="window">
+      <div class="center-text">
+        <a routerLink="/"
+          ><img
+            class="logo"
+            src="/EShop.svg"
+            alt="Logo"
+            height="90"
+        /></a>
+
+        <div class="eshop-text">EShop</div>
+        <span class="text">Уже есть аккаунт?</span>
+        <a
+          class="sign-link"
+          routerLink="/sign-in"
+          >Войти</a
+        >
+      </div>
+
+      <div>
+        <form [formGroup]="formGroup">
+          <div class="form">
+            <input
+              class="input-last-name"
+              pInputText
+              type="text"
+              placeholder="Фамилия"
+              formControlName="lastName"
+            />
+
+            <input
+              class="input-first-name"
+              pInputText
+              type="text"
+              placeholder="Имя"
+              formControlName="firstName"
+            />
+          </div>
+
+          <input
+            class="input-email"
+            type="text"
+            pInputText
+            placeholder="Email"
+            formControlName="email"
+            (ngModelChange)="emailChange()"
+            [ngClass]="{
+              'mb-3': !isEmailInvalid,
+              'mb-2': isEmailInvalid
+            }"
+          />
+          <div
+            *ngIf="isEmailInvalid"
+            class="input-error"
+          >
+            Заполните поле
+          </div>
+
+          <input
+            class="input-password"
+            type="password"
+            pInputText
+            placeholder="Пароль"
+            formControlName="password"
+            (ngModelChange)="passwordChange()"
+            [ngClass]="{
+              'mb-5': !isPasswordInvalid,
+              'mb-2': isPasswordInvalid
+            }"
+          />
+          <div
+            *ngIf="isPasswordInvalid"
+            class="input-error"
+          >
+            Заполните поле
+          </div>
+
+          <p-messages (onClose)="changeVisibility()" />
+
+          <button
+            class="sign-button"
+            pButton
+            pRipple
+            label="Зарегистрироваться"
+            icon="pi pi-user"
+            type="submit"
+            (click)="onSignUp()"
+            [loading]="isLoading"
+          ></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

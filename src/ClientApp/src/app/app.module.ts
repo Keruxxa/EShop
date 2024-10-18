@@ -7,7 +7,7 @@ import { PrimeNGConfig, SharedModule } from 'primeng/api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { AuthComponent } from './features/auth/auth.component';
+import { SignInComponent } from './features/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +17,7 @@ import { AuthComponent } from './features/auth/auth.component';
     CoreModule,
     SharedModule,
     AppRoutingModule,
-    AuthComponent,
+    SignInComponent,
     RouterOutlet,
   ],
   providers: [provideClientHydration(), provideHttpClient(withFetch())],

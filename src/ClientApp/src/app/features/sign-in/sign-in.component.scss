@@ -1,0 +1,16 @@
+@import '../feature.styles.scss';
+
+.forgot-password-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.forgot-password-link {
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--blue-500);
+  text-align: right;
+  cursor: pointer;
+}

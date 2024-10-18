@@ -1,0 +1,67 @@
+@import 'primeflex/primeflex.scss';
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5em;
+}
+
+.adapt-width {
+  @include styleclass('sm:w-6 md:w-6 lg:w-4 xl:w-3');
+}
+
+.window {
+  padding: 1.5em;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03), 0px 0px 2px rgba(0, 0, 0, 0.06),
+    0px 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.center-text {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.logo {
+  margin-bottom: 0.25em;
+}
+
+.eshop-text {
+  color: var(--surface-900);
+  font-size: 1.75em;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
+.text {
+  color: var(--surface-800);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.input-error {
+  padding-left: 0.75em;
+  color: var(--red-500);
+  margin-bottom: 1em;
+}
+
+.sign-link {
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 0.5em;
+  color: var(--blue-500);
+  cursor: pointer;
+}
+
+.input-email {
+  width: 100%;
+}
+
+.input-password {
+  width: 100%;
+}
+
+.sign-button {
+  width: 100%;
+}

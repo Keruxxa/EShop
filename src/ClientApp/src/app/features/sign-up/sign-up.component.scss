@@ -1,0 +1,17 @@
+@import '../feature.styles.scss';
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.input-last-name {
+  width: 50%;
+  margin-right: 0.5em;
+}
+
+.input-first-name {
+  width: 50%;
+  margin-left: 0.5em;
+}
