@@ -1,1 +1,18 @@
-<p>header works!</p>
+<div class="flex align-items-center surface-0 p-2">
+  <a routerLink="/"
+    ><img
+      src="/EShop.svg"
+      alt="Logo"
+      height="90"
+  /></a>
+
+  <p-menu
+    #menu
+    [model]="menuItems"
+    [popup]="true"
+  />
+  <p-button
+    (onClick)="menu.toggle($event)"
+    label="Каталог"
+  />
+</div>

@@ -8,6 +8,7 @@ body {
   font-family: var(--font-family);
   font-size: 16px;
   background-color: var(--background-color);
+  margin: 0px;
 }
 
 // @layer reset, primeng;
@@ -37,5 +38,10 @@ body {
   //Input
   .p-inputtext {
     padding: 0.7em 0.75em !important;
+  }
+
+  //Menu
+  .p-menu .p-submenu-header {
+    padding: 0px;
   }
 }
