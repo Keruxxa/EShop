@@ -21,5 +21,11 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .WithOne()
             .HasForeignKey(categoryProducts => categoryProducts.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany<CategoryClosureNode>()
+            .WithOne(categoryClosureNode => categoryClosureNode.AncestorCategory)
+            .HasForeignKey(categoryClosureNode => categoryClosureNode.AncestorCategoryId)
+            .HasForeignKey(categoryClosureNode => categoryClosureNode.DescendantCategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
