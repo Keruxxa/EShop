@@ -19,4 +19,9 @@ public class CategoryService : ICategoryService
         return !await _dbContext.Categories
             .AnyAsync(category => category.Name.Equals(name), cancellationToken);
     }
+
+    public async Task<bool> IsCategoryExistAsync(int id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Categories.AnyAsync(category => category.Id == id, cancellationToken);
+    }
 }

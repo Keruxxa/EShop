@@ -10,6 +10,7 @@ public interface IEShopDbContext
     public DbSet<Brand> Brands { get; set; }
     public DbSet<BrandProducts> BrandProducts { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<CategoryClosureNode> CategoryClosureNodes { get; set; }
     public DbSet<CategoryProducts> CategoryProducts { get; set; }
     public DbSet<Country> Countries { get; set; }
     public DbSet<Favorite> Favorites { get; set; }

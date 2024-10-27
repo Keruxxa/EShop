@@ -8,8 +8,14 @@ namespace EShop.Infrastructure.Handlers.Commands.Categories.Create;
 /// </summary>
 public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {
-    public CreateCategoryCommandValidator() =>
+    public CreateCategoryCommandValidator()
+    {
+        RuleFor(command => command.AncestorCategoryId)
+            .GreaterThan(0);
+
         RuleFor(command => command.Name)
             .NotEmpty()
             .MaximumLength(128);
+    }
+
 }
