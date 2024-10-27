@@ -1,5 +1,8 @@
 ﻿namespace EShop.Domain.Entities;
 
+/// <summary>
+///     Представляет категорию
+/// </summary>
 public class Category : EntityBase<int>
 {
     /// <summary>
