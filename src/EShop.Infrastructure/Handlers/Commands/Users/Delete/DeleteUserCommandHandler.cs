@@ -1,12 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Users;
-using EShop.Application.Interfaces;
-using EShop.Application.Interfaces.Repositories;
-using EShop.Domain.Entities;
 using EShop.Application.Exceptions;
-using MediatR;
-using EShop.Application.Issues.Errors.Base;
+using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
+using EShop.Domain.Entities;
+using MediatR;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.Delete;
 
@@ -15,12 +14,11 @@ namespace EShop.Infrastructure.Handlers.Commands.Users.Delete;
 /// </summary>
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
 
-    public DeleteUserCommandHandler(IEShopDbContext dbContext)
+    public DeleteUserCommandHandler(IUserRepository userRepository)
     {
-        _dbContext = dbContext;
+        _userRepository = userRepository;
     }
 
 

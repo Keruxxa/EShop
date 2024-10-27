@@ -39,11 +39,24 @@ public class CategoriesController : BaseController
     }
 
 
+    [HttpGet("hierarchy")]
+    [AllowAnonymous]
+    public async Task<ActionResult<Result<List<SelectListItem<int>>>>> GetHierarchyById(int categoryId)
+    {
+
+        var result = await Mediator.Send(new GetCategoriesHierarchyByIdQuery(categoryId));
+
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(result.Error);
+    }
+
+
     [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result<int, Error>>> Create([FromQuery] string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<int, Error>>> Create([FromQuery] int ancestorCategoryId, [FromQuery] string name, CancellationToken cancellationToken)
     {
-        var result = await Mediator.Send(new CreateCategoryCommand(name), cancellationToken);
+        var result = await Mediator.Send(new CreateCategoryCommand(ancestorCategoryId, name), cancellationToken);
 
         if (result.IsSuccess)
         {

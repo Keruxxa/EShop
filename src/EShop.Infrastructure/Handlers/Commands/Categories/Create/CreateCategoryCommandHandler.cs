@@ -1,11 +1,11 @@
-﻿using EShop.Application.CQRS.Commands.Categories;
+﻿using CSharpFunctionalExtensions;
+using EShop.Application.CQRS.Commands.Categories;
 using EShop.Application.Interfaces.Repositories;
+using EShop.Application.Interfaces.Services;
+using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Domain.Entities;
 using MediatR;
-using CSharpFunctionalExtensions;
-using EShop.Application.Issues.Errors.Base;
-using EShop.Application.Issues.Errors;
-using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Categories.Create;
 
@@ -33,9 +33,11 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
         var category = new Category(request.Name);
 
-        _categoryRepository.Create(category);
+        var ancestorsHierarchy = await _categoryRepository.GetHierarchyByIdAsync(request.AncestorCategoryId, cancellationToken);
 
-        var isSaved = await _categoryRepository.SaveChangesAsync(cancellationToken) > 0;
+        var ancestorIds = ancestorsHierarchy.Select(ancestor => ancestor.Id).ToList();
+
+        var isSaved = await _categoryRepository.CreateAsync(category, ancestorIds, cancellationToken);
 
         return isSaved
             ? Result.Success<int, Error>(category.Id)
