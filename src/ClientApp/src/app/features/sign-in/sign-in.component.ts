@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -15,9 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { RippleModule } from 'primeng/ripple';
-import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
-import { SignInUserModel } from './models/sign-in-user-model';
 import { SignInUserResponseModel } from './models/sign-in-user-response-model';
 
 @Component({
@@ -39,14 +38,14 @@ import { SignInUserResponseModel } from './models/sign-in-user-response-model';
   styleUrl: './sign-in.component.scss',
   providers: [MessageService],
 })
-export class SignInComponent implements OnDestroy {
+export class SignInComponent {
   @Output() signIn = new EventEmitter<SignInUserResponseModel>();
   public formGroup: FormGroup;
   public isOpened: boolean = false;
   public isEmailInvalid: boolean = false;
   public isPasswordInvalid: boolean = false;
   public isLoading: boolean = false;
-  public subscribtions: Subscription | undefined;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,
@@ -68,13 +67,9 @@ export class SignInComponent implements OnDestroy {
 
     this.isLoading = true;
 
-    const signInUserModel: SignInUserModel = {
-      email: this.formGroup.controls['email'].value,
-      password: this.formGroup.controls['password'].value,
-    };
-
-    this.subscribtions = this.authService
-      .signIn(signInUserModel)
+    this.authService
+      .signIn(this.formGroup)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(isAuthenticated => {
         this.isLoading = false;
 
@@ -102,9 +97,5 @@ export class SignInComponent implements OnDestroy {
 
   public passwordChange(): void {
     this.isPasswordInvalid = this.formGroup.controls['password'].invalid;
-  }
-
-  ngOnDestroy(): void {
-    this.subscribtions?.unsubscribe();
   }
 }

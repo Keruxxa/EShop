@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.dev';
 import { SignInUserModel } from '../../features/sign-in/models/sign-in-user-model';
@@ -17,7 +18,12 @@ export class AuthService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  public signIn(signInUserModel: SignInUserModel): Observable<boolean> {
+  public signIn(formGroup: FormGroup): Observable<boolean> {
+    const signInUserModel: SignInUserModel = {
+      email: formGroup.controls['email'].value,
+      password: formGroup.controls['password'].value,
+    };
+
     return this.httpClient
       .post<SignInUserResponseModel>(`${this.apiUrl}/sign-in`, signInUserModel)
       .pipe(
@@ -30,7 +36,14 @@ export class AuthService {
       );
   }
 
-  public signUp(signUpUserModel: SignUpUserModel): Observable<boolean> {
+  public signUp(formGroup: FormGroup): Observable<boolean> {
+    const signUpUserModel: SignUpUserModel = {
+      firstName: formGroup.controls['firstName'].value,
+      lastName: formGroup.controls['lastName'].value,
+      email: formGroup.controls['email'].value,
+      password: formGroup.controls['password'].value,
+    };
+
     return this.httpClient
       .post<SignUpUserResponseModel>(`${this.apiUrl}/sign-up`, signUpUserModel)
       .pipe(

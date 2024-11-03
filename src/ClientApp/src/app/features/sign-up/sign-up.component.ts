@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -14,9 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { RippleModule } from 'primeng/ripple';
-import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
-import { SignUpUserModel } from './models/sign-up-user-model';
 
 @Component({
   selector: 'app-sign-up',
@@ -36,13 +35,13 @@ import { SignUpUserModel } from './models/sign-up-user-model';
   ],
   providers: [MessageService],
 })
-export class SignUpComponent implements OnDestroy {
+export class SignUpComponent {
   public formGroup: FormGroup;
   public isOpened: boolean = false;
   public isEmailInvalid: boolean = false;
   public isPasswordInvalid: boolean = false;
   public isLoading: boolean = false;
-  public subscribtions: Subscription | undefined;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,
@@ -65,6 +64,10 @@ export class SignUpComponent implements OnDestroy {
     this.isPasswordInvalid = this.formGroup.controls['password'].invalid;
   }
 
+  public changeVisibility(): void {
+    this.isOpened = false;
+  }
+
   public onSignUp(): void {
     if (this.formGroup.invalid) {
       this.isEmailInvalid = this.formGroup.controls['email'].invalid;
@@ -74,37 +77,23 @@ export class SignUpComponent implements OnDestroy {
 
     this.isLoading = true;
 
-    const signUpUserModel: SignUpUserModel = {
-      firstName: this.formGroup.controls['firstName'].value,
-      lastName: this.formGroup.controls['lastName'].value,
-      email: this.formGroup.controls['email'].value,
-      password: this.formGroup.controls['password'].value,
-    };
-
-    this.authService.signUp(signUpUserModel).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: (errorMessage: string) => {
-        if (!this.isOpened) {
-          this.messageService.add({
-            severity: 'error',
-            detail: errorMessage,
-          });
-          this.isOpened = true;
-        }
-
-        this.isLoading = false;
-        console.log('Completed');
-      },
-    });
-  }
-
-  public changeVisibility(): void {
-    this.isOpened = false;
-  }
-
-  ngOnDestroy(): void {
-    this.subscribtions?.unsubscribe();
+    this.authService
+      .signUp(this.formGroup)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: (errorMessage: string) => {
+          if (!this.isOpened) {
+            this.messageService.add({
+              severity: 'error',
+              detail: errorMessage,
+            });
+            this.isOpened = true;
+          }
+          this.isLoading = false;
+        },
+      });
   }
 }

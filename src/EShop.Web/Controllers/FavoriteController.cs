@@ -28,10 +28,10 @@ public class FavoriteController : BaseController
     [HttpPost("add-product")]
     public async Task<ActionResult<Result<Unit, Error>>> AddProductAsync(
         [FromQuery] Guid id,
-        [FromQuery] Guid ProductId,
+        [FromQuery] Guid productId,
         CancellationToken cancellationToken = default)
     {
-        var result = await Mediator.Send(new AddProductToFavoriteCommand(id, ProductId), cancellationToken);
+        var result = await Mediator.Send(new AddProductToFavoriteCommand(id, productId), cancellationToken);
 
         if (result.IsSuccess)
         {
