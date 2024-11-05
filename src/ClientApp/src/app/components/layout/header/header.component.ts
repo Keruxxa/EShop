@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { CategoriesService } from '../../../shared/services/categories.service';
 
 @Component({
@@ -7,7 +9,7 @@ import { CategoriesService } from '../../../shared/services/categories.service';
   standalone: true,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  imports: [RouterLink],
+  imports: [RouterLink, ButtonModule, InputTextModule, RouterModule],
   providers: [CategoriesService],
 })
 export class HeaderComponent {

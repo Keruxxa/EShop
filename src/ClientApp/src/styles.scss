@@ -29,10 +29,38 @@ body {
 
   // Button
   .p-button {
-    padding: 0.7em 1em !important;
+    padding: 0.7em 1em;
   }
   .p-button-label {
-    font-size: 0.85rem;
+    font-size: 1em;
+    font-weight: 400;
+  }
+  .p-button-icon-top {
+    margin-bottom: 0.2em !important;
+  }
+  .p-button-icon-right {
+    margin-left: 0.4em !important;
+  }
+
+  .header-button {
+    .p-button {
+      width: 6em;
+      padding: 0.25em 1em !important;
+    }
+    .p-button-label {
+      font-weight: 200;
+    }
+  }
+
+  .catalog {
+    .p-button {
+      width: 7em;
+      height: 3em !important;
+      padding: 0.25em 1em !important;
+    }
+    .p-button-label {
+      @extend .header-button;
+    }
   }
 
   //Input

@@ -1,8 +1,44 @@
-<div class="flex align-items-center surface-0 p-2">
+<div class="flex align-items-center justify-content-end surface-0 p-2">
   <a routerLink="/"
     ><img
+      class="header-img"
       src="/EShop.svg"
       alt="Logo"
-      height="90"
+      height="68"
   /></a>
+  <p-button
+    class="header-button header-button-ext catalog"
+    label="Каталог"
+    icon="pi pi-angle-down"
+    [iconPos]="'right'"
+    [text]="true"
+  ></p-button>
+
+  <input
+    pInputText
+    class="header-input"
+  />
+
+  <p-button
+    class="header-button header-button-ext"
+    label="Избранное"
+    icon="pi pi-heart"
+    [iconPos]="'top'"
+    [text]="true"
+  ></p-button>
+  <p-button
+    class="header-button header-button-ext"
+    label="Корзина"
+    icon="pi pi-shopping-cart"
+    [iconPos]="'top'"
+    [text]="true"
+  ></p-button>
+  <p-button
+    class="header-button header-button-ext"
+    label="Войти"
+    icon="pi pi-user"
+    [iconPos]="'top'"
+    [text]="true"
+    routerLink="/sign-in"
+  ></p-button>
 </div>
