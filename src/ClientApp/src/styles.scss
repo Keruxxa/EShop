@@ -44,7 +44,7 @@ body {
 
   .header-button {
     .p-button {
-      width: 6em;
+      width: 6em !important;
       padding: 0.25em 1em !important;
     }
     .p-button-label {
@@ -54,7 +54,7 @@ body {
 
   .catalog {
     .p-button {
-      width: 7em;
+      width: 7em !important;
       height: 3em !important;
       padding: 0.25em 1em !important;
     }
