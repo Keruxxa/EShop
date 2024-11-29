@@ -4,6 +4,7 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Products.List;
 
@@ -25,7 +26,9 @@ public class GetProductListQueryHandler
     public async Task<IEnumerable<ProductListItemDto>> Handle(
         GetProductListQuery request, CancellationToken cancellationToken)
     {
-        var products = await _productRepository.GetListAsync(cancellationToken);
+        var products = await _productRepository
+            .GetList()
+            .ToListAsync(cancellationToken);
 
         return products.Select(product =>
         {

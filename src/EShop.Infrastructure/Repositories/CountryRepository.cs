@@ -15,11 +15,11 @@ public class CountryRepository : ICountryRepository
     }
 
 
-    public async Task<List<Country>> GetListAsync(CancellationToken cancellationToken)
+    public IQueryable<Country> GetList()
     {
-        return await _dbContext.Countries
+        return _dbContext.Countries
             .AsNoTracking()
-            .ToListAsync(cancellationToken);
+            .AsQueryable();
     }
 
     public async Task<Country> GetByIdAsync(int id, CancellationToken cancellationToken)

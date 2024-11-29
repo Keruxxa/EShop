@@ -7,7 +7,7 @@ public interface IProductRepository
     /// <summary>
     ///     Получает список товаров
     /// </summary>
-    Task<List<Product>> GetListAsync(CancellationToken cancellationToken);
+    IQueryable<Product> GetList();
 
     /// <summary>
     ///     Получает товар с заполненными навигационными свойствами

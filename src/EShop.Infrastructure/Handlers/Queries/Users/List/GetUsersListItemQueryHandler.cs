@@ -4,6 +4,7 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Users.List;
 
@@ -26,7 +27,9 @@ public class GetUsersListItemQueryHandler : IRequestHandler<GetUsersListItemQuer
         GetUsersListItemQuery request,
         CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetListAsync(cancellationToken);
+        var users = await _userRepository
+            .GetListAsync()
+            .ToListAsync(cancellationToken);
 
         return users.Select(user =>
         {

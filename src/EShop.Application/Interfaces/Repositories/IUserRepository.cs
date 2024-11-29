@@ -7,7 +7,7 @@ public interface IUserRepository
     /// <summary>
     ///     Получает список пользователей
     /// </summary>
-    Task<List<User>> GetListAsync(CancellationToken cancellationToken);
+    IQueryable<User> GetListAsync();
 
     /// <summary>
     ///     Получает пользователя

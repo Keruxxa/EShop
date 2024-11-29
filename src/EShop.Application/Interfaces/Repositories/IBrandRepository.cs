@@ -7,7 +7,7 @@ public interface IBrandRepository
     /// <summary>
     ///     Получает список брендов
     /// </summary>
-    Task<List<Brand>> GetListAsync(CancellationToken cancellationToken);
+    IQueryable<Brand> GetList();
 
     /// <summary>
     ///     Получает бренд

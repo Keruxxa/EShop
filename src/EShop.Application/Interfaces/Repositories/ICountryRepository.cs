@@ -7,7 +7,7 @@ public interface ICountryRepository
     /// <summary>
     ///     Получает список категорий
     /// </summary>
-    Task<List<Country>> GetListAsync(CancellationToken cancellationToken);
+    IQueryable<Country> GetList();
 
     /// <summary>
     ///     Получает страну

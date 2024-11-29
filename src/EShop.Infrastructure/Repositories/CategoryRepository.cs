@@ -17,11 +17,11 @@ class CategoryRepository : ICategoryRepository
     }
 
 
-    public async Task<List<Category>> GetListAsync(CancellationToken cancellationToken)
+    public IQueryable<Category> GetList()
     {
-        return await _dbContext.Categories
+        return _dbContext.Categories
             .AsNoTracking()
-            .ToListAsync(cancellationToken);
+            .AsQueryable();
     }
 
     public async Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken)

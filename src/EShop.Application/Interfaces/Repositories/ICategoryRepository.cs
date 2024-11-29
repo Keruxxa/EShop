@@ -8,7 +8,7 @@ public interface ICategoryRepository
     /// <summary>
     ///     Получает список категорий
     /// </summary>
-    Task<List<Category>> GetListAsync(CancellationToken cancellationToken);
+    IQueryable<Category> GetList();
 
     /// <summary>
     ///     Получает категорию

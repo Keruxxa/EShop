@@ -15,11 +15,11 @@ public class ProductRepository : IProductRepository
     }
 
 
-    public async Task<List<Product>> GetListAsync(CancellationToken cancellationToken)
+    public IQueryable<Product> GetList()
     {
-        return await _dbContext.Products
+        return _dbContext.Products
             .AsNoTracking()
-            .ToListAsync(cancellationToken);
+            .AsQueryable();
     }
 
     public async Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken)
