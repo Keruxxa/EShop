@@ -3,6 +3,7 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Categories.SelectList;
 
@@ -26,7 +27,9 @@ public class GetCategorySelectListQueryHandler
         GetCategorySelectListQuery request,
         CancellationToken cancellationToken)
     {
-        var categories = await _categoryRepository.GetListAsync(cancellationToken);
+        var categories = await _categoryRepository
+            .GetList()
+            .ToListAsync(cancellationToken);
 
         return categories
             .Select(SelectListItem<int>.CreateItem)

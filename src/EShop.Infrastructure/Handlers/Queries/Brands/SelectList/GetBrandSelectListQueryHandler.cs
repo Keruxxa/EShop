@@ -3,6 +3,7 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Brands.SelectList;
 
@@ -26,7 +27,9 @@ public class GetBrandSelectListQueryHandler :
         GetBrandSelectListQuery request,
         CancellationToken cancellationToken)
     {
-        var brands = await _brandRepository.GetListAsync(cancellationToken);
+        var brands = await _brandRepository
+            .GetList()
+            .ToListAsync(cancellationToken);
 
         return brands
             .Select(SelectListItem<int>.CreateItem)

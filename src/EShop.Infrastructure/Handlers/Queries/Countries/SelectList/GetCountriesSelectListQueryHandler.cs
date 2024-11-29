@@ -3,6 +3,7 @@ using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Countries.SelectList;
 
@@ -26,7 +27,9 @@ public class GetCountriesSelectListQueryHandler
         GetCountriesSelectListQuery request,
         CancellationToken cancellationToken)
     {
-        var countriesEntities = await _countryRepository.GetListAsync(cancellationToken);
+        var countriesEntities = await _countryRepository
+            .GetList()
+            .ToListAsync(cancellationToken);
 
         return countriesEntities
             .Select(SelectListItem<int>.CreateItem)

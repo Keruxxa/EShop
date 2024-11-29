@@ -16,11 +16,9 @@ public class UserRepository : IUserRepository
     }
 
 
-    public async Task<List<User>> GetListAsync(CancellationToken cancellationToken)
+    public IQueryable<User> GetListAsync()
     {
-        return await _dbContext.Users
-            .Where(user => user.RoleId == RoleType.Manager)
-            .ToListAsync(cancellationToken);
+        return _dbContext.Users.Where(user => user.RoleId == RoleType.Manager);
     }
 
     public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
