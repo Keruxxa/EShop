@@ -18,20 +18,28 @@ public class ReviewRepository : IReviewRepository
     public async Task<List<Review>> GetListByProductIdAsync(Guid productId, CancellationToken cancellationToken)
     {
         return await _dbContext.Reviews
+            .Include(review => review.User)
             .Where(review => review.ProductId == productId)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<Review>> GetListByUserId(Guid userId, CancellationToken cancellationToken)
+    public async Task<List<Review>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Reviews
+            .Include(review => review.Product)
             .Where(review => review.UserId == userId)
             .ToListAsync(cancellationToken);
     }
 
-    public Guid Create(Review review)
+    public async Task<Review> GetByIdAsync(Guid productId, Guid userId, CancellationToken cancellationToken)
     {
-        return _dbContext.Reviews.Add(review).Entity.Id;
+        return await _dbContext.Reviews.FirstOrDefaultAsync(review =>
+            review.ProductId == productId && review.UserId == userId, cancellationToken);
+    }
+
+    public Review Create(Review review)
+    {
+        return _dbContext.Reviews.Add(review).Entity;
     }
 
     public void Update(Review review)

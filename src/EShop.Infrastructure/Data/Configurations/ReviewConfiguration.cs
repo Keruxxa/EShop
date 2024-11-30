@@ -8,10 +8,11 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
-        builder.HasKey(review => review.Id);
-
-        builder.Property(review => review.Id)
-            .IsRequired();
+        builder.HasKey(review => new
+        {
+            review.ProductId,
+            review.UserId
+        });
 
         builder.Property(review => review.Text)
             .HasMaxLength(2048);
