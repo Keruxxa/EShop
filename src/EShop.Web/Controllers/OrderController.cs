@@ -47,7 +47,7 @@ public class OrderController : BaseController
 
 
     [HttpPost]
-    public async Task<ActionResult> CreateOrderAsync([FromBody] CreateOrderDto createOrderDto, CancellationToken cancellationToken)
+    public async Task<ActionResult> CreateAsync([FromBody] CreateOrderDto createOrderDto, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new CreateOrderCommand(createOrderDto), cancellationToken);
 
@@ -64,7 +64,5 @@ public class OrderController : BaseController
             ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
             _ => BadRequest(error)
         };
-
-        throw new NotImplementedException();
     }
 }

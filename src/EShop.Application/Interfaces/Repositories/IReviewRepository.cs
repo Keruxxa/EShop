@@ -12,12 +12,17 @@ public interface IReviewRepository
     /// <summary>
     ///     Получает список отзывов пользователя
     /// </summary>
-    Task<List<Review>> GetListByUserId(Guid userId, CancellationToken cancellationToken);
+    Task<List<Review>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Получает отзыв
+    /// </summary>
+    Task<Review> GetByIdAsync(Guid productId, Guid userId, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Создает отзыв
     /// </summary>
-    Guid Create(Review review);
+    Review Create(Review review);
 
     /// <summary>
     ///     Обновляет отзыва
