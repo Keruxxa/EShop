@@ -35,7 +35,7 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(user => user.Email.Equals(email), cancellationToken);
     }
 
-    public Guid Create(User user)
+    public Guid Add(User user)
     {
         return _dbContext.Users.Add(user).Entity.Id;
     }

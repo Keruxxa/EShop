@@ -33,7 +33,7 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Res
 
         var brand = new Brand(request.Name);
 
-        _brandRepository.Create(brand);
+        _brandRepository.Add(brand);
 
         var isSaved = await _brandRepository.SaveChangesAsync(cancellationToken) > 0;
 

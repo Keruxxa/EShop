@@ -40,7 +40,7 @@ public class AddProductToFavoriteCommandHandler : IRequestHandler<AddProductToFa
         if (favorite is null)
         {
             favorite = new Favorite(request.Id);
-            _favoriteRepository.Create(favorite);
+            _favoriteRepository.Add(favorite);
         }
 
         var isAdded = favorite.AddProduct(request.ProductId);

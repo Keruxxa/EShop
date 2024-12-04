@@ -23,9 +23,9 @@ public interface ICategoryRepository
     Task<List<SelectListItem<int>>> GetHierarchyByIdAsync(int categoryId, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает категорию
+    ///     Добавляет категорию
     /// </summary>
-    Task<bool> CreateAsync(Category category, List<int> ancestorIds, CancellationToken cancellationToken);
+    Task<bool> AddAsync(Category category, List<int> ancestorIds, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Обновляет категорию

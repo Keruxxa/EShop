@@ -28,7 +28,7 @@ public class CountryRepository : ICountryRepository
             .FirstOrDefaultAsync(country => country.Id == id, cancellationToken);
     }
 
-    public int Create(Country country)
+    public int Add(Country country)
     {
         return _dbContext.Countries.Add(country).Entity.Id;
     }

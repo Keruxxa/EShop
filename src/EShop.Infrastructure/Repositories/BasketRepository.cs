@@ -23,7 +23,7 @@ public class BasketRepository : IBasketRepository
             .FirstOrDefaultAsync(basket => basket.Id == id, cancellationToken);
     }
 
-    public Guid Create(Basket basket)
+    public Guid Add(Basket basket)
     {
         return _dbContext.Baskets.Add(basket).Entity.Id;
     }

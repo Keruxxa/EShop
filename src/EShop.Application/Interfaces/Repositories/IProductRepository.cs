@@ -20,9 +20,9 @@ public interface IProductRepository
     Task<Product> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает товар
+    ///     Добавляет товар
     /// </summary>
-    Guid Create(Product product);
+    Guid Add(Product product);
 
     /// <summary>
     ///     Обновляет товар

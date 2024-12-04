@@ -43,7 +43,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             Id = Guid.NewGuid()
         };
 
-        _productRepository.Create(product);
+        _productRepository.Add(product);
 
         var isSaved = await _productRepository.SaveChangesAsync(cancellationToken) > 0;
 

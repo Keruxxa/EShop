@@ -29,7 +29,7 @@ public class BrandRepository : IBrandRepository
             .FirstOrDefaultAsync(brand => brand.Id == id, cancellationToken);
     }
 
-    public int Create(Brand brand)
+    public int Add(Brand brand)
     {
         return _dbContext.Brands.Add(brand).Entity.Id;
     }

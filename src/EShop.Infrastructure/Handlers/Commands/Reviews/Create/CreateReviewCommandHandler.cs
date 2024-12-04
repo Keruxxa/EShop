@@ -40,7 +40,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, R
 
         var review = new Review(request.ProductId, request.UserId, request.Rating, request.Text);
 
-        var reviewEntity = _reviewRepository.Create(review);
+        var reviewEntity = _reviewRepository.Add(review);
 
         var isSaved = await _reviewRepository.SaveChangesAsync(cancellationToken) > 0;
 

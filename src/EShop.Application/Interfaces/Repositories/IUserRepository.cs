@@ -20,9 +20,9 @@ public interface IUserRepository
     Task<User> SignInAsync(string email, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает пользователя
+    ///     Добавляет пользователя
     /// </summary>
-    Guid Create(User user);
+    Guid Add(User user);
 
     /// <summary>
     ///     Обновляет пользователя

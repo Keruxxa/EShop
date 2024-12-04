@@ -15,9 +15,9 @@ public interface IOrderRepository
     Task<Order> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает заказ
+    ///     Добавляет заказ
     /// </summary>
-    Guid Create(Order order);
+    Guid Add(Order order);
 
     /// <summary>
     ///     Сохраняет изменения контекста

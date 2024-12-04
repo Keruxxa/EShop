@@ -37,7 +37,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
         var ancestorIds = ancestorsHierarchy.Select(ancestor => ancestor.Id).ToList();
 
-        var isSaved = await _categoryRepository.CreateAsync(category, ancestorIds, cancellationToken);
+        var isSaved = await _categoryRepository.AddAsync(category, ancestorIds, cancellationToken);
 
         return isSaved
             ? Result.Success<int, Error>(category.Id)

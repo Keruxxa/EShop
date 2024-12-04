@@ -15,9 +15,9 @@ public interface IBrandRepository
     Task<Brand> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает бренд
+    ///     Добавляет бренд
     /// </summary>
-    int Create(Brand brand);
+    int Add(Brand brand);
 
     /// <summary>
     ///     Обновляет бренд

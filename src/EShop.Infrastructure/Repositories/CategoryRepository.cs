@@ -39,7 +39,7 @@ class CategoryRepository : ICategoryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<bool> CreateAsync(Category category, List<int> ancestorIds, CancellationToken cancellationToken)
+    public async Task<bool> AddAsync(Category category, List<int> ancestorIds, CancellationToken cancellationToken)
     {
         using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 

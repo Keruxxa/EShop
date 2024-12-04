@@ -57,7 +57,7 @@ public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Resul
 
         var user = _mapper.From(request).AdaptToType<User>();
 
-        _userRepository.Create(user);
+        _userRepository.Add(user);
 
         var isSaved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 

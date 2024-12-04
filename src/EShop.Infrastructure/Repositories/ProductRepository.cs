@@ -41,7 +41,7 @@ public class ProductRepository : IProductRepository
         _dbContext.Products.Update(product);
     }
 
-    public Guid Create(Product product)
+    public Guid Add(Product product)
     {
         var addedProduct = _dbContext.Products.Add(product).Entity;
 

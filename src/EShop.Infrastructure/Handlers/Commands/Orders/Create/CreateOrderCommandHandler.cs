@@ -44,7 +44,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
             order.AddOrderItem(orderItem);
         }
 
-        _orderRepository.Create(order);
+        _orderRepository.Add(order);
 
         var isSaved = await _orderRepository.SaveChangesAsync(cancellationToken) > 0;
 

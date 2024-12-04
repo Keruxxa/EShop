@@ -15,9 +15,9 @@ public interface ICountryRepository
     Task<Country> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает страну
+    ///     Добавляет страну
     /// </summary>
-    int Create(Country country);
+    int Add(Country country);
 
     /// <summary>
     ///     Обновляет страну

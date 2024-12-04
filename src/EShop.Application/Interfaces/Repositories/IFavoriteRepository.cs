@@ -10,9 +10,9 @@ public interface IFavoriteRepository
     Task<Favorite> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Создает коллекцию избранного
+    ///     Добавляет коллекцию избранного
     /// </summary>
-    void Create(Favorite favorite);
+    void Add(Favorite favorite);
 
     /// <summary>
     ///     Удаляет коллекцию избранного

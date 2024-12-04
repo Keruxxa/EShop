@@ -37,7 +37,7 @@ public class ReviewRepository : IReviewRepository
             review.ProductId == productId && review.UserId == userId, cancellationToken);
     }
 
-    public Review Create(Review review)
+    public Review Add(Review review)
     {
         return _dbContext.Reviews.Add(review).Entity;
     }

@@ -32,7 +32,7 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(order => order.Id == id, cancellationToken);
     }
 
-    public Guid Create(Order order)
+    public Guid Add(Order order)
     {
         return _dbContext.Orders.Add(order).Entity.Id;
     }

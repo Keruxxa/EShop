@@ -33,7 +33,7 @@ public class CreateCountryCommandHandler : IRequestHandler<CreateCountryCommand,
 
         var country = new Country(request.Name);
 
-        _countryRepository.Create(country);
+        _countryRepository.Add(country);
 
         var isSaved = await _countryRepository.SaveChangesAsync(cancellationToken) > 0;
 

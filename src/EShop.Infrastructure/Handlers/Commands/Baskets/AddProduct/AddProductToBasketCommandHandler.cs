@@ -36,7 +36,7 @@ public class AddProductToBasketCommandHandler : IRequestHandler<AddProductToBask
         if (basket is null)
         {
             basket = new Basket(request.BasketId);
-            _basketRepository.Create(basket);
+            _basketRepository.Add(basket);
         }
 
         basket.AddItem(request.ProductId);

@@ -121,7 +121,7 @@ public class CreateUserCommandHandlerTests
             .Returns(user);
 
         _userRepositoryMock
-            .Setup(x => x.Create(user))
+            .Setup(x => x.Add(user))
             .Returns(id);
 
         _userRepositoryMock

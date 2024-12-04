@@ -23,7 +23,7 @@ public class FavoriteRepository : IFavoriteRepository
             .FirstOrDefaultAsync(favorite => favorite.Id == id, cancellationToken);
     }
 
-    public void Create(Favorite favorite)
+    public void Add(Favorite favorite)
     {
         _dbContext.Favorites.Add(favorite);
     }
