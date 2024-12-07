@@ -63,7 +63,7 @@ public class BrandsController : BaseController
 
     [HttpPatch("{id:int}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result>> Update(
+    public async Task<ActionResult<Result<Unit, Error>>> Update(
         int id,
         [FromQuery] string name,
         CancellationToken cancellationToken)
@@ -89,7 +89,7 @@ public class BrandsController : BaseController
 
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<bool>> Delete(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<Unit, Error>>> Delete(int id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteBrandCommand(id), cancellationToken);
 

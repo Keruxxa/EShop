@@ -1,4 +1,5 @@
-﻿using EShop.Application.CQRS.Commands.Orders;
+﻿using CSharpFunctionalExtensions;
+using EShop.Application.CQRS.Commands.Orders;
 using EShop.Application.CQRS.Queries.Orders;
 using EShop.Application.Dtos.Orders;
 using EShop.Application.Issues.Errors.Base;
@@ -16,7 +17,7 @@ public class OrderController : BaseController
 
 
     [HttpGet("list")]
-    public async Task<ActionResult> GetListAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<List<OrderDto>, Error>>> GetListAsync(Guid userId, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetOrderListQuery(userId), cancellationToken);
 
@@ -36,7 +37,7 @@ public class OrderController : BaseController
 
 
     [HttpGet("{id:Guid}")]
-    public async Task<ActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<OrderDto, Error>>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetOrderByIdQuery(id), cancellationToken);
 
@@ -47,7 +48,7 @@ public class OrderController : BaseController
 
 
     [HttpPost]
-    public async Task<ActionResult> CreateAsync([FromBody] CreateOrderDto createOrderDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<Guid, Error>>> CreateAsync([FromBody] CreateOrderDto createOrderDto, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new CreateOrderCommand(createOrderDto), cancellationToken);
 

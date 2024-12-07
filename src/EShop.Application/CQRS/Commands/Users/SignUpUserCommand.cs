@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using EShop.Application.Dtos.User;
 using EShop.Application.Issues.Errors.Base;
-using EShop.Domain.Entities;
 using MediatR;
 
 namespace EShop.Application.CQRS.Commands.Users;
@@ -13,7 +13,7 @@ public record SignUpUserCommand(
     string? LastName,
     string? Phone,
     string Email,
-    string Password) : IRequest<Result<User, Error>>
+    string Password) : IRequest<Result<SignUpUserResponseDto, Error>>
 {
     public string HashPassword { get; private set; }
 

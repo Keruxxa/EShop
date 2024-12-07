@@ -10,46 +10,50 @@ using MediatR;
 using static EShop.Application.Constants;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Issues.Errors;
+using EShop.Application.Dtos.User;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.SignUp;
 
 /// <summary>
 ///     Представляет обработчик команды <see cref="SignUpUserCommandHandler"/>
 /// </summary>
-public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Result<User, Error>>
+public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Result<SignUpUserResponseDto, Error>>
 {
     private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
+    private readonly IJwtTokenService _jwtTokenService;
 
     public SignUpUserCommandHandler(
         IUserRepository userRepository,
         IEShopDbContext dbContext,
         IPasswordHasher passwordHasher,
         IUserService userService,
-        IMapper mapper)
+        IMapper mapper,
+        IJwtTokenService jwtTokenService)
     {
         _userRepository = userRepository;
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
         _userService = userService;
         _mapper = mapper;
+        _jwtTokenService = jwtTokenService;
     }
 
 
-    public async Task<Result<User, Error>> Handle(SignUpUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<SignUpUserResponseDto, Error>> Handle(SignUpUserCommand request, CancellationToken cancellationToken)
     {
         if (!await _userService.IsEmailUniqueAsync(request.Email, cancellationToken))
         {
-            return Result.Failure<User, Error>(new Error(
+            return Result.Failure<SignUpUserResponseDto, Error>(new Error(
                 new DuplicateEntityError(nameof(User), USER_EMAIL_IS_NOT_UNIQUE), ErrorType.Duplicate));
         }
 
         if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
         {
-            return Result.Failure<User, Error>(new Error(
+            return Result.Failure<SignUpUserResponseDto, Error>(new Error(
                 new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate));
         }
 
@@ -61,8 +65,15 @@ public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Resul
 
         var isSaved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
 
+        if (!isSaved)
+        {
+            return Result.Failure<SignUpUserResponseDto, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
+        }
+
+        var token = _jwtTokenService.Generate(user);
+
         return isSaved
-            ? Result.Success<User, Error>(user)
-            : Result.Failure<User, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
+            ? Result.Success<SignUpUserResponseDto, Error>(new SignUpUserResponseDto(user.Id, token))
+            : Result.Failure<SignUpUserResponseDto, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
     }
 }

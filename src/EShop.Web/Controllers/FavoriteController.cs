@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Favorites;
 using EShop.Application.CQRS.Queries.Favorites;
+using EShop.Application.Dtos.Favorite;
 using EShop.Application.Issues.Errors.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ public class FavoriteController : BaseController
 
 
     [HttpGet("list")]
-    public async Task<ActionResult> GetListAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<FavoriteDto, Error>>> GetListAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetFavoriteByIdQuery(id), cancellationToken);
 

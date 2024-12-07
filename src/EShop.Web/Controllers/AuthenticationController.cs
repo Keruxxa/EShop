@@ -29,7 +29,7 @@ public class AuthenticationController : BaseController
 
 
     [HttpPost("sign-up")]
-    public async Task<ActionResult<SignUpUserResponseDto>> SignUp([FromBody] SignUpUserDto signUpUserDto)
+    public async Task<ActionResult<Result<SignUpUserResponseDto, Error>>> SignUp([FromBody] SignUpUserDto signUpUserDto)
     {
         var result = await Mediator.Send(signUpUserDto.Adapt<SignUpUserCommand>());
 
@@ -45,13 +45,11 @@ public class AuthenticationController : BaseController
             };
         }
 
-        var user = result.Value;
+        var userResponseDto = result.Value;
 
-        var token = _jwtTokenService.Generate(user);
+        HttpContext.Response.Cookies.Append(ESHOP_SERVER_COOKIES, userResponseDto.Token);
 
-        HttpContext.Response.Cookies.Append(ESHOP_SERVER_COOKIES, token);
-
-        return Ok(new SignUpUserResponseDto(user.Id, token));
+        return Ok(userResponseDto);
     }
 
 
@@ -77,13 +75,11 @@ public class AuthenticationController : BaseController
             };
         }
 
-        var user = result.Value;
+        var userResponseDto = result.Value;
 
-        var token = _jwtTokenService.Generate(user);
+        HttpContext.Response.Cookies.Append(ESHOP_SERVER_COOKIES, userResponseDto.Token);
 
-        HttpContext.Response.Cookies.Append(ESHOP_SERVER_COOKIES, token);
-
-        return Ok(new SignInUserResponseDto(user.Id, token));
+        return Ok(userResponseDto);
     }
 
 

@@ -28,7 +28,7 @@ public class ProductsController : BaseController
 
 
     [HttpGet("{id:Guid}")]
-    public async Task<ActionResult<Result<ProductDto>>> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<ProductDto, Error>>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetProductByIdQuery(id), cancellationToken);
 
@@ -40,7 +40,7 @@ public class ProductsController : BaseController
 
     [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result<Guid>>> Create(
+    public async Task<ActionResult<Result<Guid, Error>>> Create(
         [FromBody] CreateProductDto createProductDto,
         CancellationToken cancellationToken)
     {
@@ -64,7 +64,7 @@ public class ProductsController : BaseController
 
     [HttpPatch("{id:Guid}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result>> Update(
+    public async Task<ActionResult<Result<Unit, Error>>> Update(
         Guid id,
         [FromBody] UpdateProductDto updateProductDto,
         CancellationToken cancellationToken)
@@ -92,7 +92,7 @@ public class ProductsController : BaseController
 
     [HttpDelete("{id:Guid}")]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result>> Delete(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<Unit, Error>>> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteProductCommand(id), cancellationToken);
 

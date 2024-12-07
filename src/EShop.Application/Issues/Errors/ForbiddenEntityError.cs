@@ -9,6 +9,6 @@ public class ForbiddenEntityError : IEntityError
 {
     public string Message { get; }
 
-    public ForbiddenEntityError(object id)
+    public ForbiddenEntityError(Guid id)
         => Message = $"User with id '{id}' does not have permission to perform this action";
 }
