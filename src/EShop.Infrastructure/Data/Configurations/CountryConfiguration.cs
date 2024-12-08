@@ -17,6 +17,9 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
             .IsRequired()
             .HasMaxLength(128);
 
+        builder.HasIndex(country => country.Name)
+            .IsUnique();
+
         builder.HasData([
             new Country("Китай") { Id = 1 },
             new Country("Россия") { Id = 2 },
