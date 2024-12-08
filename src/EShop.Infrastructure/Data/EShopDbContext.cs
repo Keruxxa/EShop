@@ -18,6 +18,7 @@ public class EShopDbContext : DbContext, IEShopDbContext
     public DbSet<CategoryClosureNode> CategoryClosureNodes { get; set; }
     public DbSet<CategoryProducts> CategoryProducts { get; set; }
     public DbSet<Country> Countries { get; set; }
+    public DbSet<OrderDeliveryStatus> OrderDeliveryStatuses { get; set; }
     public DbSet<Favorite> Favorites { get; set; }
     public DbSet<FavoriteProducts> FavoriteProducts { get; set; }
     public DbSet<Order> Orders { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace EShop.Domain.Entities;
+﻿using EShop.Domain.Enums;
+
+namespace EShop.Domain.Entities;
 
 /// <summary>
 ///     Представляет заказ
@@ -42,6 +44,16 @@ public class Order : EntityBase<Guid>
     ///     Дата получения
     /// </summary>
     public DateTime? ReceiptDate { get; private set; }
+
+    /// <summary>
+    ///     Id статуса получения
+    /// </summary>
+    public DeliveryStatus OrderDeliveryStatusId { get; set; }
+
+    /// <summary>
+    ///     Статус получения
+    /// </summary>
+    public OrderDeliveryStatus OrderDeliveryStatus { get; private set; }
 
 
     private Order() { }
