@@ -1,4 +1,5 @@
 ﻿using EShop.Domain.Entities;
+using EShop.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,6 +16,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(order => order.OrderingDate)
             .IsRequired();
 
+        builder.Property(order => order.OrderDeliveryStatusId)
+            .IsRequired()
+            .HasDefaultValue(DeliveryStatus.Payed);
+
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(order => order.UserId)
@@ -23,6 +28,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasMany(order => order.OrderItems)
             .WithOne()
             .HasForeignKey(orderItem => orderItem.OrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(order => order.OrderDeliveryStatus)
+            .WithMany()
+            .HasForeignKey(order => order.OrderDeliveryStatusId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
