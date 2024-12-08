@@ -18,6 +18,9 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .IsRequired()
             .HasMaxLength(128);
 
+        builder.HasIndex(role => role.Name)
+            .IsUnique();
+
         builder.HasMany<User>()
             .WithOne(user => user.Role)
             .HasForeignKey(user => user.RoleId)

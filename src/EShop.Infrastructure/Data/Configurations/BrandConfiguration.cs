@@ -17,6 +17,9 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
             .IsRequired()
             .HasMaxLength(128);
 
+        builder.HasIndex(brand => brand.Name)
+            .IsUnique();
+
         builder.Ignore(brand => brand.BrandProducts);
 
         builder.HasMany(brand => brand.BrandProducts)
