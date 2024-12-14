@@ -1,0 +1,29 @@
+.title {
+  display: inline-block;
+  font-size: 2em;
+  font-weight: 600;
+  margin: 1em 0 0.5em 0;
+}
+
+.container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .empty-text {
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .sign-link-text {
+    display: inline-block;
+    font-weight: 500;
+    line-height: 1.5em;
+    // margin-bottom: 0.5em;
+    text-decoration: none;
+    color: var(--blue-500);
+    cursor: pointer;
+  }
+}
