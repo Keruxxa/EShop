@@ -35,7 +35,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, R
         if (review.UserId != request.UserId)
         {
             return Result.Failure<Unit, Error>(new Error(
-                new ForbiddenEntityError(new { request.ProductId, request.UserId }),
+                new ForbiddenEntityError(request.UserId),
                 ErrorType.Forbidden));
         }
 
