@@ -1,0 +1,15 @@
+@import '../../../../variables.scss';
+
+.container {
+  background-color: var(--footer-color);
+
+  .content {
+    max-width: 1500px;
+    margin: auto;
+  }
+
+  .text {
+    color: white;
+    font-weight: 500;
+  }
+}
