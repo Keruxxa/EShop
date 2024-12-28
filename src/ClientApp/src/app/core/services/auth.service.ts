@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.dev';
 import { SignInUserModel } from '../../features/sign-in/models/sign-in-user-model';
@@ -18,42 +17,34 @@ export class AuthService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  public signIn(formGroup: FormGroup): Observable<boolean> {
-    const signInUserModel: SignInUserModel = {
-      email: formGroup.controls['email'].value,
-      password: formGroup.controls['password'].value,
-    };
-
+  public signIn(signInUserModel: SignInUserModel): Observable<boolean> {
     return this.httpClient
       .post<SignInUserResponseModel>(`${this.apiUrl}/sign-in`, signInUserModel)
       .pipe(
         tap(signInUserResponseModel => {
-          localStorage.setItem(userId, signInUserResponseModel.id);
-          localStorage.setItem(userToken, signInUserResponseModel.token);
+          sessionStorage.setItem(userId, signInUserResponseModel.id);
+          sessionStorage.setItem(userToken, signInUserResponseModel.token);
         }),
         map(() => true),
         catchError(() => of(false)),
       );
   }
 
-  public signUp(formGroup: FormGroup): Observable<boolean> {
-    const signUpUserModel: SignUpUserModel = {
-      firstName: formGroup.controls['firstName'].value,
-      lastName: formGroup.controls['lastName'].value,
-      email: formGroup.controls['email'].value,
-      password: formGroup.controls['password'].value,
-    };
-
+  public signUp(signUpUserModel: SignUpUserModel): Observable<boolean> {
     return this.httpClient
       .post<SignUpUserResponseModel>(`${this.apiUrl}/sign-up`, signUpUserModel)
       .pipe(
         tap(signUpUserResponseModel => {
-          localStorage.setItem(userId, signUpUserResponseModel.id);
-          localStorage.setItem(userToken, signUpUserResponseModel.token);
+          sessionStorage.setItem(userId, signUpUserResponseModel.id);
+          sessionStorage.setItem(userToken, signUpUserResponseModel.token);
         }),
         map(() => true),
         catchError(this.handleError),
       );
+  }
+
+  public isAuthenticated(): boolean {
+    return sessionStorage.getItem(userToken) !== null;
   }
 
   private handleError = (errorResponse: HttpErrorResponse): Observable<never> => {

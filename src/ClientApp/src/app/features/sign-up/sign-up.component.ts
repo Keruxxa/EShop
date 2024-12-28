@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -16,6 +16,7 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { RippleModule } from 'primeng/ripple';
 import { AuthService } from '../../core/services/auth.service';
+import { SignUpUserModel } from './models/sign-up-user-model';
 
 @Component({
   selector: 'app-sign-up',
@@ -41,7 +42,6 @@ export class SignUpComponent {
   public isEmailInvalid: boolean = false;
   public isPasswordInvalid: boolean = false;
   public isLoading: boolean = false;
-  private destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,
@@ -75,11 +75,18 @@ export class SignUpComponent {
       return;
     }
 
+    const signUpUserModel: SignUpUserModel = {
+      firstName: this.formGroup.controls['firstName'].value,
+      lastName: this.formGroup.controls['lastName'].value,
+      email: this.formGroup.controls['email'].value,
+      password: this.formGroup.controls['password'].value,
+    };
+
     this.isLoading = true;
 
     this.authService
-      .signUp(this.formGroup)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .signUp(signUpUserModel)
+      .pipe(takeUntilDestroyed())
       .subscribe({
         next: () => {
           this.router.navigate(['/']);

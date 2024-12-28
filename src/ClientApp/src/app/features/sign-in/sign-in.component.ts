@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, inject, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -17,7 +17,7 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { RippleModule } from 'primeng/ripple';
 import { AuthService } from '../../core/services/auth.service';
-import { SignInUserResponseModel } from './models/sign-in-user-response-model';
+import { SignInUserModel } from './models/sign-in-user-model';
 
 @Component({
   selector: 'app-auth',
@@ -39,19 +39,17 @@ import { SignInUserResponseModel } from './models/sign-in-user-response-model';
   providers: [MessageService],
 })
 export class SignInComponent {
-  @Output() signIn = new EventEmitter<SignInUserResponseModel>();
+  public readonly authService = inject(AuthService);
+  public readonly router = inject(Router);
+  public readonly messageService = inject(MessageService);
+
   public formGroup: FormGroup;
   public isOpened: boolean = false;
   public isEmailInvalid: boolean = false;
   public isPasswordInvalid: boolean = false;
   public isLoading: boolean = false;
-  private destroyRef = inject(DestroyRef);
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly messageService: MessageService,
-    private readonly router: Router,
-  ) {
+  constructor() {
     this.formGroup = new FormGroup({
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
@@ -65,11 +63,16 @@ export class SignInComponent {
       return;
     }
 
+    const signInUserModel: SignInUserModel = {
+      email: this.formGroup.controls['email'].value,
+      password: this.formGroup.controls['password'].value,
+    };
+
     this.isLoading = true;
 
     this.authService
-      .signIn(this.formGroup)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .signIn(signInUserModel)
+      .pipe(takeUntilDestroyed())
       .subscribe(isAuthenticated => {
         this.isLoading = false;
 
