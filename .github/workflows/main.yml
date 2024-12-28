@@ -21,3 +21,19 @@ jobs:
 
       - name: Unit tests
         run: dotnet test ./EShop.sln
+
+  front-end:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+  
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.6.x'
+
+      # - name: Dependencies
+      #   run: npm ci ./src/ClientApp
+
+      - name: Build
+        run: npm run build ./ClientApp
