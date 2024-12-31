@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -37,17 +37,18 @@ import { SignUpUserModel } from './models/sign-up-user-model';
   providers: [MessageService],
 })
 export class SignUpComponent {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
+
   public formGroup: FormGroup;
   public isOpened: boolean = false;
   public isEmailInvalid: boolean = false;
   public isPasswordInvalid: boolean = false;
   public isLoading: boolean = false;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router,
-    private readonly messageService: MessageService,
-  ) {
+  constructor() {
     this.formGroup = new FormGroup({
       firstName: new FormControl(null),
       lastName: new FormControl(null),
@@ -86,7 +87,7 @@ export class SignUpComponent {
 
     this.authService
       .signUp(signUpUserModel)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           this.router.navigate(['/']);

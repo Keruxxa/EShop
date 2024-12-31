@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -42,6 +42,7 @@ export class SignInComponent {
   public readonly authService = inject(AuthService);
   public readonly router = inject(Router);
   public readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   public formGroup: FormGroup;
   public isOpened: boolean = false;
@@ -72,7 +73,7 @@ export class SignInComponent {
 
     this.authService
       .signIn(signInUserModel)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(isAuthenticated => {
         this.isLoading = false;
 
