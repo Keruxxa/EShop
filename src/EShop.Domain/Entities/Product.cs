@@ -44,7 +44,7 @@ public class Product : EntityBase<Guid>
     /// <summary>
     ///     Категория
     /// </summary>
-    public Category Category { get; private set; }
+    public Category? Category { get; private set; }
 
     /// <summary>
     ///     Id бренда
@@ -54,7 +54,7 @@ public class Product : EntityBase<Guid>
     /// <summary>
     ///     Бренд
     /// </summary>
-    public Brand Brand { get; private set; }
+    public Brand? Brand { get; private set; }
 
     /// <summary>
     ///     Id страны-производителя
@@ -64,7 +64,7 @@ public class Product : EntityBase<Guid>
     /// <summary>
     ///     Страна-производитель
     /// </summary>
-    public Country CountryManufacturer { get; private set; }
+    public Country? CountryManufacturer { get; private set; }
 
     /// <summary>
     ///     Отзывы товара
@@ -77,7 +77,7 @@ public class Product : EntityBase<Guid>
     public int ReviewCount => _reviews.Count;
 
 
-    private Product() { }
+    //private Product() { }
 
 
     public Product(string name, string? description, DateTime? releaseDate,

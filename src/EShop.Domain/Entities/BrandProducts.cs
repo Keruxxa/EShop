@@ -17,7 +17,7 @@ public class BrandProducts
     public Guid ProductId { get; set; }
 
 
-    private BrandProducts() { }
+    //private BrandProducts() { }
 
     public BrandProducts(int brandId, Guid productId)
     {

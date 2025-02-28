@@ -17,7 +17,7 @@ public class CategoryProducts
     public Guid ProductId { get; private set; }
 
 
-    public CategoryProducts() { }
+    //private CategoryProducts() { }
 
     public CategoryProducts(int categoryId, Guid productId)
     {

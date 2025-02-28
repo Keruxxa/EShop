@@ -18,7 +18,7 @@ public class BasketItem
     /// <summary>
     ///     Товар
     /// </summary>
-    public Product Product { get; }
+    public Product? Product { get; }
 
     /// <summary>
     ///     Количество товара в корзине

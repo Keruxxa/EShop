@@ -40,10 +40,10 @@ public class User : EntityBase<Guid>
     /// <summary>
     ///     Роль
     /// </summary>
-    public Role Role { get; private set; }
+    public Role? Role { get; private set; }
 
 
-    private User() { }
+    //private User() { }
 
     public User(
         Guid id,

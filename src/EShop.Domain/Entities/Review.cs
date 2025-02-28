@@ -13,7 +13,7 @@ public class Review
     /// <summary>
     ///     Пользователь
     /// </summary>
-    public User User { get; }
+    public User? User { get; }
 
     /// <summary>
     ///     Id товара
@@ -23,7 +23,7 @@ public class Review
     /// <summary>
     ///     Товар
     /// </summary>
-    public Product Product { get; }
+    public Product? Product { get; }
 
     /// <summary>
     ///     Рейтинг
@@ -36,7 +36,7 @@ public class Review
     public string? Text { get; private set; }
 
 
-    private Review() { }
+    //private Review() { }
 
     public Review(Guid productId, Guid userId, int rating, string? text)
     {
