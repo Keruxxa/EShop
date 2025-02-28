@@ -13,7 +13,7 @@ public class Role : EntityBase<RoleType>
     public string Name { get; }
 
 
-    private Role() { }
+    //private Role() { }
 
 
     /// <param name="name">Наименование</param>

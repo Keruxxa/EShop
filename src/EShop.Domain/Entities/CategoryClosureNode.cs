@@ -13,7 +13,7 @@ public class CategoryClosureNode
     /// <summary>
     ///     Категория-предок
     /// </summary>
-    public Category AncestorCategory { get; }
+    public Category? AncestorCategory { get; }
 
     /// <summary>
     ///     Id категории-потомка

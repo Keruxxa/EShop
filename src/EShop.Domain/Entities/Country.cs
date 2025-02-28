@@ -11,7 +11,7 @@ public class Country : EntityBase<int>
     public string Name { get; private set; }
 
 
-    private Country() { }
+    //private Country() { }
 
     public Country(string name)
     {

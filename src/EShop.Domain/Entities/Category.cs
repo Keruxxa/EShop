@@ -21,7 +21,7 @@ public class Category : EntityBase<int>
     public IReadOnlyCollection<CategoryProducts> CategoryProducts => _categotyProducts.AsReadOnly();
 
 
-    private Category() { }
+    //private Category() { }
 
     public Category(string name)
     {

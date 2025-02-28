@@ -53,7 +53,7 @@ public class Order : EntityBase<Guid>
     /// <summary>
     ///     Статус получения
     /// </summary>
-    public OrderDeliveryStatus OrderDeliveryStatus { get; private set; }
+    public OrderDeliveryStatus? OrderDeliveryStatus { get; private set; }
 
 
     private Order() { }

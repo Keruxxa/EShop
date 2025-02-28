@@ -13,7 +13,7 @@ public class OrderItem : EntityBase<Guid>
     /// <summary>
     ///     Товар
     /// </summary>
-    public Product Product { get; }
+    public Product? Product { get; }
 
     /// <summary>
     ///     Id заказа
@@ -26,7 +26,7 @@ public class OrderItem : EntityBase<Guid>
     public int Count { get; }
 
 
-    private OrderItem() { }
+    //private OrderItem() { }
 
     public OrderItem(Guid orderId, Guid productId, int count)
     {
