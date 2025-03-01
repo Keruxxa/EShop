@@ -25,10 +25,8 @@ public class Order : EntityBase<Guid>
     /// <summary>
     ///     Суммарная стоимость
     /// </summary>
-    public decimal TotalPrice
-    {
-        get => _orderItems.Sum(orderItem => orderItem.Product.Price * orderItem.Count);
-    }
+    public decimal TotalPrice => _orderItems
+        .Sum(orderItem => orderItem.Product is not null ? orderItem.Product.Price * orderItem.Count : 0);
 
     /// <summary>
     ///     Дата оформления
@@ -55,8 +53,6 @@ public class Order : EntityBase<Guid>
     /// </summary>
     public OrderDeliveryStatus? OrderDeliveryStatus { get; private set; }
 
-
-    private Order() { }
 
     public Order(Guid userId)
     {

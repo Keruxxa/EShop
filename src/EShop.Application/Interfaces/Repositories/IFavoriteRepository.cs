@@ -7,7 +7,7 @@ public interface IFavoriteRepository
     /// <summary>
     ///     Получает коллекцию избранного
     /// </summary>
-    Task<Favorite> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Favorite?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет коллекцию избранного

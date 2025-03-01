@@ -22,7 +22,7 @@ public class ProductRepository : IProductRepository
             .AsQueryable();
     }
 
-    public async Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Products
             .Include(product => product.Category)
@@ -30,7 +30,7 @@ public class ProductRepository : IProductRepository
             .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
     }
 
-    public async Task<Product> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Product?> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Products
             .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);

@@ -21,8 +21,6 @@ public class Brand : EntityBase<int>
     public IReadOnlyCollection<BrandProducts> BrandProducts => _brandProducts.AsReadOnly();
 
 
-    //private Brand() { }
-
     public Brand(string name)
     {
         Name = name;

@@ -7,7 +7,7 @@ public interface IBasketRepository
     /// <summary>
     ///     Получает корзину
     /// </summary>
-    Task<Basket> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Basket?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет корзину

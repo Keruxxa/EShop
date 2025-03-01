@@ -26,8 +26,6 @@ public class BasketItem
     public int Count { get; private set; }
 
 
-    private BasketItem() { }
-
     public BasketItem(Guid basketId, Guid productId)
     {
         BasketId = basketId;

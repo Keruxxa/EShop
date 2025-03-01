@@ -17,7 +17,7 @@ public interface IReviewRepository
     /// <summary>
     ///     Получает отзыв
     /// </summary>
-    Task<Review> GetByIdAsync(Guid productId, Guid userId, CancellationToken cancellationToken);
+    Task<Review?> GetByIdAsync(Guid productId, Guid userId, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет отзыв

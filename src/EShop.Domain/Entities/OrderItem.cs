@@ -26,8 +26,6 @@ public class OrderItem : EntityBase<Guid>
     public int Count { get; }
 
 
-    //private OrderItem() { }
-
     public OrderItem(Guid orderId, Guid productId, int count)
     {
         OrderId = orderId;

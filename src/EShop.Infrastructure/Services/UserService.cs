@@ -27,8 +27,9 @@ public class UserService : IUserService
             return true;
         }
 
-        return !await _dbContext.Users
-            .AnyAsync(user => user.Phone.Equals(phone), cancellationToken);
+        return !await _dbContext.Users.AnyAsync(user =>
+            user.Phone != null &&
+            user.Phone.Equals(phone), cancellationToken);
     }
 
     public async Task<bool> IsUserExistAsync(Guid id, CancellationToken cancellationToken)

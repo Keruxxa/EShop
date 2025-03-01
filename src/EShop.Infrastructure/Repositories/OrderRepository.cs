@@ -24,7 +24,7 @@ public class OrderRepository : IOrderRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Order> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Orders
             .Include(order => order.OrderItems)

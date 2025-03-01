@@ -10,9 +10,6 @@ public class OrderDeliveryStatus : EntityBase<DeliveryStatus>
     public string Status { get; }
 
 
-    //private OrderDeliveryStatus() { }
-
-
     /// <param name="status"> Статус </param>
     public OrderDeliveryStatus(string status)
     {

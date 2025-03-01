@@ -1,13 +1,13 @@
-﻿using EShop.Application.Dtos.User;
+﻿using EShop.Application.CQRS.Commands.Users;
+using EShop.Application.CQRS.Queries.Users;
+using EShop.Application.Dtos.Basket;
+using EShop.Application.Dtos.Favorite;
+using EShop.Application.Dtos.Orders;
+using EShop.Application.Dtos.Product;
+using EShop.Application.Dtos.User;
 using EShop.Domain.Entities;
 using EShop.Domain.Enums;
 using Mapster;
-using EShop.Application.CQRS.Commands.Users;
-using EShop.Application.CQRS.Queries.Users;
-using EShop.Application.Dtos.Basket;
-using EShop.Application.Dtos.Product;
-using EShop.Application.Dtos.Orders;
-using EShop.Application.Dtos.Favorite;
 
 namespace EShop.Infrastructure.Utilities.Mapping;
 

@@ -13,7 +13,7 @@ public interface ICategoryRepository
     /// <summary>
     ///     Получает категорию
     /// </summary>
-    Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает список родительских подкатегорий

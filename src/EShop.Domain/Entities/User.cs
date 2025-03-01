@@ -43,8 +43,6 @@ public class User : EntityBase<Guid>
     public Role? Role { get; private set; }
 
 
-    //private User() { }
-
     public User(
         Guid id,
         string? firstName,

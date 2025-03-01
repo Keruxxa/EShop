@@ -22,9 +22,6 @@ public class FavoriteProducts
     public Product? Product { get; }
 
 
-    //private FavoriteProducts() { }
-
-
     /// <param name="favoriteId">Id коллекции избранного</param>
     /// <param name="productId">Id товара</param>
     public FavoriteProducts(Guid favoriteId, Guid productId)

@@ -12,7 +12,7 @@ public interface IOrderRepository
     /// <summary>
     ///     Получает заказ
     /// </summary>
-    Task<Order> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет заказ

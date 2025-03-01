@@ -1,16 +1,16 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Users;
+using EShop.Application.Dtos.User;
 using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Security;
 using EShop.Application.Interfaces.Services;
+using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Domain.Entities;
 using MapsterMapper;
 using MediatR;
 using static EShop.Application.Constants;
-using EShop.Application.Issues.Errors.Base;
-using EShop.Application.Issues.Errors;
-using EShop.Application.Dtos.User;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.SignUp;
 
@@ -51,10 +51,13 @@ public class SignUpUserCommandHandler : IRequestHandler<SignUpUserCommand, Resul
                 new DuplicateEntityError(nameof(User), USER_EMAIL_IS_NOT_UNIQUE), ErrorType.Duplicate));
         }
 
-        if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
+        if (request.Phone is not null)
         {
-            return Result.Failure<SignUpUserResponseDto, Error>(new Error(
-                new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate));
+            if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
+            {
+                return Result.Failure<SignUpUserResponseDto, Error>(new Error(
+                    new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate));
+            }
         }
 
         request.SetHashPassword(_passwordHasher.Hash(request.Password));

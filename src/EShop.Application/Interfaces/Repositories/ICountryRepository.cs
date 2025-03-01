@@ -12,7 +12,7 @@ public interface ICountryRepository
     /// <summary>
     ///     Получает страну
     /// </summary>
-    Task<Country> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Country?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет страну

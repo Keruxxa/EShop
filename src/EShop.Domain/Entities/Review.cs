@@ -36,8 +36,6 @@ public class Review
     public string? Text { get; private set; }
 
 
-    //private Review() { }
-
     public Review(Guid productId, Guid userId, int rating, string? text)
     {
         ProductId = productId;

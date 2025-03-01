@@ -24,7 +24,7 @@ class CategoryRepository : ICategoryRepository
             .AsQueryable();
     }
 
-    public async Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _dbContext.Categories.FirstOrDefaultAsync(category => category.Id == id, cancellationToken);
     }
@@ -35,7 +35,7 @@ class CategoryRepository : ICategoryRepository
             .Include(categoryClosureNode => categoryClosureNode.AncestorCategory)
             .Where(categoryClosureNode => categoryClosureNode.DescendantCategoryId == categoryId)
             .OrderBy(categoryClosureNode => categoryClosureNode.AncestorCategoryId)
-            .Select(categoryClosureNode => SelectListItem<int>.CreateItem(categoryClosureNode.AncestorCategory))
+            .Select(categoryClosureNode => SelectListItem<int>.CreateItem(categoryClosureNode.AncestorCategory!))
             .ToListAsync(cancellationToken);
     }
 

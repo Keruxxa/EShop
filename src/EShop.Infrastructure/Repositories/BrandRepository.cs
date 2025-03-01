@@ -22,7 +22,7 @@ public class BrandRepository : IBrandRepository
             .AsQueryable();
     }
 
-    public async Task<Brand> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Brand?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _dbContext.Brands
             .Include(brand => brand.BrandProducts)
