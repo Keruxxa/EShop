@@ -43,7 +43,6 @@ public class CategoriesController : BaseController
     [AllowAnonymous]
     public async Task<ActionResult<Result<List<SelectListItem<int>>>>> GetHierarchyById(int categoryId)
     {
-
         var result = await Mediator.Send(new GetCategoriesHierarchyByIdQuery(categoryId));
 
         return result.IsSuccess

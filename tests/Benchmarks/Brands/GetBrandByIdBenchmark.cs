@@ -1,11 +1,11 @@
-﻿using EShop.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using EShop.Application.CQRS.Queries.Brands;
-using EShop.Domain.Entities;
-using EShop.Infrastructure.Repositories;
+﻿using BenchmarkDotNet.Attributes;
 using CSharpFunctionalExtensions;
-using BenchmarkDotNet.Attributes;
+using EShop.Application.CQRS.Queries.Brands;
 using EShop.Application.Exceptions;
+using EShop.Domain.Entities;
+using EShop.Infrastructure.Data;
+using EShop.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Benchmarks.Brands;
 
@@ -27,12 +27,12 @@ public class GetBrandByIdBenchmark
     }
 
     [Benchmark]
-    public async Task<Brand> HandleException()
+    public async Task<Brand?> HandleException()
     {
         var request = new GetBrandByIdQuery(wrongId);
         var cancellationToken = CancellationToken.None;
 
-        Brand brand = null;
+        Brand? brand = null;
 
         try
         {

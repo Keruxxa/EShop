@@ -22,6 +22,8 @@ public class Basket : EntityBase<Guid>
         .Sum(basketItem => basketItem.Product is not null ? basketItem.Product.Price * basketItem.Count : 0);
 
 
+    private Basket() { }
+
     public Basket(Guid userId)
     {
         Id = userId;

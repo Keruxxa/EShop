@@ -1,15 +1,15 @@
-﻿using EShop.Application.Dtos.User;
+﻿using CSharpFunctionalExtensions;
+using EShop.Application.CQRS.Commands.Users;
+using EShop.Application.CQRS.Queries.Users;
+using EShop.Application.Dtos.User;
 using EShop.Application.Interfaces.Security;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Infrastructure.Utilities;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using EShop.Application.CQRS.Commands.Users;
-using EShop.Application.CQRS.Queries.Users;
-using EShop.Application.Issues.Errors.Base;
 using static EShop.Application.Constants;
-using CSharpFunctionalExtensions;
 
 namespace EShop.Web.Controllers;
 
@@ -56,7 +56,7 @@ public class AuthenticationController : BaseController
     [HttpPost("sign-in")]
     public async Task<ActionResult<Result<SignInUserResponseDto, Error>>> SignIn([FromBody] SignInUserDto signInUserDto)
     {
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity!.IsAuthenticated)
         {
             return BadRequest(USER_IS_ALREADY_AUTHENTICATED);
         }
@@ -86,7 +86,7 @@ public class AuthenticationController : BaseController
     [HttpDelete("{id:Guid}")]
     public ActionResult SignOut(Guid id)
     {
-        if (!User.Identity.IsAuthenticated)
+        if (!User.Identity!.IsAuthenticated)
         {
             return BadRequest($"User with id '{id}' is not authenticated");
         }
