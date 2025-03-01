@@ -31,7 +31,7 @@ public class ReviewRepository : IReviewRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Review> GetByIdAsync(Guid productId, Guid userId, CancellationToken cancellationToken)
+    public async Task<Review?> GetByIdAsync(Guid productId, Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Reviews.FirstOrDefaultAsync(review =>
             review.ProductId == productId && review.UserId == userId, cancellationToken);

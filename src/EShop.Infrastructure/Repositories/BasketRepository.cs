@@ -15,7 +15,7 @@ public class BasketRepository : IBasketRepository
     }
 
 
-    public async Task<Basket> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Basket?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Baskets
             .Include(basket => basket.BasketItems)

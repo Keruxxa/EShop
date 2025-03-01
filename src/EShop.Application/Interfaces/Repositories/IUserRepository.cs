@@ -12,12 +12,12 @@ public interface IUserRepository
     /// <summary>
     ///     Получает пользователя
     /// </summary>
-    Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает пользователя по email
     /// </summary>
-    Task<User> SignInAsync(string email, CancellationToken cancellationToken);
+    Task<User?> SignInAsync(string email, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет пользователя

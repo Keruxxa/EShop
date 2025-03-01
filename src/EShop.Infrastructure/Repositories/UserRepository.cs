@@ -21,14 +21,14 @@ public class UserRepository : IUserRepository
         return _dbContext.Users.Where(user => user.RoleId == RoleType.Manager);
     }
 
-    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Users
             .Include(user => user.Role)
             .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
     }
 
-    public async Task<User> SignInAsync(string email, CancellationToken cancellationToken)
+    public async Task<User?> SignInAsync(string email, CancellationToken cancellationToken)
     {
         return await _dbContext.Users
             .Include(user => user.Role)

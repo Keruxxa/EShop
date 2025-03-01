@@ -15,7 +15,7 @@ public class FavoriteRepository : IFavoriteRepository
     }
 
 
-    public async Task<Favorite> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Favorite?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Favorites
             .Include(favorite => favorite.FavoriteProducts)

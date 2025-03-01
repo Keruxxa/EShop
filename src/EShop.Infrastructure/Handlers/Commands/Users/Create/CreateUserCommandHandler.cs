@@ -47,10 +47,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
                 new DuplicateEntityError(nameof(User), USER_EMAIL_IS_NOT_UNIQUE), ErrorType.Duplicate));
         }
 
-        if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
+        if (request.Phone is not null)
         {
-            return Result.Failure<Guid, Error>(new Error(
-                new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate));
+            if (!await _userService.IsPhoneUniqueAsync(request.Phone, cancellationToken))
+            {
+                return Result.Failure<Guid, Error>(new Error(
+                    new DuplicateEntityError(nameof(User), USER_PHONE_IS_NOT_UNIQUE), ErrorType.Duplicate));
+            }
         }
 
         request.SetHashPassword(_passwordHasher.Hash(request.Password));

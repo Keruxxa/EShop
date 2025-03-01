@@ -12,12 +12,12 @@ public interface IProductRepository
     /// <summary>
     ///     Получает товар с заполненными навигационными свойствами
     /// </summary>
-    Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Получает товар с пустыми навигационными свойствами
     /// </summary>
-    Task<Product> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken);
+    Task<Product?> GetByIdEmptyNavPropsAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Добавляет товар

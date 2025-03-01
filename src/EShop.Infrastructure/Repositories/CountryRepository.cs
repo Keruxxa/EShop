@@ -22,7 +22,7 @@ public class CountryRepository : ICountryRepository
             .AsQueryable();
     }
 
-    public async Task<Country> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Country?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _dbContext.Countries
             .FirstOrDefaultAsync(country => country.Id == id, cancellationToken);

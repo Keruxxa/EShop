@@ -77,9 +77,6 @@ public class Product : EntityBase<Guid>
     public int ReviewCount => _reviews.Count;
 
 
-    //private Product() { }
-
-
     public Product(string name, string? description, DateTime? releaseDate,
         decimal price, int categoryId, int brandId, int? countryManufacturerId)
     {
