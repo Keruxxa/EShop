@@ -1,12 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
-using EShop.Application.Dtos.Product;
 using EShop.Application.CQRS.Commands.Products;
+using EShop.Application.CQRS.Queries.Products;
+using EShop.Application.Dtos.Product;
+using EShop.Application.Issues.Errors.Base;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EShop.Application.CQRS.Queries.Products;
-using EShop.Application.Issues.Errors.Base;
 
 namespace EShop.Web.Controllers;
 
@@ -16,7 +16,6 @@ public class ProductsController : BaseController
     public ProductsController(IMediator mediator) : base(mediator)
     {
     }
-
 
 
     [HttpGet]

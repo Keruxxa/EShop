@@ -16,6 +16,9 @@ public class Favorite : EntityBase<Guid>
     public IReadOnlyCollection<FavoriteProducts> FavoriteProducts => _favoriteProducts;
 
 
+
+    private Favorite() { }
+
     public Favorite(Guid userId)
     {
         Id = userId;

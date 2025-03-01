@@ -33,7 +33,7 @@ public class DeleteBrandBenchmark
         var request = new DeleteBrandCommand(wrongId);
         var cancellationToken = CancellationToken.None;
 
-        Brand brand = null;
+        Brand? brand = null;
 
         try
         {
