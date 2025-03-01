@@ -7,6 +7,9 @@ namespace EShop.Domain.Entities;
 /// </summary>
 public class User : EntityBase<Guid>
 {
+    /// <summary>
+    ///     Отзывы, относящиеся к пользователю
+    /// </summary>
     private readonly List<Review> _reviews = [];
 
     /// <summary>
@@ -44,6 +47,9 @@ public class User : EntityBase<Guid>
     /// </summary>
     public Role? Role { get; private set; }
 
+    /// <summary>
+    ///     Отзывы, относящиеся к пользователю
+    /// </summary>
     public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
 
 

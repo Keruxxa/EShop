@@ -34,7 +34,20 @@ public class Product : EntityBase<Guid>
     /// <summary>
     ///     Рейтинг
     /// </summary>
-    public decimal? Rating { get; private set; }
+    public decimal? Rating
+    {
+        get
+        {
+            if (_reviews.Count == 0)
+            {
+                return null;
+            }
+
+            var sum = _reviews.Sum(x => (decimal)x.Rating);
+
+            return sum / _reviews.Count;
+        }
+    }
 
     /// <summary>
     ///     Id категории

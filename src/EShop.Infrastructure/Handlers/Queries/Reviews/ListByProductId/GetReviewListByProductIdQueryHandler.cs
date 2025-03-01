@@ -1,18 +1,21 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Queries.Reviews;
+using EShop.Application.Dtos.Review;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Services;
 using EShop.Application.Issues.Errors;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Domain.Entities;
+using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Reviews.ListByProductId;
 
 /// <summary>
 ///     Представялет обработчик запроса <see cref="GetReviewListByProductIdQuery"/>
 /// </summary>
-public class GetReviewListByProductIdQueryHandler : IRequestHandler<GetReviewListByProductIdQuery, Result<List<Review>, Error>>
+public class GetReviewListByProductIdQueryHandler : IRequestHandler<GetReviewListByProductIdQuery, Result<List<ReviewListItemByProductIdDto>, Error>>
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IProductService _productService;
@@ -24,15 +27,19 @@ public class GetReviewListByProductIdQueryHandler : IRequestHandler<GetReviewLis
     }
 
 
-    public async Task<Result<List<Review>, Error>> Handle(GetReviewListByProductIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<ReviewListItemByProductIdDto>, Error>> Handle(GetReviewListByProductIdQuery request, CancellationToken cancellationToken)
     {
         if (!await _productService.IsProductExistAsync(request.ProductId, cancellationToken))
         {
-            return Result.Failure<List<Review>, Error>(new Error(new NotFoundEntityError(nameof(Product), request.ProductId), ErrorType.NotFound));
+            return Result.Failure<List<ReviewListItemByProductIdDto>, Error>(new Error(new NotFoundEntityError(nameof(Product), request.ProductId), ErrorType.NotFound));
         }
 
-        var reviews = await _reviewRepository.GetListByProductIdAsync(request.ProductId, cancellationToken);
+        var reviews = _reviewRepository.GetListByProductId(request.ProductId);
 
-        return Result.Success<List<Review>, Error>(reviews);
+        var reviewDtos = await reviews
+            .Select(review => review.Adapt<ReviewListItemByProductIdDto>())
+            .ToListAsync(cancellationToken);
+
+        return Result.Success<List<ReviewListItemByProductIdDto>, Error>(reviewDtos);
     }
 }

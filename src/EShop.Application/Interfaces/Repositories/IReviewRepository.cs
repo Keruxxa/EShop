@@ -7,12 +7,12 @@ public interface IReviewRepository
     /// <summary>
     ///     Получает список отзывов товара
     /// </summary>
-    Task<List<Review>> GetListByProductIdAsync(Guid productId, CancellationToken cancellationToken);
+    IQueryable<Review> GetListByProductId(Guid productId);
 
     /// <summary>
     ///     Получает список отзывов пользователя
     /// </summary>
-    Task<List<Review>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+    IQueryable<Review> GetListByUserId(Guid userId);
 
     /// <summary>
     ///     Получает отзыв

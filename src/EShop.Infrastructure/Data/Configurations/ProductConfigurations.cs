@@ -24,26 +24,30 @@ public class ProductConfigurations : IEntityTypeConfiguration<Product>
 
         builder
             .HasMany(product => product.Reviews)
-            .WithOne()
+            .WithOne(review => review.Product)
             .HasForeignKey(review => review.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(product => product.CountryManufacturer)
+        builder
+            .HasOne(product => product.CountryManufacturer)
             .WithMany()
             .HasForeignKey(product => product.CountryManufacturerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany<FavoriteProducts>()
+        builder
+            .HasMany<FavoriteProducts>()
             .WithOne(favoriteProduct => favoriteProduct.Product)
             .HasForeignKey(favoriteProducts => favoriteProducts.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany<CategoryProducts>()
+        builder
+            .HasMany<CategoryProducts>()
             .WithOne()
             .HasForeignKey(categoryProducts => categoryProducts.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany<BrandProducts>()
+        builder
+            .HasMany<BrandProducts>()
             .WithOne()
             .HasForeignKey(brandProduct => brandProduct.ProductId)
             .OnDelete(DeleteBehavior.Cascade);

@@ -15,5 +15,5 @@ public record ProductListItemDto(
     string Description,
     DateTime? ReleaseDate,
     decimal Price,
-    int RatingCount,
+    int ReviewCount,
     double? Rating);

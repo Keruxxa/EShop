@@ -4,6 +4,7 @@ using EShop.Application.Dtos.Basket;
 using EShop.Application.Dtos.Favorite;
 using EShop.Application.Dtos.Orders;
 using EShop.Application.Dtos.Product;
+using EShop.Application.Dtos.Review;
 using EShop.Application.Dtos.User;
 using EShop.Domain.Entities;
 using EShop.Domain.Enums;
@@ -44,7 +45,26 @@ public static class MapsterConfig
                 src.LastName,
                 src.Phone,
                 src.Email,
-                src.Role.Name));
+                src.Role!.Name));
+
+        TypeAdapterConfig<Review, ReviewListItemByProductIdDto>
+            .NewConfig()
+            .ConstructUsing(src => new ReviewListItemByProductIdDto(
+                src.ProductId,
+                src.UserId,
+                src.Rating,
+                src.Text,
+                src.User!.FirstName,
+                src.User.LastName));
+
+        TypeAdapterConfig<Review, ReviewListItemByUserIdDto>
+            .NewConfig()
+            .ConstructUsing(src => new ReviewListItemByUserIdDto(
+                src.ProductId,
+                src.UserId,
+                src.Product!.Name,
+                src.Rating,
+                src.Text));
 
         TypeAdapterConfig<SignUpUserDto, SignUpUserCommand>
             .NewConfig()
@@ -82,7 +102,7 @@ public static class MapsterConfig
                 src.Id,
                 src.TotalPrice,
                 src.BasketItems.Select(basketItem => new ProductInBasketDto(
-                    basketItem.Product.Id,
+                    basketItem.Product!.Id,
                     basketItem.Product.Name,
                     basketItem.Product.Price,
                     basketItem.Count)).ToList()));
@@ -93,7 +113,7 @@ public static class MapsterConfig
                 src.OrderingDate,
                 src.TotalPrice,
                 src.OrderItems.Select(x => new ProductInOrderDto(
-                    x.Product.Id,
+                    x.Product!.Id,
                     x.Product.Name,
                     x.Product.Price)).ToList()));
 
@@ -102,7 +122,7 @@ public static class MapsterConfig
             .ConstructUsing(src => new FavoriteDto(
                 src.Id,
                 src.FavoriteProducts.Select(favoriteProduct => new ProductInFavoriteDto(
-                    favoriteProduct.Product.Id,
+                    favoriteProduct.Product!.Id,
                     favoriteProduct.Product.Name,
                     favoriteProduct.Product.Price)).ToList()));
     }

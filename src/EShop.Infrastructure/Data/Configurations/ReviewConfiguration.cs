@@ -20,13 +20,14 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
         builder.Property(review => review.Rating)
             .IsRequired();
 
-        builder.HasOne<User>()
-            .WithMany()
+        builder
+            .HasOne(review => review.User)
+            .WithMany(user => user.Reviews)
             .HasForeignKey(review => review.UserId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder
-            .HasOne<Product>()
+            .HasOne(review => review.Product)
             .WithMany(product => product.Reviews)
             .HasForeignKey(review => review.ProductId)
             .OnDelete(DeleteBehavior.Cascade);

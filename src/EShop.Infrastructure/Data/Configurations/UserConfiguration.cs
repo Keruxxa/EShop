@@ -37,7 +37,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(64);
 
-        builder.Property(user => user.RoleId)
+        builder
+            .Property(user => user.RoleId)
             .IsRequired()
             .ValueGeneratedNever()
             .HasDefaultValue(RoleType.UnregisteredUser);
@@ -47,17 +48,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey<Basket>(basket => basket.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany<Review>()
-            .WithOne()
+        builder
+            .HasMany(user => user.Reviews)
+            .WithOne(review => review.User)
             .HasForeignKey(review => review.UserId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(user => user.Role)
+        builder
+            .HasOne(user => user.Role)
             .WithMany()
             .HasForeignKey(user => user.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany<Order>()
+        builder
+            .HasMany<Order>()
             .WithOne()
             .HasForeignKey(order => order.UserId)
             .OnDelete(DeleteBehavior.Cascade);
