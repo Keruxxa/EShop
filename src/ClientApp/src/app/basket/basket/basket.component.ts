@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { EmptyBasketComponent } from './empty-basket/empty-basket/empty-basket.component';
 
 @Component({
-  selector: 'app-basket',
   standalone: true,
+  selector: 'app-basket',
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.scss',
-  imports: [RouterLink],
+  imports: [EmptyBasketComponent],
 })
-export class BasketComponent {}
+export class BasketComponent {
+  public readonly orders: any[] = [];
+}

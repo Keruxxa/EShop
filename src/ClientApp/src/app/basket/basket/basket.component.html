@@ -2,30 +2,10 @@
 
 <div class="window">
   <div class="container">
-    <span class="empty-text">Здесь пока пусто</span>
-    <div>
-      <a
-        class="sign-link-text"
-        routerLink="/sign-in"
-        >Войдите</a
-      >
-      <span>, чтобы воспользоваться корзиной</span>
-    </div>
-    <div>
-      <span> Или </span>
-      <a
-        class="sign-link-text"
-        routerLink="/sign-up"
-        >создайте аккаунт</a
-      >
-    </div>
-
-    <div class="image">
-      <img
-        src="/eshop-basket.svg"
-        height="300"
-        alt=""
-      />
-    </div>
+    @if (!orders.length) {
+    <app-empty-basket></app-empty-basket>
+    } @else {
+    <div>Not empty basket</div>
+    }
   </div>
 </div>

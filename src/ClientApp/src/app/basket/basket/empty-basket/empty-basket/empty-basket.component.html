@@ -1,0 +1,31 @@
+<div>
+  <span class="empty-text">Здесь пока пусто</span>
+  @if (!isLoggedIn) {
+  <div>
+    <a
+      class="sign-link-text"
+      routerLink="/sign-in"
+      >Войдите</a
+    >
+    <span>, чтобы воспользоваться корзиной</span>
+  </div>
+  <div>
+    <span> Или </span>
+    <a
+      class="sign-link-text"
+      routerLink="/sign-up"
+      >создайте аккаунт</a
+    >
+  </div>
+
+  <div class="image">
+    <img
+      src="/eshop-basket.svg"
+      height="300"
+      alt=""
+    />
+  </div>
+  } @else {
+  <span>Ваши заказы будут отображаться здесь</span>
+  }
+</div>

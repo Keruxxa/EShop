@@ -43,7 +43,7 @@ export class AuthService {
       );
   }
 
-  public isAuthenticated(): boolean {
+  get isAuthenticated(): boolean {
     return sessionStorage.getItem(userToken) !== null;
   }
 
