@@ -35,6 +35,16 @@
     [iconPos]="'top'"
     [text]="true"
   ></p-button>
+  @if (isLoggedIn) {
+  <p-button
+    class="header-button header-button-ext"
+    label="Аккаунт"
+    icon="pi pi-user"
+    [iconPos]="'top'"
+    [text]="true"
+    routerLink="/account"
+  ></p-button>
+  } @else {
   <p-button
     class="header-button header-button-ext"
     label="Войти"
@@ -43,4 +53,5 @@
     [text]="true"
     routerLink="/sign-in"
   ></p-button>
+  }
 </div>

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { AuthService } from '../../../core/services/auth.service';
 import { CategoriesService } from '../../../shared/services/categories.service';
 
 @Component({
@@ -13,5 +14,11 @@ import { CategoriesService } from '../../../shared/services/categories.service';
   providers: [CategoriesService],
 })
 export class HeaderComponent {
-  constructor() {}
+  private readonly authService = inject(AuthService);
+
+  public readonly isLoggedIn: boolean = false;
+
+  constructor() {
+    this.isLoggedIn = this.authService.isAuthenticated;
+  }
 }
