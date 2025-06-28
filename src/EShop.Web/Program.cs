@@ -1,6 +1,7 @@
 using EShop.Application.Extensions;
 using EShop.Infrastructure.Extensions;
 using EShop.Infrastructure.Utilities;
+using Microsoft.OpenApi.Models;
 
 namespace EShop.Web;
 
@@ -13,7 +14,31 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    }, []
+                }
+            });
+        });
 
         builder.Services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
