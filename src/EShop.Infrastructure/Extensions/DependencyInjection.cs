@@ -1,5 +1,6 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Infrastructure.Data;
+using EShop.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ public static class DependencyInjection
         services.AddMediatr();
         services.AddMapster();
 
-        services.AddJwtAuthentication(configuration.GetSection("JwtOptions"));
+        services.AddJwtAuthentication(configuration.GetSection(nameof(JwtOptions)));
 
         return services;
     }

@@ -55,20 +55,20 @@ public class User : EntityBase<Guid>
 
     public User(
         Guid id,
-        string? firstName,
-        string? lastName,
-        string? phone,
         string email,
         string password,
-        RoleType roleId)
+        RoleType roleId,
+        string? firstName,
+        string? lastName,
+        string? phone)
     {
         Id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        Phone = phone;
         Email = email;
         Password = password;
         RoleId = roleId;
+        FirstName = firstName;
+        LastName = lastName;
+        Phone = phone;
     }
 
 
@@ -77,7 +77,7 @@ public class User : EntityBase<Guid>
     /// </summary>
     /// <param name="firstName"> Имя </param>
     /// <param name="lastName"> Фамилия </param>
-    public void UpdateMainInfo(string firstName, string lastName)
+    public void UpdateMainInfo(string? firstName, string? lastName)
     {
         FirstName = firstName;
         LastName = lastName;

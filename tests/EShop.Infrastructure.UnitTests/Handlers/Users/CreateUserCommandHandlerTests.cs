@@ -187,6 +187,6 @@ public class CreateUserCommandHandlerTests
 
     private User GetUser()
     {
-        return new User(id, firstName, lastName, phone, email, password, roleType);
+        return new User(id, email, password, roleType, firstName, lastName, phone);
     }
 }

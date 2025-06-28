@@ -13,7 +13,15 @@ public static class JwtAuthentication
     {
         var validIssuer = configuration.GetValue<string>("Issuer");
         var validAudience = configuration.GetValue<string>("Audience");
-        var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("Key")));
+
+        var jwtOptionKey = configuration.GetValue<string>("Key");
+
+        if (jwtOptionKey is null)
+        {
+            throw new InvalidOperationException($"{nameof(jwtOptionKey)} is null");
+        }
+
+        var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptionKey));
 
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

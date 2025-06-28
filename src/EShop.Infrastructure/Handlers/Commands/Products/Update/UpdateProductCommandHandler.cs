@@ -38,8 +38,14 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             return Result.Failure<Unit, Error>(new Error(new DuplicateEntityError(nameof(Product)), ErrorType.Duplicate));
         }
 
-        product.UpdateEntity(request.Name, request.Description, request.ReleaseDate,
-            request.Price, request.CategoryId, request.BrandId, request.CountryManufacturerId);
+        product.UpdateEntity(
+            request.Name,
+            request.BrandId,
+            request.CategoryId,
+            request.Price,
+            request.Description,
+            request.ReleaseDate,
+            request.CountryManufacturerId);
 
         _productRepository.Update(product);
 

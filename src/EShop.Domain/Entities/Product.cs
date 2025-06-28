@@ -90,30 +90,42 @@ public class Product : EntityBase<Guid>
     public int ReviewCount => _reviews.Count;
 
 
-    public Product(string name, string? description, DateTime? releaseDate,
-        decimal price, int categoryId, int brandId, int? countryManufacturerId)
+    public Product(
+        string name,
+        int brandId,
+        int categoryId,
+        decimal price,
+        string? description,
+        DateTime? releaseDate,
+        int? countryManufacturerId)
     {
         Name = name;
+        BrandId = brandId;
+        CategoryId = categoryId;
+        Price = price;
         Description = description;
         ReleaseDate = releaseDate?.ToUniversalTime();
-        Price = price;
-        CategoryId = categoryId;
-        BrandId = brandId;
         CountryManufacturerId = countryManufacturerId;
     }
 
     /// <summary>
     ///     Обновляет поля сущности
     /// </summary>
-    public void UpdateEntity(string name, string? description, DateTime? releaseDate,
-        decimal price, int categoryId, int brandId, int? countryManufacturerId)
+    public void UpdateEntity(
+        string name,
+        int brandId,
+        int categoryId,
+        decimal price,
+        string? description,
+        DateTime? releaseDate,
+        int? countryManufacturerId)
     {
         Name = name;
+        BrandId = brandId;
+        CategoryId = categoryId;
+        Price = price;
         Description = description;
         ReleaseDate = releaseDate;
-        Price = price;
-        CategoryId = categoryId;
-        BrandId = brandId;
         CountryManufacturerId = countryManufacturerId;
     }
 }

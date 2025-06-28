@@ -30,13 +30,12 @@ public static class MapsterConfig
             .Ignore(dest => dest.Password)
             .ConstructUsing(src => new User(
                 Guid.NewGuid(),
-                src.FirstName,
-                src.LastName,
-                src.Phone,
                 src.Email,
                 src.HashPassword,
-                RoleType.Manager
-            ));
+                RoleType.Manager,
+                src.FirstName,
+                src.LastName,
+                src.Phone));
 
         TypeAdapterConfig<User, UserDto>
             .NewConfig()
@@ -82,13 +81,12 @@ public static class MapsterConfig
             .Ignore(dest => dest.Password)
             .ConstructUsing(src => new User(
                 Guid.NewGuid(),
-                src.FirstName,
-                src.LastName,
-                src.Phone,
                 src.Email,
                 src.HashPassword,
-                RoleType.RegisteredUser
-            ));
+                RoleType.RegisteredUser,
+                src.FirstName,
+                src.LastName,
+                src.Phone));
 
         TypeAdapterConfig<SignInUserDto, SignInUserQuery>
             .NewConfig()

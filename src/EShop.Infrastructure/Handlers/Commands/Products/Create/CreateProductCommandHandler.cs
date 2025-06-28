@@ -33,11 +33,11 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         var product = new Product(
             request.Name,
+            request.BrandId,
+            request.CategoryId,
+            request.Price,
             request.Description,
             request.ReleaseDate,
-            request.Price,
-            request.CategoryId,
-            request.BrandId,
             request.CountryManufacturerId)
         {
             Id = Guid.NewGuid()
