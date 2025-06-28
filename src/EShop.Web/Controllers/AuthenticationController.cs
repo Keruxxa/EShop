@@ -2,29 +2,17 @@
 using EShop.Application.CQRS.Commands.Users;
 using EShop.Application.CQRS.Queries.Users;
 using EShop.Application.Dtos.User;
-using EShop.Application.Interfaces.Security;
 using EShop.Application.Issues.Errors.Base;
-using EShop.Infrastructure.Utilities;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using static EShop.Application.Constants;
 
 namespace EShop.Web.Controllers;
 
 public class AuthenticationController : BaseController
 {
-    private readonly IOptions<JwtOptions> _options;
-    private readonly IJwtTokenService _jwtTokenService;
-
-    public AuthenticationController(
-        IMediator mediator,
-        IOptions<JwtOptions> options,
-        IJwtTokenService jwtTokenService) : base(mediator)
+    public AuthenticationController(IMediator mediator) : base(mediator)
     {
-        _options = options;
-        _jwtTokenService = jwtTokenService;
     }
 
 
@@ -47,8 +35,6 @@ public class AuthenticationController : BaseController
 
         var userResponseDto = result.Value;
 
-        HttpContext.Response.Cookies.Append(ESHOP_SERVER_COOKIES, userResponseDto.Token);
-
         return Ok(userResponseDto);
     }
 
@@ -56,11 +42,6 @@ public class AuthenticationController : BaseController
     [HttpPost("sign-in")]
     public async Task<ActionResult<Result<SignInUserResponseDto, Error>>> SignIn([FromBody] SignInUserDto signInUserDto)
     {
-        if (User.Identity!.IsAuthenticated)
-        {
-            return BadRequest(USER_IS_ALREADY_AUTHENTICATED);
-        }
-
         var result = await Mediator.Send(signInUserDto.Adapt<SignInUserQuery>());
 
         if (result.IsFailure)
@@ -77,22 +58,6 @@ public class AuthenticationController : BaseController
 
         var userResponseDto = result.Value;
 
-        HttpContext.Response.Cookies.Append(ESHOP_SERVER_COOKIES, userResponseDto.Token);
-
         return Ok(userResponseDto);
-    }
-
-
-    [HttpDelete("{id:Guid}")]
-    public ActionResult SignOut(Guid id)
-    {
-        if (!User.Identity!.IsAuthenticated)
-        {
-            return BadRequest($"User with id '{id}' is not authenticated");
-        }
-
-        HttpContext.Response.Cookies.Delete(ESHOP_SERVER_COOKIES);
-
-        return NoContent();
     }
 }
