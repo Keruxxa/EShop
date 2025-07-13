@@ -11,9 +11,12 @@ import { CoreModule } from './core/core.module';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { defaultPreset } from './theming/theme-preset';
+import { ProfileComponent } from './account/profile/profile.component';
+import { NotificationsComponent } from './account/notifications/notifications.component';
+import { OrdersComponent } from './account/orders/orders.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProfileComponent, NotificationsComponent, OrdersComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,

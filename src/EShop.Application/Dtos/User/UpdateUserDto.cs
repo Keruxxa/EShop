@@ -7,7 +7,8 @@
 /// <param name="LastName"> Фамилия </param>
 public record UpdateUserDto(
     string? FirstName,
-    string? LastName)
+    string? LastName,
+    string? Phone)
 {
     public Guid Id { get; set; }
 };
