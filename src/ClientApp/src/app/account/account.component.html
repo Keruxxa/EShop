@@ -1,5 +1,68 @@
-<span class="title">Аккаунт</span>
+<h1 class="title">Аккаунт</h1>
 
-<div class="window">
-  <div class="container">ыуаыуаыуаыуааыуу</div>
+<div class="account">
+  <div class="account__left-side">
+    <p-tabs value="profile">
+      <p-tablist>
+        @for(tab of tabs; track tab.route){
+        <p-tab
+          [value]="tab.route"
+          [routerLink]="tab.route"
+        >
+          <i [class]="tab.icon"></i>
+          <span>{{ tab.label }}</span>
+        </p-tab>
+        }
+      </p-tablist>
+    </p-tabs>
+  </div>
+
+  <div class="account__right-side">
+    <div class="window">
+      <!-- <form
+        class="account__form-group"
+        [formGroup]="formGoup"
+      >
+        <div class="account__input">
+          <input
+            type="text"
+            placeholder="Имя"
+            pInputText
+            formControlName="firstName"
+          />
+        </div>
+
+        <div class="account__input">
+          <input
+            type="text"
+            placeholder="Фамилия"
+            pInputText
+            formControlName="lastName"
+          />
+        </div>
+
+        <div class="account__input">
+          <input
+            type="text"
+            placeholder="Email"
+            pInputText
+            formControlName="email"
+          />
+        </div>
+
+        <div class="account__input">
+          <p-inputMask
+            mask="8(999)-999-99-99"
+            class="input-phone"
+            placeholder="Телефон"
+            formControlName="phone"
+          />
+        </div>
+      </form> -->
+      <router-outlet></router-outlet>
+      <div class="account__footer">
+        <button pButton>Сохранить</button>
+      </div>
+    </div>
+  </div>
 </div>
