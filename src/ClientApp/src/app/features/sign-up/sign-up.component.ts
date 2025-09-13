@@ -88,20 +88,34 @@ export class SignUpComponent {
     this.authService
       .signUp(signUpUserModel)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
+      .subscribe(authResponse => {
+        if (authResponse.isSuccess) {
           this.router.navigate(['/']);
-        },
-        error: (errorMessage: string) => {
-          if (!this.isOpened) {
-            this.messageService.add({
-              severity: 'error',
-              detail: errorMessage,
-            });
-            this.isOpened = true;
-          }
-          this.isLoading = false;
-        },
+        }
+
+        if (!this.isOpened) {
+          this.messageService.add({
+            severity: 'error',
+            detail: authResponse.errorMessage,
+          });
+          this.isOpened = true;
+        }
+        this.isLoading = false;
       });
   }
 }
+// {
+//         next: () => {
+//           this.router.navigate(['/']);
+//         },
+//         error: (errorMessage: string) => {
+//           if (!this.isOpened) {
+//             this.messageService.add({
+//               severity: 'error',
+//               detail: errorMessage,
+//             });
+//             this.isOpened = true;
+//           }
+//           this.isLoading = false;
+//         },
+//       }

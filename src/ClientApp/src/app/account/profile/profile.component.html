@@ -1,1 +1,96 @@
-<p>profile works!</p>
+<div class="window">
+  @if (isLoading()) {
+  <form class="form-group">
+    <div class="form-group__input">
+      <p-skeleton height="2.75em" />
+    </div>
+    <div class="form-group__input">
+      <p-skeleton height="2.75em" />
+    </div>
+    <div class="form-group__input">
+      <p-skeleton height="2.75em" />
+    </div>
+    <div class="form-group__input">
+      <p-skeleton height="2.75em" />
+    </div>
+  </form>
+  } @else {
+  <form
+    class="form-group"
+    [formGroup]="formGoup"
+  >
+    <div class="form-group__input">
+      <p-floatlabel variant="on">
+        <input
+          id="name"
+          type="text"
+          pInputText
+          formControlName="firstName"
+        />
+        <label for="name">Имя</label>
+      </p-floatlabel>
+    </div>
+
+    <div class="form-group__input">
+      <p-float-label variant="on">
+        <input
+          id="lastName"
+          type="text"
+          pInputText
+          formControlName="lastName"
+        />
+        <label for="lastName">Фамилия</label>
+      </p-float-label>
+    </div>
+
+    <div class="form-group__input">
+      <p-float-label variant="on">
+        <input
+          id="email"
+          type="text"
+          pInputText
+          formControlName="email"
+        />
+        <label for="email">Email</label>
+      </p-float-label>
+    </div>
+
+    <div class="form-group__input">
+      <p-float-label variant="on">
+        <p-inputMask
+          id="phone"
+          mask="8(999)-999-99-99"
+          class="input-phone"
+          formControlName="phone"
+        />
+        <label for="phone">Телефон</label>
+      </p-float-label>
+    </div>
+  </form>
+
+  <div class="footer">
+    <div>
+      <button
+        class="footer__save"
+        pButton
+        (click)="onSave()"
+      >
+        Сохранить
+      </button>
+      <button
+        severity="secondary"
+        pButton
+        (click)="onSave()"
+      >
+        Выйти
+      </button>
+    </div>
+    <p-button
+      label="Удалить аккаунт"
+      variant="text"
+      severity="danger"
+    />
+  </div>
+  }
+</div>
+<p-toast />

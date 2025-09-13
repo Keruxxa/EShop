@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Users;
-using EShop.Application.Interfaces;
 using EShop.Application.Interfaces.Repositories;
 using EShop.Domain.Entities;
 using MediatR;
 using EShop.Application.Issues.Errors.Base;
 using EShop.Application.Issues.Errors;
+using EShop.Infrastructure.Extensions;
 
 namespace EShop.Infrastructure.Handlers.Commands.Users.Update;
 
@@ -14,12 +14,10 @@ namespace EShop.Infrastructure.Handlers.Commands.Users.Update;
 /// </summary>
 public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<Unit, Error>>
 {
-    private readonly IEShopDbContext _dbContext;
     private readonly IUserRepository _userRepository;
 
-    public UpdateUserCommandHandler(IEShopDbContext dbContext, IUserRepository userRepository)
+    public UpdateUserCommandHandler(IUserRepository userRepository)
     {
-        _dbContext = dbContext;
         _userRepository = userRepository;
     }
 
@@ -33,15 +31,12 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Resul
             return Result.Failure<Unit, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
-        user.UpdateMainInfo(request.FirstName, request.LastName);
 
-        _userRepository.Update(user);
+        user.UpdateMainInfo(request.FirstName?.ToNullIfEmpty(), request.LastName?.ToNullIfEmpty());
 
-        var isSaved = await _userRepository.SaveChangesAsync(cancellationToken) > 0;
+        await _userRepository.SaveChangesAsync(cancellationToken);
 
-        return isSaved
-            ? Result.Success<Unit, Error>(Unit.Value)
-            : Result.Failure<Unit, Error>(new Error(new ServerEntityError(), ErrorType.ServerError));
+        return Result.Success<Unit, Error>(Unit.Value);
     }
 }
 

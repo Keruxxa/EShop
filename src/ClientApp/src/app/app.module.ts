@@ -1,9 +1,9 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterOutlet } from '@angular/router';
-import { SharedModule } from 'primeng/api';
+import { MessageService, SharedModule } from 'primeng/api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -11,12 +11,11 @@ import { CoreModule } from './core/core.module';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { defaultPreset } from './theming/theme-preset';
-import { ProfileComponent } from './account/profile/profile.component';
-import { NotificationsComponent } from './account/notifications/notifications.component';
-import { OrdersComponent } from './account/orders/orders.component';
+import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { Toast } from 'primeng/toast';
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, NotificationsComponent, OrdersComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
@@ -25,10 +24,11 @@ import { OrdersComponent } from './account/orders/orders.component';
     AppRoutingModule,
     LayoutComponent,
     RouterOutlet,
+    Toast,
   ],
   providers: [
     provideClientHydration(),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
@@ -39,6 +39,7 @@ import { OrdersComponent } from './account/orders/orders.component';
       },
       ripple: true,
     }),
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

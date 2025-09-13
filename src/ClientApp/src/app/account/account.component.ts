@@ -4,7 +4,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
-import { InputMaskModule } from 'primeng/inputmask';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TabsModule } from 'primeng/tabs';
@@ -25,7 +24,6 @@ export interface AccountTab {
     ReactiveFormsModule,
     MenuModule,
     ButtonModule,
-    InputMaskModule,
     RouterModule,
     CommonModule,
     TabsModule,
@@ -63,6 +61,11 @@ export class AccountComponent {
         label: 'Заказы',
         route: 'orders',
         icon: 'pi pi-shopping-cart',
+      },
+      {
+        label: 'Отзывы',
+        route: 'reviews',
+        icon: 'pi pi-megaphone',
       },
     ];
   }
