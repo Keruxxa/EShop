@@ -1,13 +1,18 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment.dev';
 import { SignInUserModel } from '../../features/sign-in/models/sign-in-user-model';
 import { SignInUserResponseModel } from '../../features/sign-in/models/sign-in-user-response-model';
 import { SignUpUserModel } from '../../features/sign-up/models/sign-up-user-model';
 import { SignUpUserResponseModel } from '../../features/sign-up/models/sign-up-user-response-model';
-import { ErrorType, ReponseError } from '../../shared/models/reponse-error.model';
-import { userId, userToken } from '../constants';
+import { ErrorType, ResponseError } from '../../shared/models/response-error.model';
+import { userIdKey, userToken } from '../constants';
+
+export interface AuthResponse {
+  isSuccess: boolean;
+  errorMessage?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -17,43 +22,46 @@ export class AuthService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  public signIn(signInUserModel: SignInUserModel): Observable<boolean> {
+  public signIn(signInUserModel: SignInUserModel): Observable<AuthResponse> {
     return this.httpClient
       .post<SignInUserResponseModel>(`${this.apiUrl}/sign-in`, signInUserModel)
       .pipe(
         tap(signInUserResponseModel => {
-          sessionStorage.setItem(userId, signInUserResponseModel.id);
-          sessionStorage.setItem(userToken, signInUserResponseModel.token);
+          localStorage.setItem(userIdKey, signInUserResponseModel.id);
+          localStorage.setItem(userToken, signInUserResponseModel.token);
         }),
-        map(() => true),
-        catchError(() => of(false)),
+        map(() => ({ isSuccess: true })),
+        catchError(error => of(this.handleError(error))),
       );
   }
 
-  public signUp(signUpUserModel: SignUpUserModel): Observable<boolean> {
+  public signUp(signUpUserModel: SignUpUserModel): Observable<AuthResponse> {
     return this.httpClient
       .post<SignUpUserResponseModel>(`${this.apiUrl}/sign-up`, signUpUserModel)
       .pipe(
         tap(signUpUserResponseModel => {
-          sessionStorage.setItem(userId, signUpUserResponseModel.id);
-          sessionStorage.setItem(userToken, signUpUserResponseModel.token);
+          localStorage.setItem(userIdKey, signUpUserResponseModel.id);
+          localStorage.setItem(userToken, signUpUserResponseModel.token);
         }),
-        map(() => true),
-        catchError(this.handleError),
+        map(() => ({ isSuccess: true })),
+        catchError(error => of(this.handleError(error))),
       );
   }
 
   get isAuthenticated(): boolean {
-    return sessionStorage.getItem(userToken) !== null;
+    return localStorage.getItem(userToken) !== null;
   }
 
-  private handleError = (errorResponse: HttpErrorResponse): Observable<never> => {
-    const error: ReponseError = errorResponse.error;
+  private handleError(errorResponse: HttpErrorResponse): AuthResponse {
+    const error: ResponseError = errorResponse.error;
 
     const errorMessage = this.getErrorMessage(error.errorType);
 
-    return throwError(() => errorMessage);
-  };
+    return {
+      isSuccess: false,
+      errorMessage: errorMessage,
+    };
+  }
 
   private getErrorMessage(errorType: ErrorType): string {
     switch (errorType) {

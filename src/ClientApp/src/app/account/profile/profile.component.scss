@@ -1,0 +1,20 @@
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+
+  &__input {
+    flex: 1 1 calc(50% - 0.5em);
+    min-width: calc(50% - 0.5em);
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5em;
+
+  &__save {
+    margin-right: 1em;
+  }
+}

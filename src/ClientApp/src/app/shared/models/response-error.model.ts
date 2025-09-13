@@ -1,4 +1,4 @@
-export type ReponseError = {
+export type ResponseError = {
   entityError: EntityError;
   errorType: ErrorType;
 };

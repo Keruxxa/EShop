@@ -74,17 +74,17 @@ export class SignInComponent {
     this.authService
       .signIn(signInUserModel)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(isAuthenticated => {
+      .subscribe(authResponse => {
         this.isLoading = false;
 
-        if (isAuthenticated) {
+        if (authResponse.isSuccess) {
           this.router.navigate(['/']);
         }
 
         if (!this.isOpened) {
           this.messageService.add({
             severity: 'error',
-            detail: 'Неверный Email адрес или пароль',
+            detail: authResponse.errorMessage,
           });
           this.isOpened = true;
         }
