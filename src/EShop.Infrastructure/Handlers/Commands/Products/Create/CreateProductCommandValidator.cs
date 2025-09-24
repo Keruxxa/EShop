@@ -33,5 +33,31 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
         RuleFor(command => command.CountryManufacturerId)
             .GreaterThan(0)
             .When(command => command.CountryManufacturerId.HasValue);
+
+        RuleFor(command => command.ImagesInfo)
+            .NotNull()
+            .Custom((images, context) =>
+            {
+                var isMainExists = images.FirstOrDefault(image => image.IsMain);
+
+                if (isMainExists is null)
+                {
+                    context.AddFailure("There must be a main image");
+                }
+            });
+
+        RuleFor(command => command.ImagesInfo)
+            .NotNull()
+            .Custom((images, context) =>
+            {
+                var orders = images.Select(image => image.Order);
+
+                var hasDuplicates = orders.Count() != orders.Distinct().Count();
+
+                if (hasDuplicates)
+                {
+                    context.AddFailure("There must be a correct order of images");
+                }
+            });
     }
 }

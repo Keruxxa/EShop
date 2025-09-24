@@ -1,12 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Queries.Products;
 using EShop.Application.Dtos.Product;
-using EShop.Application.Interfaces.Repositories;
-using EShop.Domain.Entities;
-using MapsterMapper;
-using MediatR;
+using EShop.Application.Dtos.ProductImages;
 using EShop.Application.Issues.Errors;
 using EShop.Application.Issues.Errors.Base;
+using EShop.Domain.Entities;
+using EShop.Infrastructure.Data;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infrastructure.Handlers.Queries.Products.ById;
 
@@ -15,28 +16,33 @@ namespace EShop.Infrastructure.Handlers.Queries.Products.ById;
 /// </summary>
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto, Error>>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IMapper _mapper;
+    private readonly EShopDbContext _dbContext;
 
-    public GetProductByIdQueryHandler(IProductRepository productRepository, IMapper mapper)
+    public GetProductByIdQueryHandler(EShopDbContext dbContext)
     {
-        _productRepository = productRepository;
-        _mapper = mapper;
+        _dbContext = dbContext;
     }
 
 
     public async Task<Result<ProductDto, Error>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
+        var productDto = await _dbContext.Products
+            .Where(p => p.Id == request.Id)
+            .Select(p => new ProductDto(
+                p.Id, p.Name,
+                p.Price,
+                p.Category!.Name,
+                p.Images.Select(i => new ProductImageDto(i.Uri, i.IsMain, i.Order)),
+                p.CountryManufacturer!.Name,
+                p.Description,
+                p.ReleaseDate))
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (product is null)
+        if (productDto is null)
         {
             return Result.Failure<ProductDto, Error>(new Error(new NotFoundEntityError(nameof(Product), request.Id), ErrorType.NotFound));
         }
 
-        var productDto = _mapper.From(product).AdaptToType<ProductDto>();
-
         return Result.Success<ProductDto, Error>(productDto);
     }
 }
-

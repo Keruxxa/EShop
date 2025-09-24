@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using EShop.Application.Dtos.ProductImages;
 using EShop.Application.Issues.Errors.Base;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace EShop.Application.CQRS.Commands.Products;
 
@@ -9,9 +11,11 @@ namespace EShop.Application.CQRS.Commands.Products;
 /// </summary>
 public record CreateProductCommand(
     string Name,
-    string? Description,
-    DateTime? ReleaseDate,
-    decimal Price,
     int CategoryId,
     int BrandId,
+    decimal Price,
+    IEnumerable<IFormFile> Images,
+    IEnumerable<CreateProductImageInfo> ImagesInfo,
+    string? Description,
+    DateTime? ReleaseDate,
     int? CountryManufacturerId) : IRequest<Result<Guid, Error>>;

@@ -2,15 +2,16 @@
 using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.CQRS.Queries.Products;
 using EShop.Application.Dtos.Product;
+using EShop.Application.Dtos.ProductImages;
 using EShop.Application.Issues.Errors.Base;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EShop.Web.Controllers;
 
-[AllowAnonymous]
 public class ProductsController : BaseController
 {
     public ProductsController(IMediator mediator) : base(mediator)
@@ -39,11 +40,11 @@ public class ProductsController : BaseController
 
     [HttpPost]
     [Authorize(Roles = "Administrator, Manager")]
-    public async Task<ActionResult<Result<Guid, Error>>> Create(
-        [FromBody] CreateProductDto createProductDto,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<Guid, Error>>> Create([FromForm] CreateProductDto createProductDto, CancellationToken cancellationToken)
     {
-        var result = await Mediator.Send(createProductDto.Adapt<CreateProductCommand>(), cancellationToken);
+        var createProductCommandConfig = GetProductCommandConfig(createProductDto.Images);
+
+        var result = await Mediator.Send(createProductDto.Adapt<CreateProductCommand>(createProductCommandConfig), cancellationToken);
 
         if (result.IsSuccess)
         {
@@ -108,5 +109,40 @@ public class ProductsController : BaseController
             ErrorType.ServerError => StatusCode(StatusCodes.Status500InternalServerError, error),
             _ => BadRequest()
         };
+    }
+
+
+    private TypeAdapterConfig GetProductCommandConfig(IEnumerable<IFormFile> Images)
+    {
+        return new TypeAdapterConfig()
+            .NewConfig<CreateProductDto, CreateProductCommand>()
+            .ConstructUsing(src => new CreateProductCommand(
+                src.Name,
+                src.CategoryId,
+                src.BrandId,
+                src.Price,
+                Images,
+                DeserializeImagesInfo(src.ImagesInfo),
+                src.Description,
+                src.ReleaseDate,
+                src.CountryManufacturerId))
+            .Config;
+    }
+
+    private static IEnumerable<CreateProductImageInfo> DeserializeImagesInfo(string json)
+    {
+        if (string.IsNullOrEmpty(json))
+        {
+            throw new BadHttpRequestException($"{nameof(CreateProductDto.ImagesInfo)} must have value");
+        }
+
+        var imagesInfo = JsonConvert.DeserializeObject<List<CreateProductImageInfo>>(json);
+
+        if (imagesInfo is null)
+        {
+            throw new BadHttpRequestException($"{nameof(CreateProductDto.ImagesInfo)} must have value");
+        }
+
+        return imagesInfo;
     }
 }
