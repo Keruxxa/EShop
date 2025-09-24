@@ -9,7 +9,10 @@ public class Product : EntityBase<Guid>
     ///     Отзывы товара
     /// </summary>
     private readonly List<Review> _reviews = [];
-
+    /// <summary>
+    ///     Изображения товара
+    /// </summary>
+    private readonly List<ProductImage> _images = [];
 
     /// <summary>
     ///     Наименование
@@ -89,6 +92,16 @@ public class Product : EntityBase<Guid>
     /// </summary>
     public int ReviewCount => _reviews.Count;
 
+    /// <summary>
+    ///     Главное изображение
+    /// </summary>
+    public ProductImage? MainImage => _images.FirstOrDefault(image => image.IsMain);
+
+    /// <summary>
+    ///     Изображения товара
+    /// </summary>
+    public IReadOnlyCollection<ProductImage> Images => _images.AsReadOnly();
+
 
     public Product(
         string name,
@@ -104,7 +117,7 @@ public class Product : EntityBase<Guid>
         CategoryId = categoryId;
         Price = price;
         Description = description;
-        ReleaseDate = releaseDate?.ToUniversalTime();
+        ReleaseDate = releaseDate;
         CountryManufacturerId = countryManufacturerId;
     }
 
@@ -127,5 +140,11 @@ public class Product : EntityBase<Guid>
         Description = description;
         ReleaseDate = releaseDate;
         CountryManufacturerId = countryManufacturerId;
+    }
+
+
+    public void AddImages(IEnumerable<ProductImage> images)
+    {
+        _images.AddRange(images);
     }
 }

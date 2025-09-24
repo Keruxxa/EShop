@@ -1,4 +1,6 @@
-﻿namespace EShop.Application.Dtos.Product;
+﻿using EShop.Application.Dtos.ProductImages;
+
+namespace EShop.Application.Dtos.Product;
 
 /// <summary>
 ///     Представляет объект DTO товара для отображения в списке
@@ -12,8 +14,9 @@
 public record ProductListItemDto(
     Guid Id,
     string Name,
-    string Description,
-    DateTime? ReleaseDate,
     decimal Price,
     int ReviewCount,
-    double? Rating);
+    IEnumerable<ProductImageDto> Images,
+    string? Description,
+    DateTime? ReleaseDate,
+    decimal? Rating);

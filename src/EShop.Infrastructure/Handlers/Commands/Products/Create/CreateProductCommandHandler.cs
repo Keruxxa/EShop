@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using EShop.Application.CQRS.Commands.Products;
 using EShop.Application.Interfaces.Repositories;
+using EShop.Application.Interfaces.Services;
+using EShop.Application.Issues.Errors;
+using EShop.Application.Issues.Errors.Base;
 using EShop.Domain.Entities;
 using MediatR;
-using EShop.Application.Issues.Errors.Base;
-using EShop.Application.Issues.Errors;
-using EShop.Application.Interfaces.Services;
 
 namespace EShop.Infrastructure.Handlers.Commands.Products.Create;
 
@@ -42,6 +42,10 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         {
             Id = Guid.NewGuid()
         };
+
+        var images = request.ImagesInfo.Select(image => new ProductImage(product.Id, image.FileName, image.IsMain, image.Order));
+
+        product.AddImages(images);
 
         _productRepository.Add(product);
 
