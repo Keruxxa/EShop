@@ -24,7 +24,7 @@ public class UsersController : BaseController
         return await Mediator.Send(new GetUsersListItemQuery(), cancellationToken);
     }
 
-
+    [Authorize(Roles = "Administrator, Manager, RegisteredUser")]
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<Result<UserDto, Error>>> GetById(Guid id, CancellationToken cancellationToken)
     {

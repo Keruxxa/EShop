@@ -1,11 +1,14 @@
 ﻿using EShop.Domain.Entities;
+using EShop.Domain.Enums;
 
 namespace EShop.Application.Interfaces.Security;
 
 public interface IJwtTokenService
 {
     /// <summary>
-    ///     Генерирует Jwt-токен
+    ///     Генерирует Access Jwt-токен
     /// </summary>
-    string Generate(User user);
+    string GenerateAccessToken(Guid userId, RoleType roleType);
+
+    RefreshToken GenerateRefreshToken(Guid UserId);
 }

@@ -16,7 +16,7 @@ import { CategoriesService } from '../../../shared/services/categories.service';
 export class HeaderComponent {
   private readonly authService = inject(AuthService);
 
-  public readonly isLoggedIn: boolean = false;
+  protected readonly isLoggedIn: boolean;
 
   constructor() {
     this.isLoggedIn = this.authService.isAuthenticated;

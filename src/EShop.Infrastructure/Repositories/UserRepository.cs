@@ -31,7 +31,6 @@ public class UserRepository : IUserRepository
     public async Task<User?> SignInAsync(string email, CancellationToken cancellationToken)
     {
         return await _dbContext.Users
-            .Include(user => user.Role)
             .FirstOrDefaultAsync(user => user.Email.Equals(email), cancellationToken);
     }
 

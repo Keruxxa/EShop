@@ -65,5 +65,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne()
             .HasForeignKey(order => order.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasMany<RefreshToken>()
+            .WithOne()
+            .HasForeignKey(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

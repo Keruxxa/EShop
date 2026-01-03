@@ -11,5 +11,6 @@ public enum ErrorType
     Duplicate,
     Forbidden,
     BadRequest,
+    Unauthorized,
     ServerError
 }

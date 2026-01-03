@@ -12,7 +12,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class EmptyBasketComponent {
   private readonly authService = inject(AuthService);
 
-  public readonly isLoggedIn: boolean = false;
+  public readonly isLoggedIn: boolean;
 
   constructor() {
     this.isLoggedIn = this.authService.isAuthenticated;

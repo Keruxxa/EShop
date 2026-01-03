@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,6 +20,8 @@ import { MessageService } from 'primeng/api';
 import { userIdKey } from '../../core/constants';
 import { take } from 'rxjs';
 import { Toast } from 'primeng/toast';
+import { AuthService } from '../../core/services/auth.service';
+import { UserDto } from '../../modules/user/models/user.model';
 
 interface ProfileFormGroup {
   email: FormControl<string>;
@@ -52,9 +54,10 @@ interface ProfileFormGroup {
 export class ProfileComponent {
   private readonly userService = inject(UserService);
   private readonly messageService = inject(MessageService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   protected formGoup: FormGroup<ProfileFormGroup>;
-  public saveEvent = output<void>();
   protected isLoading = signal<boolean>(true);
 
   constructor() {
@@ -71,10 +74,11 @@ export class ProfileComponent {
     const userId = localStorage.getItem(userIdKey);
 
     if (!userId) {
-      throw new Error('UserId is not defined');
+      this.router.navigate(['/sign-in']);
+      return;
     }
 
-    this.userService.getUserById(userId).subscribe(user => {
+    this.userService.getUserById(userId).subscribe((user: UserDto) => {
       this.formGoup.patchValue({
         email: user.email,
         firstName: user.firstName,
@@ -85,12 +89,11 @@ export class ProfileComponent {
     });
   }
 
-  onSave(): void {
+  protected onSave(): void {
     if (this.formGoup.invalid) {
       return;
     }
     if (this.formGoup.pristine) {
-      return;
     }
 
     const userId = localStorage.getItem(userIdKey);
@@ -118,7 +121,9 @@ export class ProfileComponent {
           console.log('An error ocured while onSave: ', error);
         },
       });
+  }
 
-    this.saveEvent.emit();
+  protected onSignOut(): void {
+    this.authService.signOut().pipe(take(1)).subscribe();
   }
 }
