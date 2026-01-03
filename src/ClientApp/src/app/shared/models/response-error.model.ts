@@ -11,6 +11,8 @@ export enum ErrorType {
   NotFound,
   InvalidRequest,
   Duplicate,
+  Forbidden,
   BadRequest,
+  Unauthorized,
   ServerError,
 }

@@ -4,6 +4,6 @@
     ///     Представляет объект-ответ DTO зарегистрировавшегося пользователя
     /// </summary>
     /// <param name="Id"> Id </param>
-    /// <param name="Token"> JWT-токен </param>
-    public record SignUpUserResponseDto(Guid Id, string Token);
+    /// <param name="AccessToken"> JWT-токен </param>
+    public record SignUpUserResponseDto(Guid Id, string AccessToken, string RefreshToken);
 }

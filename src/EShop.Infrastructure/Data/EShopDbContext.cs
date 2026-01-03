@@ -27,6 +27,7 @@ public class EShopDbContext : DbContext, IEShopDbContext
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

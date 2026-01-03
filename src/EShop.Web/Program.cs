@@ -50,7 +50,8 @@ public class Program
             options.AddPolicy("AllowAnyOrigin", builder =>
             {
                 builder
-                    .AllowAnyOrigin()
+                    .WithOrigins("http://localhost:4200")
+                    .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
